@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
         /* ==========================================================
            ROOT – الهوية الفاخرة
@@ -43,14 +44,14 @@
             overflow-x: hidden;
         }
 
-        /* ===== الهيكل الرئيسي للوحة التحكم ===== */
+        /* ===== الهيكل الرئيسي ===== */
         .admin-layout {
             display: flex;
             width: 100%;
             min-height: 100vh;
         }
 
-        /* ===== القائمة الجانبية (Sidebar) ===== */
+        /* ===== القائمة الجانبية ===== */
         .sidebar {
             width: 280px;
             background: var(--sidebar-bg);
@@ -71,21 +72,18 @@
             border-bottom: 1px solid rgba(176, 141, 87, 0.2);
             background: linear-gradient(to bottom, rgba(16,42,67,1), var(--sidebar-bg));
         }
-        
         .sidebar-header .icon {
             font-size: 2.5rem;
             color: var(--matte-gold);
             margin-bottom: 1rem;
             display: block;
         }
-
         .sidebar-header h2 {
             font-family: var(--font-playfair);
             font-size: 1.4rem;
             color: var(--matte-gold);
             margin-bottom: 0.3rem;
         }
-
         .sidebar-header p {
             font-size: 0.8rem;
             color: rgba(255,255,255,0.5);
@@ -95,7 +93,6 @@
             padding: 1.5rem 0;
             flex: 1;
         }
-
         .nav-item {
             display: flex;
             align-items: center;
@@ -107,13 +104,11 @@
             cursor: pointer;
             border-right: 4px solid transparent;
         }
-
         .nav-item:hover, .nav-item.active {
             background: rgba(176, 141, 87, 0.1);
             color: var(--matte-gold);
             border-right-color: var(--matte-gold);
         }
-
         .nav-item i { width: 20px; text-align: center; font-size: 1.1rem; }
 
         /* ===== المحتوى الرئيسي ===== */
@@ -136,13 +131,11 @@
             margin-bottom: 2rem;
             border: 1px solid rgba(176, 141, 87, 0.06);
         }
-
         .dashboard-header .greeting {
             font-size: 1.2rem;
             font-weight: 700;
             color: var(--deep-navy);
         }
-
         .dashboard-header .actions { display: flex; gap: 0.8rem; }
 
         /* ===== أزرار ===== */
@@ -168,6 +161,8 @@
         .btn-sm.danger:hover { background: #b91c1c; }
         .btn-sm.outline { border-color: var(--matte-gold); color: var(--matte-gold); background: transparent; }
         .btn-sm.outline:hover { background: var(--matte-gold); color: #fff; }
+        .btn-sm.success { background: #059669; color: #fff; }
+        .btn-sm.success:hover { background: #047857; }
 
         /* ===== الإحصائيات ===== */
         .stats {
@@ -214,7 +209,6 @@
             box-shadow: var(--shadow-card);
             margin-bottom: 2.5rem;
         }
-        
         .section-header {
             display: flex; justify-content: space-between; align-items: center;
             margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 1px solid rgba(0,0,0,0.05);
@@ -222,7 +216,7 @@
         .section-header h2 { font-family: var(--font-serif); font-size: 1.6rem; color: var(--deep-navy); }
         .section-header .sub { font-size: 0.9rem; color: rgba(34, 34, 34, 0.5); margin-top: 0.3rem; display: block;}
 
-        /* ===== نموذج وتنسيقات مدير المحتوى ===== */
+        /* ===== نموذج ===== */
         .form-group { margin-bottom: 1.5rem; }
         .form-group label {
             display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 700;
@@ -238,13 +232,38 @@
         }
         .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
 
+        /* ===== حقل كلمة المرور مع زر إظهار ===== */
+        .password-wrapper {
+            position: relative;
+        }
+        .password-wrapper input {
+            padding-left: 3rem !important;
+        }
+        .toggle-password {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: rgba(34,34,34,0.4);
+            cursor: pointer;
+            font-size: 1.1rem;
+            padding: 0.5rem;
+            transition: color 0.3s;
+        }
+        .toggle-password:hover {
+            color: var(--matte-gold);
+        }
+
+        /* ===== معاينة الصورة ===== */
         .image-preview-box {
             margin-top: 0.8rem; max-width: 200px; border-radius: 8px; display: none;
             border: 2px dashed rgba(0,0,0,0.1); padding: 0.2rem;
         }
         .image-preview-box img { width: 100%; border-radius: 6px; display: block; }
 
-        /* ===== EasyMDE – شريط الأدوات المتقدم ===== */
+        /* ===== EasyMDE ===== */
         .editor-toolbar {
             border-radius: 10px 10px 0 0 !important; background: #f8f9fa !important; border-color: rgba(0,0,0,0.1) !important; padding: 10px !important;
         }
@@ -254,7 +273,6 @@
         .editor-toolbar button:hover, .editor-toolbar button.active {
             background: var(--matte-gold) !important; color: #fff !important; border-color: transparent !important;
         }
-        .editor-toolbar i.separator { border-right-color: rgba(0,0,0,0.1) !important; margin: 0 6px !important; }
         .CodeMirror {
             border-radius: 0 0 10px 10px !important; min-height: 400px !important;
             border-color: rgba(0, 0, 0, 0.1) !important; font-family: var(--font-ar) !important;
@@ -274,9 +292,6 @@
             border-right: 5px solid var(--matte-gold); padding-right: 1.5rem; background: var(--warm-off-white);
             padding-top: 0.5rem; padding-bottom: 0.5rem; border-radius: 4px;
         }
-        .preview-area table { width: 100%; border-collapse: collapse; margin-bottom: 1rem; }
-        .preview-area th, .preview-area td { border: 1px solid #ddd; padding: 8px; text-align: right; }
-        .preview-area th { background-color: var(--light-gray); color: var(--deep-navy); }
 
         /* ===== قائمة المقالات ===== */
         .articles-list { display: grid; gap: 1rem; }
@@ -291,16 +306,17 @@
             border-color: var(--matte-gold); box-shadow: var(--shadow-hover); transform: translateX(-5px);
         }
         .article-item .info h4 { font-size: 1.1rem; color: var(--deep-navy); margin-bottom: 0.4rem; font-family: var(--font-serif); font-weight: 700; }
-        .article-item .meta { font-size: 0.8rem; color: rgba(34,34,34,0.5); display: flex; gap: 1rem; align-items: center; }
-        
-        /* ===== العلامات والتوست (محتفظ بها من الكود الأصلي مع تحسين لوني) ===== */
+        .article-item .meta { font-size: 0.8rem; color: rgba(34,34,34,0.5); display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; }
+
+        /* ===== العلامات ===== */
         .tags-container { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.5rem; }
         .tag-pill {
             background: var(--matte-gold-light); padding: 0.3rem 0.8rem; border-radius: 20px;
             font-size: 0.75rem; color: var(--deep-navy); font-weight: 600; display: inline-flex; align-items: center; gap: 0.4rem;
         }
         .tag-pill .remove-tag { cursor: pointer; color: #dc2626; transition: 0.3s; }
-        
+
+        /* ===== Toast ===== */
         .toast {
             position: fixed; bottom: 2rem; left: 2rem; background: var(--deep-navy); color: #fff;
             padding: 1rem 1.8rem; border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.2);
@@ -310,7 +326,8 @@
         .toast.show { opacity: 1; transform: translateY(0) scale(1); }
         .toast.success { border-right: 4px solid #059669; }
         .toast.error { border-right: 4px solid #dc2626; }
-        
+        .toast.info { border-right: 4px solid var(--matte-gold); }
+
         .loading-spinner {
             display: inline-block; width: 18px; height: 18px; border: 2px solid rgba(255,255,255,0.3);
             border-radius: 50%; border-top-color: #fff; animation: spin 0.8s linear infinite; margin-left: 0.5rem;
@@ -318,7 +335,7 @@
         @keyframes spin { to { transform: rotate(360deg); } }
         .hidden { display: none !important; }
 
-        /* ===== استجابة الشاشات ===== */
+        /* ===== استجابة ===== */
         @media (max-width: 1024px) {
             .sidebar { width: 80px; }
             .sidebar-header h2, .sidebar-header p, .nav-item span { display: none; }
@@ -331,8 +348,8 @@
             .stats { grid-template-columns: 1fr 1fr; }
         }
         @media (max-width: 480px) {
-            .sidebar { display: none; } /* يمكن إضافة قائمة همبرغر لاحقاً */
-            .main-content { margin-right: 0; max-width: 100vw; }
+            .sidebar { display: none; }
+            .main-content { margin-right: 0; max-width: 100vw; padding: 1rem; }
             .stats { grid-template-columns: 1fr; }
         }
     </style>
@@ -393,7 +410,7 @@
             <section class="editor-section" id="editorSection">
                 <div class="section-header">
                     <div>
-                        <h2 id="editorTitle">صياغة مقال جديد</h2>
+                        <h2 id="editorTitle">✍️ صياغة مقال جديد</h2>
                         <span class="sub" id="editorSub">استخدم الأدوات المتقدمة لتنسيق المذكرات والمقالات القانونية بدقة.</span>
                     </div>
                     <button type="button" class="btn-sm outline hidden" onclick="resetForm()" id="cancelEditBtn">
@@ -441,7 +458,7 @@
                             <input type="text" id="articleAuthor" value="الأستاذ / محمود عبد الحميد" placeholder="اسم الكاتب" />
                         </div>
                         <div class="form-group">
-                            <label for="seoKeyword">الكلمة المفتاحية (SEO Focus)</label>
+                            <label for="seoKeyword">الكلمة المفتاحية الرئيسية (SEO Focus)</label>
                             <input type="text" id="seoKeyword" placeholder="الكلمة الأساسية لمحركات البحث (مثال: محكمة النقض)" />
                         </div>
                     </div>
@@ -463,9 +480,15 @@
                         </div>
                     </div>
 
+                    <!-- ===== اقتراح الوسوم التلقائي ===== -->
                     <div class="form-group">
-                        <label for="articleTags">الكلمات الدلالية (Tags) – افصل بينها بفاصلة</label>
-                        <input type="text" id="articleTags" placeholder="دعوى مدنية، تعويض، نقض..." />
+                        <label for="articleTags">
+                            الكلمات الدلالية (Tags)
+                            <button type="button" class="btn-sm outline" onclick="suggestTags()" style="padding:0.2rem 0.8rem; font-size:0.7rem;">
+                                <i class="fas fa-magic"></i> اقتراح وسوم تلقائية
+                            </button>
+                        </label>
+                        <input type="text" id="articleTags" placeholder="افصل بين الكلمات بفاصلة" />
                         <div class="tags-container" id="tagsPreview"></div>
                     </div>
 
@@ -481,7 +504,7 @@
                         </div>
                     </div>
 
-                    <div style="display:flex; gap:1rem; margin-top:2rem;">
+                    <div style="display:flex; gap:1rem; margin-top:2rem; flex-wrap:wrap;">
                         <button type="submit" class="btn-sm gold" id="saveBtn" style="padding:0.8rem 3rem; font-size:1.05rem;">
                             <i class="fas fa-save"></i> حفظ المقال بالنظام
                         </button>
@@ -495,7 +518,7 @@
             <section class="editor-section" id="articlesListSection">
                 <div class="section-header">
                     <div>
-                        <h2>أرشيف المقالات</h2>
+                        <h2>📖 أرشيف المقالات</h2>
                         <span class="sub">إدارة جميع المقالات، تعديلها، أو حذفها من قاعدة البيانات.</span>
                     </div>
                     <div style="display:flex; gap:0.5rem; align-items:center;">
@@ -511,7 +534,7 @@
             <section class="editor-section" id="passwordSection">
                 <div class="section-header">
                     <div>
-                        <h2>إعدادات الأمان</h2>
+                        <h2>🔑 إعدادات الأمان</h2>
                         <span class="sub">تغيير رمز المرور الخاص بمدير النظام.</span>
                     </div>
                 </div>
@@ -519,16 +542,25 @@
                     <div class="form-row">
                         <div class="form-group">
                             <label for="currentPassword">كلمة المرور الحالية</label>
-                            <input type="password" id="currentPassword" placeholder="••••••••" required />
+                            <div class="password-wrapper">
+                                <input type="password" id="currentPassword" placeholder="••••••••" required />
+                                <button type="button" class="toggle-password" onclick="togglePasswordVisibility('currentPassword', this)"><i class="fas fa-eye"></i></button>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="newPassword">كلمة المرور الجديدة</label>
-                            <input type="password" id="newPassword" placeholder="••••••••" required minlength="8" />
+                            <div class="password-wrapper">
+                                <input type="password" id="newPassword" placeholder="••••••••" required minlength="8" />
+                                <button type="button" class="toggle-password" onclick="togglePasswordVisibility('newPassword', this)"><i class="fas fa-eye"></i></button>
+                            </div>
                         </div>
                     </div>
                     <div class="form-group" style="max-width: 50%;">
                         <label for="confirmPassword">تأكيد الكلمة الجديدة</label>
-                        <input type="password" id="confirmPassword" placeholder="••••••••" required />
+                        <div class="password-wrapper">
+                            <input type="password" id="confirmPassword" placeholder="••••••••" required />
+                            <button type="button" class="toggle-password" onclick="togglePasswordVisibility('confirmPassword', this)"><i class="fas fa-eye"></i></button>
+                        </div>
                     </div>
                     <button type="submit" class="btn-sm gold" id="passwordBtn">
                         <i class="fas fa-lock"></i> تحديث بيانات الدخول
@@ -543,7 +575,9 @@
         (function() {
             'use strict';
 
+            // ==========================================================
             // AUTH CHECK
+            // ==========================================================
             function checkAuth() {
                 const token = sessionStorage.getItem('admin_token');
                 const expiry = parseInt(sessionStorage.getItem('admin_expiry') || '0');
@@ -556,7 +590,19 @@
             if (!checkAuth()) return;
 
             // ==========================================================
-            // شريط أدوات EasyMDE المطور لمدير المدونة
+            // TOGGLE PASSWORD VISIBILITY
+            // ==========================================================
+            window.togglePasswordVisibility = function(inputId, btn) {
+                const input = document.getElementById(inputId);
+                if (!input) return;
+                const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
+                input.setAttribute('type', type);
+                btn.querySelector('i').classList.toggle('fa-eye');
+                btn.querySelector('i').classList.toggle('fa-eye-slash');
+            };
+
+            // ==========================================================
+            // EASYMDE – شريط أدوات متقدم
             // ==========================================================
             const easyMDE = new EasyMDE({
                 element: document.getElementById('articleContent'),
@@ -581,10 +627,10 @@
                     { name: "horizontal-rule", action: EasyMDE.drawHorizontalRule, className: "fa fa-minus", title: "فاصل أفقي" },
                     "|",
                     { name: "link", action: EasyMDE.drawLink, className: "fa fa-link", title: "رابط لمرجع" },
-                    { name: "image", action: EasyMDE.drawImage, className: "fa fa-image", title: "إدراج صورة بالنص" },
+                    { name: "image", action: EasyMDE.drawImage, className: "fa fa-image", title: "إدراج صورة" },
                     "|",
-                    { name: "preview", action: EasyMDE.togglePreview, className: "fa fa-eye no-disable", title: "معاينة المحرر" },
-                    { name: "fullscreen", action: EasyMDE.toggleFullScreen, className: "fa fa-arrows-alt no-disable no-mobile", title: "ملء الشاشة للكتابة" }
+                    { name: "preview", action: EasyMDE.togglePreview, className: "fa fa-eye no-disable", title: "معاينة" },
+                    { name: "fullscreen", action: EasyMDE.toggleFullScreen, className: "fa fa-arrows-alt no-disable no-mobile", title: "ملء الشاشة" }
                 ],
                 placeholder: 'ابدأ بصياغة المقال أو المذكرة هنا...',
                 previewRender: function(plainText) { return marked.parse(plainText); },
@@ -604,7 +650,9 @@
                 }
             }
 
+            // ==========================================================
             // DOM REFS
+            // ==========================================================
             const DOM = {
                 title: document.getElementById('articleTitle'),
                 image: document.getElementById('articleImage'),
@@ -630,7 +678,9 @@
                 cancelBtn: document.getElementById('cancelEditBtn'),
             };
 
+            // ==========================================================
             // TOOLS
+            // ==========================================================
             window.switchTab = function(element) {
                 document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
                 element.classList.add('active');
@@ -643,7 +693,7 @@
             window.previewImageURL = function(url) {
                 const box = document.getElementById('imgPreviewBox');
                 const img = document.getElementById('imgPreviewElement');
-                if(url.match(/\.(jpeg|jpg|gif|png|webp)$/) != null || url.startsWith('http')) {
+                if(url && (url.match(/\.(jpeg|jpg|gif|png|webp)$/i) || url.startsWith('http'))) {
                     img.src = url;
                     box.style.display = 'block';
                 } else {
@@ -656,9 +706,47 @@
                 t.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-triangle' : 'fa-info-circle'}"></i> ${msg}`;
                 t.className = 'toast ' + type + ' show';
                 clearTimeout(t._hide);
-                t._hide = setTimeout(() => t.classList.remove('show'), 3500);
+                t._hide = setTimeout(() => t.classList.remove('show'), 4000);
             }
 
+            // ==========================================================
+            // SUGGEST TAGS – اقتراح وسوم من محتوى المقال
+            // ==========================================================
+            window.suggestTags = function() {
+                const content = DOM.content.value();
+                const title = DOM.title.value.trim();
+                const combined = title + ' ' + content;
+                if (combined.length < 20) {
+                    showToast('اكتب محتوى أطول للحصول على اقتراحات ذكية.', 'info');
+                    return;
+                }
+                // استخراج الكلمات المفتاحية: نأخذ الكلمات التي تظهر بكثرة
+                const words = combined.replace(/[^\u0600-\u06FF\s\w]/g, ' ').split(/\s+/);
+                const freq = {};
+                const stopWords = ['من', 'إلى', 'على', 'عن', 'في', 'في', 'هذا', 'هذه', 'ذلك', 'كما', 'حيث', 'بين', 'بعد', 'قبل', 'تحت', 'فوق', 'الذي', 'التي', 'الذين', 'عند', 'لقد', 'قد', 'إذا', 'إن', 'ما', 'و', 'ف', 'ب', 'ك', 'ل', 'هو', 'هي', 'هم'];
+                words.forEach(w => {
+                    w = w.trim();
+                    if (w.length > 2 && !stopWords.includes(w)) {
+                        freq[w] = (freq[w] || 0) + 1;
+                    }
+                });
+                const sorted = Object.entries(freq).sort((a, b) => b[1] - a[1]);
+                const topTags = sorted.slice(0, 5).map(item => item[0]);
+                if (topTags.length === 0) {
+                    showToast('لم نتمكن من استخراج وسوم. حاول كتابة محتوى أكثر تفصيلاً.', 'info');
+                    return;
+                }
+                // دمج مع الوسوم الموجودة
+                const existing = DOM.tags.value.split(',').map(t => t.trim()).filter(t => t);
+                const allTags = [...new Set([...existing, ...topTags])];
+                DOM.tags.value = allTags.join(', ');
+                renderTagsPreview(allTags);
+                showToast('✅ تم اقتراح ' + topTags.length + ' وسوم تلقائياً!', 'success');
+            };
+
+            // ==========================================================
+            // RESET FORM
+            // ==========================================================
             function resetForm() {
                 DOM.title.value = '';
                 DOM.image.value = '';
@@ -674,7 +762,7 @@
                 DOM.content.value('');
                 DOM.editSlug.value = '';
                 DOM.editSha.value = '';
-                DOM.editorTitle.textContent = 'صياغة مقال جديد';
+                DOM.editorTitle.textContent = '✍️ صياغة مقال جديد';
                 DOM.editorSub.textContent = 'استخدم الأدوات المتقدمة لتنسيق المذكرات والمقالات القانونية بدقة.';
                 DOM.saveBtn.innerHTML = '<i class="fas fa-save"></i> حفظ المقال بالنظام';
                 DOM.cancelBtn.classList.add('hidden');
@@ -683,7 +771,9 @@
             }
             window.resetForm = resetForm;
 
+            // ==========================================================
             // TAGS
+            // ==========================================================
             DOM.tags.addEventListener('input', function() {
                 const val = this.value.trim();
                 const tags = val ? val.split(',').map(t => t.trim()).filter(t => t) : [];
@@ -708,7 +798,9 @@
                 });
             }
 
-            // LOAD ARTICLES (Retained API Logic)
+            // ==========================================================
+            // LOAD ARTICLES
+            // ==========================================================
             let articles = [];
 
             async function loadArticles() {
@@ -730,7 +822,8 @@
                 if (searchTerm) {
                     filtered = articles.filter(a =>
                         (a.title || '').toLowerCase().includes(searchTerm) ||
-                        (a.category || '').toLowerCase().includes(searchTerm)
+                        (a.category || '').toLowerCase().includes(searchTerm) ||
+                        (a.slug || '').toLowerCase().includes(searchTerm)
                     );
                 }
 
@@ -757,6 +850,7 @@
                                 <div class="meta">
                                     <span><i class="far fa-calendar-alt"></i> ${date}</span>
                                     <span><i class="fas fa-balance-scale-right"></i> ${category}</span>
+                                    <span><i class="fas fa-tag"></i> ${art.seoKeyword || '—'}</span>
                                     <span><i class="fas fa-link"></i> ${art.slug}</span>
                                 </div>
                             </div>
@@ -778,7 +872,9 @@
                 DOM.published.textContent = articles.filter(a => a.status === 'published').length;
             }
 
+            // ==========================================================
             // EDIT ARTICLE
+            // ==========================================================
             window.editArticle = function(slug) {
                 const art = articles.find(a => a.slug === slug);
                 if (!art) return;
@@ -788,10 +884,8 @@
                 previewImageURL(art.image || '');
                 DOM.desc.value = art.description || '';
                 updateCharCount(DOM.desc);
-                // Added author & seo if backend provides them, otherwise defaults
                 DOM.author.value = art.author || 'الأستاذ / محمود عبد الحميد';
                 DOM.seo.value = art.seoKeyword || '';
-                
                 DOM.tags.value = (art.tags || []).join(', ');
                 renderTagsPreview(art.tags || []);
                 DOM.status.value = art.status || 'published';
@@ -800,7 +894,7 @@
                 DOM.editSlug.value = slug;
                 DOM.editSha.value = art.sha || '';
 
-                DOM.editorTitle.textContent = 'تعديل الملف: ' + (art.title || slug);
+                DOM.editorTitle.textContent = '✏️ تعديل الملف: ' + (art.title || slug);
                 DOM.editorSub.textContent = 'أنت الآن في وضع التعديل. احفظ التغييرات عند الانتهاء.';
                 DOM.saveBtn.innerHTML = '<i class="fas fa-save"></i> تحديث المقال';
                 DOM.cancelBtn.classList.remove('hidden');
@@ -809,7 +903,9 @@
                 document.getElementById('editorSection').scrollIntoView({ behavior: 'smooth' });
             };
 
+            // ==========================================================
             // DELETE ARTICLE
+            // ==========================================================
             window.deleteArticle = async function(slug) {
                 if (!confirm(`تحذير: هل أنت متأكد من رغبتك في إزالة المادة "${slug}" من السجلات نهائياً؟`)) return;
                 try {
@@ -827,7 +923,9 @@
                 }
             };
 
+            // ==========================================================
             // SAVE / UPDATE ARTICLE
+            // ==========================================================
             document.getElementById('articleForm').addEventListener('submit', async function(e) {
                 e.preventDefault();
 
@@ -846,13 +944,16 @@
                 if (!slug) slug = Date.now().toString();
 
                 const payload = {
-                    slug, title, content, tags,
+                    slug,
+                    title,
+                    content,
+                    tags,
                     image: DOM.image.value.trim(),
                     description: DOM.desc.value.trim(),
                     status: DOM.status.value,
                     category: DOM.category.value,
-                    author: DOM.author.value.trim(), // Added field for backend logic if needed
-                    seoKeyword: DOM.seo.value.trim(), // Added field for backend logic if needed
+                    author: DOM.author.value.trim(),
+                    seoKeyword: DOM.seo.value.trim(),
                     oldSlug: editSlug || undefined,
                     sha: DOM.editSha.value || undefined
                 };
@@ -880,7 +981,9 @@
                 }
             });
 
+            // ==========================================================
             // REFRESH & LOGOUT
+            // ==========================================================
             window.refreshList = function() {
                 loadArticles();
                 showToast('تم تحديث البيانات المتصلة بالخادم.', 'info');
@@ -891,39 +994,71 @@
                 window.location.href = '/admin/login.html';
             };
 
-            // PASSWORD LOGIC
+            // ==========================================================
+            // CHANGE PASSWORD – مع تأكيد التغيير الفعلي
+            // ==========================================================
             document.getElementById('passwordForm').addEventListener('submit', async function(e) {
                 e.preventDefault();
-                // (Retained exact same logic from user code)
+
                 const cp = document.getElementById('currentPassword').value.trim();
                 const np = document.getElementById('newPassword').value.trim();
                 const cnp = document.getElementById('confirmPassword').value.trim();
 
-                if (np !== cnp) return showToast('كلمتا المرور غير متطابقتين.', 'error');
-                
+                if (!cp || !np || !cnp) {
+                    showToast('يرجى ملء جميع الحقول.', 'error');
+                    return;
+                }
+                if (np !== cnp) {
+                    showToast('كلمتا المرور غير متطابقتين.', 'error');
+                    return;
+                }
+                if (np.length < 8) {
+                    showToast('كلمة المرور الجديدة يجب أن تكون 8 أحرف على الأقل.', 'error');
+                    return;
+                }
+
                 const btn = document.getElementById('passwordBtn');
                 const orig = btn.innerHTML;
-                btn.disabled = true; btn.innerHTML = '<span class="loading-spinner"></span> جاري التحديث...';
-                
+                btn.disabled = true;
+                btn.innerHTML = '<span class="loading-spinner"></span> جاري التحديث...';
+
                 try {
                     const res = await fetch('/api/update-password', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ currentPassword: cp, newPassword: np })
                     });
-                    if (!res.ok) throw new Error('تأكد من صحة كلمة المرور الحالية');
-                    showToast('تم تحديث بيانات الأمان بنجاح.', 'success');
-                    setTimeout(logout, 2000);
+                    const data = await res.json();
+                    if (!res.ok) throw new Error(data.message || 'تأكد من صحة كلمة المرور الحالية');
+
+                    showToast('✅ تم تحديث كلمة المرور بنجاح! سيتم تسجيل الخروج لتطبيق التغيير.', 'success');
+                    document.getElementById('currentPassword').value = '';
+                    document.getElementById('newPassword').value = '';
+                    document.getElementById('confirmPassword').value = '';
+
+                    // تسجيل الخروج بعد 2.5 ثانية لتطبيق كلمة المرور الجديدة
+                    setTimeout(() => {
+                        sessionStorage.clear();
+                        window.location.href = '/admin/login.html';
+                    }, 2500);
+
                 } catch (err) {
-                    showToast(err.message, 'error');
+                    showToast('❌ ' + err.message, 'error');
                 } finally {
-                    btn.disabled = false; btn.innerHTML = orig;
+                    btn.disabled = false;
+                    btn.innerHTML = orig;
                 }
             });
 
+            // ==========================================================
             // INIT
+            // ==========================================================
             loadArticles();
+            resetForm();
+            setInterval(loadArticles, 60000);
+
         })();
     </script>
+
 </body>
 </html>
