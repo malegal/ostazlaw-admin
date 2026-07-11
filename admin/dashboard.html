@@ -7,12 +7,12 @@
     <title>لوحة التحكم – إدارة المكتبة القانونية</title>
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700;900&family=Tajawal:wght@300;400;500;700;800;900&family=Playfair+Display:wght@400;700;900&family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-    <!-- SimpleMDE – محرر Markdown غني -->
+    <!-- EasyMDE – محرر Markdown مع شريط أدوات -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.js"></script>
     <style>
         /* ==========================================================
-           أنماط متطابقة مع الموقع الرئيسي – فاخرة ومتناسقة
+           ROOT – الهوية الفاخرة
            ========================================================== */
         :root {
             --very-dark-navy: #0B111B;
@@ -43,7 +43,7 @@
             min-height: 100vh;
         }
 
-        /* ===== هيدر فاخر ===== */
+        /* ===== الهيدر الفاخر ===== */
         .dashboard-header {
             display: flex;
             justify-content: space-between;
@@ -140,14 +140,14 @@
         /* ===== الإحصائيات ===== */
         .stats {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-            gap: 1rem;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1.2rem;
             margin-bottom: 2rem;
         }
         .stat-card {
             background: var(--pure-white);
-            padding: 1.2rem 1.5rem;
-            border-radius: 12px;
+            padding: 1.5rem 1.2rem;
+            border-radius: 14px;
             border: 1px solid rgba(0, 0, 0, 0.04);
             box-shadow: var(--shadow-card);
             transition: all 0.4s ease;
@@ -173,28 +173,28 @@
         }
         .stat-card .num {
             font-family: var(--font-serif);
-            font-size: 2.2rem;
+            font-size: 2.4rem;
             font-weight: 900;
             color: var(--matte-gold);
         }
         .stat-card .label {
-            font-size: 0.75rem;
+            font-size: 0.8rem;
             color: rgba(34, 34, 34, 0.5);
             font-weight: 300;
         }
         .stat-card .icon {
-            font-size: 1.2rem;
+            font-size: 1.4rem;
             color: var(--matte-gold);
             opacity: 0.2;
             margin-bottom: 0.2rem;
         }
 
-        /* ===== بطاقات المحرر ===== */
+        /* ===== أقسام المحرر ===== */
         .editor-section {
             background: var(--pure-white);
             border-radius: 16px;
             border: 1px solid rgba(0, 0, 0, 0.04);
-            padding: 2rem 1.8rem;
+            padding: 2rem 2rem;
             box-shadow: var(--shadow-card), var(--gold-glow);
             margin-bottom: 2rem;
             position: relative;
@@ -223,11 +223,11 @@
             align-items: center;
             flex-wrap: wrap;
             gap: 0.8rem;
-            margin-bottom: 1.2rem;
+            margin-bottom: 1.5rem;
         }
         .editor-section .section-header h2 {
             font-family: var(--font-serif);
-            font-size: 1.4rem;
+            font-size: 1.5rem;
             font-weight: 700;
             color: var(--charcoal);
         }
@@ -241,7 +241,7 @@
         .form-group { margin-bottom: 1.2rem; }
         .form-group label {
             display: block;
-            font-size: 0.75rem;
+            font-size: 0.8rem;
             font-weight: 700;
             color: rgba(34, 34, 34, 0.5);
             margin-bottom: 0.3rem;
@@ -277,39 +277,45 @@
             .form-row { grid-template-columns: 1fr; }
         }
 
-        /* ===== محرر EasyMDE ===== */
+        /* ===== EasyMDE – شريط الأدوات ===== */
         .editor-toolbar {
             border-radius: 10px 10px 0 0 !important;
             background: var(--warm-off-white) !important;
-            border-color: rgba(0, 0, 0, 0.04) !important;
+            border-color: rgba(0, 0, 0, 0.06) !important;
+        }
+        .editor-toolbar button {
+            background: transparent !important;
+            border-radius: 4px !important;
+            transition: background 0.2s !important;
+        }
+        .editor-toolbar button:hover {
+            background: var(--matte-gold-light) !important;
         }
         .CodeMirror {
             border-radius: 0 0 10px 10px !important;
-            min-height: 280px !important;
-            border-color: rgba(0, 0, 0, 0.04) !important;
+            min-height: 320px !important;
+            border-color: rgba(0, 0, 0, 0.06) !important;
             font-family: 'Courier New', monospace !important;
             font-size: 0.9rem !important;
+            background: var(--warm-off-white) !important;
         }
         .CodeMirror-focused {
             border-color: var(--matte-gold) !important;
             box-shadow: 0 0 0 3px rgba(176, 141, 87, 0.05) !important;
         }
-        .EasyMDEContainer .CodeMirror {
-            background: var(--warm-off-white) !important;
-        }
 
-        /* ===== معاينة فورية ===== */
+        /* ===== معاينة ===== */
         .preview-area {
             background: var(--warm-off-white);
-            padding: 1.5rem;
+            padding: 1.5rem 1.8rem;
             border-radius: 12px;
             margin-top: 1rem;
-            max-height: 400px;
+            max-height: 450px;
             overflow-y: auto;
             font-family: var(--font-serif);
             font-size: 1.05rem;
-            line-height: 1.9;
-            color: rgba(34, 34, 34, 0.8);
+            line-height: 2;
+            color: rgba(34, 34, 34, 0.85);
             border: 1px solid rgba(0, 0, 0, 0.04);
             transition: all 0.3s ease;
         }
@@ -325,9 +331,6 @@
             padding-right: 1.2rem;
             font-style: italic;
             color: rgba(34, 34, 34, 0.6);
-        }
-        .preview-area ul, .preview-area ol {
-            padding-right: 1.5rem;
         }
         .preview-area img {
             max-width: 100%;
@@ -360,12 +363,13 @@
         }
         .article-item .info {
             flex: 1;
-            min-width: 150px;
+            min-width: 180px;
         }
         .article-item .info h4 {
             font-size: 1rem;
             font-weight: 700;
             color: var(--charcoal);
+            margin-bottom: 0.1rem;
         }
         .article-item .info .meta {
             font-size: 0.7rem;
@@ -386,10 +390,31 @@
             display: flex;
             gap: 0.4rem;
         }
-        .article-item .actions .btn-sm {
-            padding: 0.3rem 0.8rem;
-            font-size: 0.7rem;
+
+        /* ===== الكلمات المفتاحية ===== */
+        .tags-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            margin-top: 0.3rem;
         }
+        .tag-pill {
+            background: var(--matte-gold-light);
+            padding: 0.15rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            color: var(--matte-gold);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        .tag-pill .remove-tag {
+            cursor: pointer;
+            opacity: 0.4;
+            transition: opacity 0.3s;
+            font-size: 0.6rem;
+        }
+        .tag-pill .remove-tag:hover { opacity: 1; }
 
         /* ===== Toast ===== */
         .toast {
@@ -432,31 +457,6 @@
         @keyframes spin { to { transform: rotate(360deg); } }
 
         .hidden { display: none !important; }
-
-        /* ===== كلمات مفتاحية ===== */
-        .tags-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.4rem;
-            margin-top: 0.3rem;
-        }
-        .tag-pill {
-            background: var(--matte-gold-light);
-            padding: 0.15rem 0.8rem;
-            border-radius: 20px;
-            font-size: 0.7rem;
-            color: var(--matte-gold);
-            display: inline-flex;
-            align-items: center;
-            gap: 0.3rem;
-        }
-        .tag-pill .remove-tag {
-            cursor: pointer;
-            opacity: 0.4;
-            transition: opacity 0.3s;
-            font-size: 0.6rem;
-        }
-        .tag-pill .remove-tag:hover { opacity: 1; }
 
         /* ===== استجابة ===== */
         @media (max-width: 820px) {
@@ -524,7 +524,7 @@
     </div>
 
     <!-- ==========================================================
-    EDITOR
+    EDITOR SECTION
     ========================================================== -->
     <section class="editor-section" id="editorSection">
         <div class="section-header">
@@ -621,7 +621,7 @@
                 <span class="sub">انقر على أي مقال لتعديله، أو استخدم الأزرار لحذفه.</span>
             </div>
             <div style="display:flex; gap:0.4rem;">
-                <input type="text" id="searchArticles" placeholder="🔍 بحث..." style="padding:0.4rem 0.8rem;border-radius:8px;border:1px solid rgba(0,0,0,0.06);font-family:var(--font-ar);font-size:0.8rem;outline:none;background:var(--warm-off-white);width:160px;" oninput="filterArticles()" />
+                <input type="text" id="searchArticles" placeholder="🔍 بحث..." style="padding:0.4rem 0.8rem;border-radius:8px;border:1px solid rgba(0,0,0,0.06);font-family:var(--font-ar);font-size:0.8rem;outline:none;background:var(--warm-off-white);width:180px;" oninput="filterArticles()" />
             </div>
         </div>
         <div id="articlesList" class="articles-list">
@@ -664,7 +664,7 @@
     </section>
 
     <!-- ==========================================================
-    JAVASCRIPT – متكامل ومحسّن
+    JAVASCRIPT
     ========================================================== -->
     <script>
         (function() {
@@ -685,14 +685,7 @@
             if (!checkAuth()) return;
 
             // ==========================================================
-            // GLOBALS
-            // ==========================================================
-            let articles = [];
-            let isEditing = false;
-            let allTags = new Set();
-
-            // ==========================================================
-            // EASYMDE – محرر Markdown غني
+            // EASYMDE – محرر Markdown مع شريط أدوات
             // ==========================================================
             const easyMDE = new EasyMDE({
                 element: document.getElementById('articleContent'),
@@ -717,7 +710,7 @@
                 status: false,
             });
 
-            // ربط المعاينة الفورية من EasyMDE
+            // تحديث المعاينة عند التغيير
             easyMDE.codemirror.on('change', function() {
                 updatePreview();
             });
@@ -727,7 +720,8 @@
                 const preview = document.getElementById('previewArea');
                 if (raw.trim()) {
                     const html = marked.parse(raw);
-                    preview.innerHTML = DOMPurify ? DOMPurify.sanitize(html) : html;
+                    // استخدام DOMPurify إن وجد، وإلا اعرض النص الخام
+                    preview.innerHTML = (typeof DOMPurify !== 'undefined') ? DOMPurify.sanitize(html) : html;
                 } else {
                     preview.innerHTML = '<span style="color:rgba(34,34,34,0.3);">ستظهر معاينة المقال هنا عند الكتابة...</span>';
                 }
@@ -812,7 +806,6 @@
                     span.innerHTML = `${tag} <span class="remove-tag" data-tag="${tag}"><i class="fas fa-times"></i></span>`;
                     DOM.tagsPreview.appendChild(span);
                 });
-                // إضافة مستمعي إزالة
                 DOM.tagsPreview.querySelectorAll('.remove-tag').forEach(el => {
                     el.addEventListener('click', function() {
                         const tagToRemove = this.dataset.tag;
@@ -827,6 +820,9 @@
             // ==========================================================
             // LOAD ARTICLES
             // ==========================================================
+            let articles = [];
+            let isEditing = false;
+
             async function loadArticles() {
                 try {
                     const res = await fetch('/api/articles');
@@ -915,7 +911,6 @@
                 DOM.draft.textContent = drafts;
                 DOM.published.textContent = published;
 
-                // جمع كل التصنيفات
                 const categories = new Set(articles.map(a => a.category || 'general'));
                 DOM.tagCount.textContent = categories.size;
             }
@@ -945,8 +940,6 @@
                 DOM.cancelBtn.classList.remove('hidden');
 
                 updatePreview();
-
-                // التمرير إلى المحرر
                 document.getElementById('editorSection').scrollIntoView({ behavior: 'smooth' });
             };
 
