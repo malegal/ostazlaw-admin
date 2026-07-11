@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; style-src 'self' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; connect-src 'self';" />
     <title>لوحة التحكم – إدارة المكتبة القانونية</title>
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700;900&family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700;900&family=Tajawal:wght@300;400;500;700;800;900&family=Playfair+Display:wght@400;700;900&family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
@@ -20,6 +20,8 @@
             --matte-gold: #B08D57;
             --font-ar: 'Tajawal', sans-serif;
             --font-serif: 'Amiri', serif;
+            --font-playfair: 'Playfair Display', Georgia, serif;
+            --font-montserrat: 'Montserrat', Arial, sans-serif;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -335,6 +337,34 @@
         </div>
     </section>
 
+    <!-- ==========================================================
+    تغيير كلمة المرور
+    ========================================================== -->
+    <section class="editor-section" id="passwordSection">
+        <h2>🔑 تغيير كلمة المرور</h2>
+        <p class="sub">قم بتغيير كلمة مرور لوحة التحكم. <strong>احتفظ بها في مكان آمن.</strong></p>
+        <form id="passwordForm">
+            <div class="form-group">
+                <label for="currentPassword">كلمة المرور الحالية</label>
+                <input type="password" id="currentPassword" placeholder="••••••••" required />
+            </div>
+            <div class="form-group">
+                <label for="newPassword">كلمة المرور الجديدة</label>
+                <input type="password" id="newPassword" placeholder="••••••••" required minlength="8" />
+                <div style="font-size:0.65rem; color:rgba(34,34,34,0.3); margin-top:0.2rem;">
+                    <i class="fas fa-info-circle"></i> يجب أن تكون 8 أحرف على الأقل، وتحتوي على حروف وأرقام ورموز.
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="confirmPassword">تأكيد كلمة المرور الجديدة</label>
+                <input type="password" id="confirmPassword" placeholder="••••••••" required />
+            </div>
+            <button type="submit" class="btn-sm gold" id="passwordBtn" style="padding:0.6rem 2rem; font-size:0.9rem;">
+                <i class="fas fa-save"></i> تغيير كلمة المرور
+            </button>
+        </form>
+    </section>
+
     <script>
         (function() {
             'use strict';
@@ -578,6 +608,67 @@
             };
 
             // ==========================================================
+            // CHANGE PASSWORD
+            // ==========================================================
+            const passwordForm = document.getElementById('passwordForm');
+            const passwordBtn = document.getElementById('passwordBtn');
+
+            passwordForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+
+                const currentPassword = document.getElementById('currentPassword').value.trim();
+                const newPassword = document.getElementById('newPassword').value.trim();
+                const confirmPassword = document.getElementById('confirmPassword').value.trim();
+
+                if (!currentPassword || !newPassword || !confirmPassword) {
+                    showToast('⚠️ يرجى ملء جميع الحقول.', 'error');
+                    return;
+                }
+
+                if (newPassword !== confirmPassword) {
+                    showToast('⚠️ كلمتا المرور غير متطابقتين.', 'error');
+                    return;
+                }
+
+                if (newPassword.length < 8) {
+                    showToast('⚠️ كلمة المرور الجديدة يجب أن تكون 8 أحرف على الأقل.', 'error');
+                    return;
+                }
+
+                const originalText = passwordBtn.innerHTML;
+                passwordBtn.disabled = true;
+                passwordBtn.innerHTML = '<span class="loading-spinner"></span> جاري التغيير...';
+
+                try {
+                    const res = await fetch('/api/update-password', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ currentPassword, newPassword })
+                    });
+                    const data = await res.json();
+
+                    if (!res.ok) throw new Error(data.message || 'فشل تغيير كلمة المرور');
+
+                    showToast('✅ تم تغيير كلمة المرور بنجاح!', 'success');
+                    document.getElementById('currentPassword').value = '';
+                    document.getElementById('newPassword').value = '';
+                    document.getElementById('confirmPassword').value = '';
+
+                    // تسجيل الخروج تلقائياً بعد 3 ثواني لتطبيق كلمة المرور الجديدة
+                    setTimeout(() => {
+                        showToast('🔄 جاري تسجيل الخروج لتطبيق كلمة المرور الجديدة...', 'success');
+                        setTimeout(() => logout(), 2000);
+                    }, 1500);
+
+                } catch (err) {
+                    showToast('❌ ' + err.message, 'error');
+                } finally {
+                    passwordBtn.disabled = false;
+                    passwordBtn.innerHTML = originalText;
+                }
+            });
+
+            // ==========================================================
             // INIT
             // ==========================================================
             loadArticles();
@@ -587,5 +678,6 @@
 
         })();
     </script>
+
 </body>
 </html>
