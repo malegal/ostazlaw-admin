@@ -4,10 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
     <title>تسجيل الدخول – لوحة تحكم المكتبة القانونية</title>
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700;900&family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700;900&family=Tajawal:wght@300;400;500;700;800;900&family=Playfair+Display:wght@400;700;900&family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <style>
-        /* ===== نفس الهوية البصرية للموقع ===== */
+        /* ==========================================================
+           الهوية البصرية الموحدة مع الموقع الرئيسي
+           ========================================================== */
         :root {
             --very-dark-navy: #0B111B;
             --deep-navy: #102A43;
@@ -18,27 +20,89 @@
             --matte-gold: #B08D57;
             --font-ar: 'Tajawal', sans-serif;
             --font-serif: 'Amiri', serif;
+            --font-playfair: 'Playfair Display', Georgia, serif;
+            --font-montserrat: 'Montserrat', Arial, sans-serif;
+            --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
         }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
             font-family: var(--font-ar);
-            background: var(--warm-off-white);
+            background: var(--very-dark-navy);
+            min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            min-height: 100vh;
             direction: rtl;
+            padding: 1.5rem;
+            position: relative;
+            overflow: hidden;
         }
+
+        /* ===== خلفية بتوهج ذهبي (مثل الموقع الرئيسي) ===== */
+        body::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            opacity: 0.03;
+            background-image:
+                radial-gradient(circle at 20% 30%, var(--matte-gold) 1px, transparent 1px),
+                radial-gradient(circle at 80% 70%, var(--matte-gold) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
+        }
+
+        .glow {
+            position: absolute;
+            width: 60vw;
+            height: 60vw;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(176, 141, 87, 0.04) 0%, transparent 70%);
+            top: -20%;
+            right: -20%;
+            pointer-events: none;
+            animation: orbFloat 20s ease-in-out infinite alternate;
+        }
+        .glow-2 {
+            position: absolute;
+            width: 40vw;
+            height: 40vw;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(176, 141, 87, 0.02) 0%, transparent 70%);
+            bottom: -20%;
+            left: -10%;
+            pointer-events: none;
+            animation: orbFloat 25s ease-in-out infinite alternate-reverse;
+        }
+
+        @keyframes orbFloat {
+            0% {
+                transform: translate(0, 0) scale(1);
+            }
+            100% {
+                transform: translate(40px, -30px) scale(1.05);
+            }
+        }
+
+        /* ===== بطاقة تسجيل الدخول ===== */
         .login-container {
+            position: relative;
+            z-index: 1;
             background: var(--pure-white);
-            padding: 2.5rem 2rem;
+            padding: 2.8rem 2.2rem 2.2rem;
             border-radius: 16px;
-            box-shadow: 0 8px 40px rgba(0,0,0,0.04);
-            border: 1px solid rgba(176,141,87,0.08);
-            max-width: 400px;
+            border: 1px solid rgba(176, 141, 87, 0.08);
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.3), 0 0 30px rgba(176, 141, 87, 0.03);
+            max-width: 420px;
             width: 100%;
             position: relative;
             overflow: hidden;
+            transition: all 0.4s var(--ease-out);
         }
         .login-container::after {
             content: '';
@@ -47,45 +111,91 @@
             right: 0;
             width: 0;
             height: 3px;
-            background: var(--matte-gold);
-            transition: width 0.6s ease;
+            background: linear-gradient(90deg, #D4AF37, #B08D57, #8A703E);
+            transition: width 0.6s var(--ease-out);
         }
-        .login-container:hover::after { width: 100%; }
+        .login-container:hover::after {
+            width: 100%;
+        }
+        .login-container:hover {
+            border-color: var(--matte-gold);
+            box-shadow: 0 12px 48px rgba(0, 0, 0, 0.35), 0 0 40px rgba(176, 141, 87, 0.05);
+            transform: translateY(-2px);
+        }
+
+        /* ===== الشعار ===== */
+        .brand-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        .brand-wordmark {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.1;
+            text-align: center;
+        }
+        .brand-wordmark .brand-main {
+            font-family: var(--font-playfair);
+            font-weight: 700;
+            font-size: 1.8rem;
+            letter-spacing: 6px;
+            background: linear-gradient(135deg, #D4AF37 0%, #B08D57 60%, #8A703E 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .brand-wordmark .brand-sub {
+            font-family: var(--font-montserrat);
+            font-weight: 300;
+            font-size: 0.6rem;
+            letter-spacing: 8px;
+            color: #C0C0C0;
+            margin-top: -3px;
+        }
+
+        .login-container .icon-header {
+            text-align: center;
+            font-size: 1.8rem;
+            color: var(--matte-gold);
+            opacity: 0.3;
+            margin-bottom: 0.3rem;
+        }
+
         .login-container h1 {
             font-family: var(--font-serif);
-            font-size: 1.8rem;
+            font-size: 1.6rem;
             font-weight: 900;
             color: var(--charcoal);
             text-align: center;
-            margin-bottom: 0.2rem;
+            margin-bottom: 0.1rem;
         }
         .login-container .sub {
             text-align: center;
-            color: rgba(34,34,34,0.5);
+            color: rgba(34, 34, 34, 0.45);
             font-weight: 300;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             margin-bottom: 1.8rem;
         }
-        .login-container .icon-header {
-            text-align: center;
-            font-size: 2.5rem;
-            color: var(--matte-gold);
-            opacity: 0.4;
-            margin-bottom: 0.5rem;
+
+        /* ===== الحقول ===== */
+        .form-group {
+            margin-bottom: 1.2rem;
         }
-        .form-group { margin-bottom: 1.2rem; }
         .form-group label {
             display: block;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             font-weight: 700;
-            color: rgba(34,34,34,0.5);
+            color: rgba(34, 34, 34, 0.4);
             margin-bottom: 0.2rem;
+            letter-spacing: 0.04em;
         }
         .form-group input {
             width: 100%;
-            padding: 0.7rem 0.8rem;
-            border: 1px solid rgba(0,0,0,0.06);
-            border-radius: 8px;
+            padding: 0.7rem 0.9rem;
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            border-radius: 10px;
             font-size: 0.95rem;
             font-family: var(--font-ar);
             background: var(--warm-off-white);
@@ -95,17 +205,19 @@
         }
         .form-group input:focus {
             border-color: var(--matte-gold);
-            box-shadow: 0 0 0 3px rgba(176,141,87,0.05);
+            box-shadow: 0 0 0 3px rgba(176, 141, 87, 0.05);
         }
+
+        /* ===== زر الدخول ===== */
         .btn-gold {
             display: inline-block;
             background: var(--matte-gold);
             color: #000;
             font-weight: 700;
             padding: 14px 36px;
-            border-radius: 8px;
+            border-radius: 10px;
             border: none;
-            transition: all 0.4s ease;
+            transition: all 0.4s var(--ease-out);
             width: 100%;
             font-size: 1rem;
             cursor: pointer;
@@ -120,40 +232,100 @@
             width: 0;
             height: 2px;
             background: var(--matte-gold);
-            transition: width 0.6s ease;
+            transition: width 0.6s var(--ease-out);
         }
-        .btn-gold:hover::after { width: 100%; }
+        .btn-gold:hover::after {
+            width: 100%;
+        }
         .btn-gold:hover {
             background: #c4a06a;
             transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(176,141,87,0.25);
+            box-shadow: 0 8px 30px rgba(176, 141, 87, 0.25);
         }
         .btn-gold:disabled {
             opacity: 0.5;
             cursor: not-allowed;
             transform: none !important;
+            box-shadow: none !important;
         }
+
+        /* ===== رسائل الخطأ ===== */
         .error-msg {
             color: #dc2626;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             text-align: center;
-            margin-top: 0.5rem;
+            margin-top: 0.8rem;
             display: none;
         }
-        .error-msg.show { display: block; }
+        .error-msg.show {
+            display: block;
+        }
+
+        /* ===== تذييل ===== */
         .footer-text {
             text-align: center;
-            font-size: 0.7rem;
-            color: rgba(34,34,34,0.3);
-            margin-top: 1.5rem;
+            font-size: 0.6rem;
+            color: rgba(34, 34, 34, 0.25);
+            margin-top: 1.8rem;
+            letter-spacing: 0.04em;
+        }
+        .footer-text .gold-dot {
+            color: var(--matte-gold);
+            opacity: 0.3;
+        }
+
+        /* ===== سبينر ===== */
+        .spinner-border-sm {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            border: 3px solid rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            border-top-color: #000;
+            animation: spin 0.8s linear infinite;
+            vertical-align: middle;
+            margin-left: 0.5rem;
+        }
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* ===== استجابة ===== */
+        @media (max-width: 480px) {
+            .login-container {
+                padding: 2rem 1.2rem;
+            }
+            .brand-wordmark .brand-main {
+                font-size: 1.4rem;
+            }
+            .login-container h1 {
+                font-size: 1.3rem;
+            }
         }
     </style>
 </head>
 <body>
+
+    <!-- ===== خلفية بتوهج ذهبي ===== -->
+    <div class="glow"></div>
+    <div class="glow-2"></div>
+
+    <!-- ===== بطاقة تسجيل الدخول ===== -->
     <div class="login-container">
+        <!-- الشعار -->
+        <div class="brand-header">
+            <div class="brand-wordmark">
+                <span class="brand-main">OSTAZ</span>
+                <span class="brand-sub">LAW FIRM</span>
+            </div>
+        </div>
+
         <div class="icon-header"><i class="fas fa-gavel"></i></div>
         <h1>المكتبة القانونية</h1>
         <p class="sub">لوحة تحكم الأستاذ محمود عبد الحميد</p>
+
         <form id="loginForm">
             <div class="form-group">
                 <label for="password">كلمة المرور</label>
@@ -162,22 +334,27 @@
             <button type="submit" class="btn-gold" id="loginBtn">دخول <i class="fas fa-arrow-left" style="margin-right:6px;"></i></button>
             <div class="error-msg" id="errorMsg">كلمة المرور غير صحيحة. حاول مجددًا.</div>
         </form>
-        <div class="footer-text">مخصص للإدارة فقط</div>
+
+        <div class="footer-text">
+            <span class="gold-dot">◆</span> مخصص للإدارة فقط <span class="gold-dot">◆</span>
+        </div>
     </div>
+
     <script>
         (function() {
             'use strict';
+
             const form = document.getElementById('loginForm');
             const passwordInput = document.getElementById('password');
             const loginBtn = document.getElementById('loginBtn');
             const errorMsg = document.getElementById('errorMsg');
 
-            // Rate limiting – 3 محاولات ثم انتظار 30 ثانية
             let attempts = 0;
             let blockedUntil = 0;
 
             form.addEventListener('submit', async function(e) {
                 e.preventDefault();
+
                 const now = Date.now();
                 if (now < blockedUntil) {
                     const remaining = Math.ceil((blockedUntil - now) / 1000);
@@ -190,7 +367,7 @@
                 if (!password) return;
 
                 loginBtn.disabled = true;
-                loginBtn.innerHTML = '<span class="spinner-border spinner-border-sm" style="margin-left:0.5rem;"></span> جاري التحقق...';
+                loginBtn.innerHTML = '<span class="spinner-border-sm"></span> جاري التحقق...';
 
                 try {
                     const res = await fetch('/api/auth', {
@@ -225,7 +402,9 @@
                     loginBtn.innerHTML = 'دخول <i class="fas fa-arrow-left" style="margin-right:6px;"></i>';
                 }
             });
+
         })();
     </script>
+
 </body>
 </html>
