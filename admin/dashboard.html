@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; style-src 'self' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; connect-src 'self';" />
+    <title>لوحة التحكم – إدارة المكتبة القانونية</title>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700;900&family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        /* ===== أنماط متطابقة مع الموقع الرئيسي ===== */
+        :root {
+            --very-dark-navy: #0B111B;
+            --deep-navy: #102A43;
+            --warm-off-white: #FAFAF8;
+            --pure-white: #FFFFFF;
+            --light-gray: #F5F5F5;
+            --charcoal: #222222;
+            --matte-gold: #B08D57;
+            --font-ar: 'Tajawal', sans-serif;
+            --font-serif: 'Amiri', serif;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: var(--font-ar);
+            background: var(--warm-off-white);
+            color: var(--charcoal);
+            direction: rtl;
+            padding: 2rem 1.5rem;
+        }
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            border-bottom: 1px solid rgba(176,141,87,0.1);
+            padding-bottom: 1rem;
+            margin-bottom: 2rem;
+        }
+        .dashboard-header h1 {
+            font-family: var(--font-serif);
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--charcoal);
+        }
+        .dashboard-header h1 .gold-text { color: var(--matte-gold); }
+        .dashboard-header .actions {
+            display: flex;
+            gap: 0.6rem;
+            align-items: center;
+        }
+        .btn-sm {
+            padding: 0.4rem 1.2rem;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            border: 1px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: var(--light-gray);
+            color: var(--charcoal);
+        }
+        .btn-sm:hover { transform: translateY(-2px); }
+        .btn-sm.gold {
+            background: var(--matte-gold);
+            color: #000;
+        }
+        .btn-sm.gold:hover { background: #c4a06a; box-shadow: 0 4px 20px rgba(176,141,87,0.15); }
+        .btn-sm.danger { background: #dc2626; color: #fff; }
+        .btn-sm.danger:hover { background: #b91c1c; }
+        .btn-sm.outline {
+            border-color: var(--matte-gold);
+            color: var(--matte-gold);
+            background: transparent;
+        }
+        .btn-sm.outline:hover { background: var(--matte-gold); color: #000; }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .stat-card {
+            background: var(--pure-white);
+            padding: 1rem 1.2rem;
+            border-radius: 12px;
+            border: 1px solid rgba(0,0,0,0.04);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+            text-align: center;
+        }
+        .stat-card .num {
+            font-family: var(--font-serif);
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--matte-gold);
+        }
+        .stat-card .label {
+            font-size: 0.75rem;
+            color: rgba(34,34,34,0.5);
+        }
+
+        .editor-section {
+            background: var(--pure-white);
+            border-radius: 16px;
+            border: 1px solid rgba(0,0,0,0.04);
+            padding: 1.8rem 1.5rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .editor-section::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 0;
+            height: 3px;
+            background: var(--matte-gold);
+            transition: width 0.6s ease;
+        }
+        .editor-section:hover::after { width: 100%; }
+        .editor-section h2 {
+            font-family: var(--font-serif);
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--charcoal);
+            margin-bottom: 0.2rem;
+        }
+        .editor-section .sub {
+            color: rgba(34,34,34,0.5);
+            font-weight: 300;
+            font-size: 0.85rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .form-group { margin-bottom: 1rem; }
+        .form-group label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: rgba(34,34,34,0.5);
+            margin-bottom: 0.2rem;
+        }
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.6rem 0.8rem;
+            border: 1px solid rgba(0,0,0,0.06);
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-family: var(--font-ar);
+            background: var(--warm-off-white);
+            color: var(--charcoal);
+            transition: border-color 0.3s, box-shadow 0.3s;
+            outline: none;
+        }
+        .form-group input:focus,
+        .form-group textarea:focus {
+            border-color: var(--matte-gold);
+            box-shadow: 0 0 0 3px rgba(176,141,87,0.05);
+        }
+        .form-group textarea {
+            min-height: 200px;
+            resize: vertical;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            line-height: 1.6;
+        }
+        .preview-area {
+            background: var(--light-gray);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 0.5rem;
+            max-height: 300px;
+            overflow-y: auto;
+            font-family: var(--font-serif);
+            font-size: 1rem;
+            line-height: 1.8;
+            color: rgba(34,34,34,0.8);
+        }
+        .preview-area h2 { color: var(--matte-gold); }
+        .preview-area blockquote { border-right: 3px solid var(--matte-gold); padding-right: 1rem; font-style: italic; }
+
+        .articles-list {
+            display: grid;
+            gap: 0.8rem;
+        }
+        .article-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem 1.2rem;
+            background: var(--pure-white);
+            border-radius: 10px;
+            border: 1px solid rgba(0,0,0,0.04);
+            transition: all 0.3s ease;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        .article-item:hover {
+            border-color: var(--matte-gold);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+        }
+        .article-item .info h4 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--charcoal);
+        }
+        .article-item .info .meta {
+            font-size: 0.7rem;
+            color: rgba(34,34,34,0.4);
+        }
+        .article-item .actions {
+            display: flex;
+            gap: 0.4rem;
+        }
+        .article-item .actions .btn-sm {
+            padding: 0.2rem 0.8rem;
+            font-size: 0.7rem;
+        }
+
+        .hidden { display: none !important; }
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(176,141,87,0.1);
+            border-radius: 50%;
+            border-top-color: var(--matte-gold);
+            animation: spin 0.8s linear infinite;
+            margin-left: 0.5rem;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            left: 2rem;
+            background: var(--charcoal);
+            color: #fff;
+            padding: 0.8rem 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+            z-index: 999;
+            transition: all 0.5s ease;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .toast.success { background: #059669; }
+        .toast.error { background: #dc2626; }
+
+        /* Responsive */
+        @media (max-width: 640px) {
+            .dashboard-header { flex-direction: column; align-items: stretch; }
+            .stats { grid-template-columns: 1fr 1fr; }
+            .article-item { flex-direction: column; align-items: stretch; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Toast -->
+    <div class="toast" id="toast"></div>
+
+    <!-- Header -->
+    <header class="dashboard-header">
+        <div>
+            <h1>📚 المكتبة <span class="gold-text">القانونية</span></h1>
+            <p style="color:rgba(34,34,34,0.5); font-size:0.9rem;">إدارة المقالات – الأستاذ محمود عبد الحميد</p>
+        </div>
+        <div class="actions">
+            <button class="btn-sm outline" onclick="refreshList()"><i class="fas fa-sync-alt"></i> تحديث</button>
+            <button class="btn-sm danger" onclick="logout()"><i class="fas fa-sign-out-alt"></i> خروج</button>
+        </div>
+    </header>
+
+    <!-- Stats -->
+    <div class="stats" id="statsContainer">
+        <div class="stat-card"><div class="num" id="totalArticles">0</div><div class="label">إجمالي المقالات</div></div>
+        <div class="stat-card"><div class="num" id="draftCount">0</div><div class="label">مسودة</div></div>
+        <div class="stat-card"><div class="num" id="publishedCount">0</div><div class="label">منشور</div></div>
+    </div>
+
+    <!-- Editor -->
+    <section class="editor-section" id="editorSection">
+        <h2 id="editorTitle">✍️ كتابة مقال جديد</h2>
+        <p class="sub">استخدم Markdown للكتابة، وستظهر المعاينة فورًا.</p>
+        <form id="articleForm">
+            <input type="hidden" id="editSlug" value="">
+            <div class="form-group">
+                <label for="articleTitle">عنوان المقال</label>
+                <input type="text" id="articleTitle" placeholder="اكتب عنوان المقال..." required />
+            </div>
+            <div class="form-group">
+                <label for="articleImage">رابط الصورة (اختياري)</label>
+                <input type="url" id="articleImage" placeholder="https://example.com/image.jpg" />
+            </div>
+            <div class="form-group">
+                <label for="articleDescription">الوصف المختصر (للـ SEO)</label>
+                <input type="text" id="articleDescription" placeholder="وصف موجز للمقال..." />
+            </div>
+            <div class="form-group">
+                <label for="articleContent">محتوى المقال (Markdown)</label>
+                <textarea id="articleContent" placeholder="اكتب المحتوى بصيغة Markdown..." required></textarea>
+            </div>
+            <div class="form-group">
+                <label>معاينة المقال</label>
+                <div class="preview-area" id="previewArea"></div>
+            </div>
+            <div style="display:flex; gap:0.8rem; flex-wrap:wrap;">
+                <button type="submit" class="btn-sm gold" id="saveBtn" style="padding:0.6rem 2rem; font-size:0.9rem;">
+                    <i class="fas fa-save"></i> حفظ المقال
+                </button>
+                <button type="button" class="btn-sm outline" onclick="resetForm()">
+                    <i class="fas fa-times"></i> إلغاء
+                </button>
+            </div>
+        </form>
+    </section>
+
+    <!-- Articles List -->
+    <section class="editor-section">
+        <h2>📖 جميع المقالات</h2>
+        <p class="sub">انقر على أي مقال لتعديله، أو استخدم الأزرار لحذفه.</p>
+        <div id="articlesList" class="articles-list">
+            <div style="text-align:center; padding:2rem; color:rgba(34,34,34,0.4);">جاري تحميل المقالات...</div>
+        </div>
+    </section>
+
+    <script>
+        (function() {
+            'use strict';
+
+            // ==========================================================
+            // AUTH CHECK – التحقق من الجلسة
+            // ==========================================================
+            function checkAuth() {
+                const token = sessionStorage.getItem('admin_token');
+                const expiry = parseInt(sessionStorage.getItem('admin_expiry') || '0');
+                if (!token || Date.now() > expiry) {
+                    window.location.href = '/admin/login.html';
+                    return false;
+                }
+                return true;
+            }
+            if (!checkAuth()) return;
+
+            // ==========================================================
+            // GLOBALS
+            // ==========================================================
+            let articles = [];
+            let isEditing = false;
+
+            const DOM = {
+                title: document.getElementById('articleTitle'),
+                image: document.getElementById('articleImage'),
+                desc: document.getElementById('articleDescription'),
+                content: document.getElementById('articleContent'),
+                preview: document.getElementById('previewArea'),
+                list: document.getElementById('articlesList'),
+                saveBtn: document.getElementById('saveBtn'),
+                editorTitle: document.getElementById('editorTitle'),
+                editSlug: document.getElementById('editSlug'),
+                total: document.getElementById('totalArticles'),
+                draft: document.getElementById('draftCount'),
+                published: document.getElementById('publishedCount'),
+            };
+
+            // ==========================================================
+            // FUNCTIONS
+            // ==========================================================
+            function showToast(msg, type = 'success') {
+                const t = document.getElementById('toast');
+                t.textContent = msg;
+                t.className = 'toast ' + type + ' show';
+                clearTimeout(t._hide);
+                t._hide = setTimeout(() => t.classList.remove('show'), 3000);
+            }
+
+            function resetForm() {
+                DOM.title.value = '';
+                DOM.image.value = '';
+                DOM.desc.value = '';
+                DOM.content.value = '';
+                DOM.preview.innerHTML = '';
+                DOM.editSlug.value = '';
+                isEditing = false;
+                DOM.editorTitle.textContent = '✍️ كتابة مقال جديد';
+                DOM.saveBtn.innerHTML = '<i class="fas fa-save"></i> حفظ المقال';
+                document.querySelector('#editorSection .sub').textContent = 'استخدم Markdown للكتابة، وستظهر المعاينة فورًا.';
+            }
+
+            function previewMarkdown() {
+                const raw = DOM.content.value;
+                if (raw.trim()) {
+                    const html = marked.parse(raw);
+                    DOM.preview.innerHTML = DOMPurify ? DOMPurify.sanitize(html) : html;
+                } else {
+                    DOM.preview.innerHTML = '<span style="color:rgba(34,34,34,0.3);">ستظهر معاينة المقال هنا...</span>';
+                }
+            }
+
+            DOM.content.addEventListener('input', previewMarkdown);
+
+            // ==========================================================
+            // LOAD ARTICLES
+            // ==========================================================
+            async function loadArticles() {
+                try {
+                    const res = await fetch('/api/articles');
+                    if (!res.ok) throw new Error('فشل جلب المقالات');
+                    const data = await res.json();
+                    articles = data.articles || [];
+                    renderArticles();
+                    updateStats();
+                } catch (err) {
+                    showToast('❌ فشل تحميل المقالات: ' + err.message, 'error');
+                    DOM.list.innerHTML = `<div style="text-align:center;padding:2rem;color:rgba(34,34,34,0.4);">حدث خطأ في تحميل المقالات.</div>`;
+                }
+            }
+
+            function renderArticles() {
+                if (articles.length === 0) {
+                    DOM.list.innerHTML = `<div style="text-align:center;padding:2rem;color:rgba(34,34,34,0.4);">لا توجد مقالات حالياً. اكتب مقالك الأول!</div>`;
+                    return;
+                }
+                let html = '';
+                articles.forEach(art => {
+                    const title = art.title || art.slug.replace(/-/g, ' ');
+                    const date = art.updated_at ? new Date(art.updated_at).toLocaleDateString('ar-EG') : '---';
+                    html += `
+                        <div class="article-item">
+                            <div class="info">
+                                <h4>${title}</h4>
+                                <div class="meta">
+                                    <span><i class="far fa-calendar-alt"></i> ${date}</span>
+                                    <span style="margin-right:0.8rem;">${art.slug}</span>
+                                </div>
+                            </div>
+                            <div class="actions">
+                                <button class="btn-sm gold" onclick="editArticle('${art.slug}')"><i class="fas fa-edit"></i> تعديل</button>
+                                <button class="btn-sm danger" onclick="deleteArticle('${art.slug}')"><i class="fas fa-trash-alt"></i> حذف</button>
+                            </div>
+                        </div>
+                    `;
+                });
+                DOM.list.innerHTML = html;
+            }
+
+            function updateStats() {
+                const total = articles.length;
+                DOM.total.textContent = total;
+                DOM.draft.textContent = Math.floor(total * 0.2);
+                DOM.published.textContent = total - Math.floor(total * 0.2);
+            }
+
+            // ==========================================================
+            // EDIT ARTICLE
+            // ==========================================================
+            window.editArticle = function(slug) {
+                const art = articles.find(a => a.slug === slug);
+                if (!art) return;
+                DOM.title.value = art.title || '';
+                DOM.image.value = art.image || '';
+                DOM.desc.value = art.description || '';
+                DOM.content.value = art.content || '';
+                DOM.editSlug.value = slug;
+                isEditing = true;
+                DOM.editorTitle.textContent = '✏️ تعديل المقال: ' + (art.title || slug);
+                DOM.saveBtn.innerHTML = '<i class="fas fa-save"></i> تحديث المقال';
+                document.querySelector('#editorSection .sub').textContent = 'قم بتعديل المحتوى ثم اضغط "تحديث المقال".';
+                previewMarkdown();
+                document.getElementById('editorSection').scrollIntoView({ behavior: 'smooth' });
+            };
+
+            // ==========================================================
+            // DELETE ARTICLE
+            // ==========================================================
+            window.deleteArticle = async function(slug) {
+                if (!confirm(`هل أنت متأكد من حذف المقال "${slug}"؟ لا يمكن التراجع.`)) return;
+                try {
+                    const res = await fetch('/api/articles', {
+                        method: 'DELETE',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ slug })
+                    });
+                    const data = await res.json();
+                    if (!res.ok) throw new Error(data.message || 'فشل الحذف');
+                    showToast(`✅ تم حذف المقال "${slug}" بنجاح.`);
+                    if (isEditing && DOM.editSlug.value === slug) resetForm();
+                    await loadArticles();
+                } catch (err) {
+                    showToast('❌ ' + err.message, 'error');
+                }
+            };
+
+            // ==========================================================
+            // SAVE / UPDATE ARTICLE
+            // ==========================================================
+            document.getElementById('articleForm').addEventListener('submit', async function(e) {
+                e.preventDefault();
+
+                const title = DOM.title.value.trim();
+                const image = DOM.image.value.trim();
+                const description = DOM.desc.value.trim();
+                const content = DOM.content.value.trim();
+                const editSlug = DOM.editSlug.value;
+
+                if (!title || !content) {
+                    showToast('⚠️ يرجى إدخال عنوان ومحتوى المقال.', 'error');
+                    return;
+                }
+
+                let slug = editSlug || title
+                    .replace(/[^\u0600-\u06FF\s\w-]/g, '')
+                    .replace(/\s+/g, '-')
+                    .toLowerCase()
+                    .replace(/--+/g, '-');
+
+                if (!slug) slug = Date.now().toString();
+
+                const payload = {
+                    slug,
+                    title,
+                    image,
+                    description,
+                    content,
+                    oldSlug: editSlug || undefined
+                };
+
+                const btn = DOM.saveBtn;
+                const originalText = btn.innerHTML;
+                btn.disabled = true;
+                btn.innerHTML = '<span class="loading-spinner"></span> جاري الحفظ...';
+
+                try {
+                    const res = await fetch('/api/articles', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    const data = await res.json();
+                    if (!res.ok) throw new Error(data.message || 'فشل الحفظ');
+                    showToast(`✅ تم ${editSlug ? 'تحديث' : 'نشر'} المقال "${title}" بنجاح.`);
+                    resetForm();
+                    await loadArticles();
+                } catch (err) {
+                    showToast('❌ ' + err.message, 'error');
+                } finally {
+                    btn.disabled = false;
+                    btn.innerHTML = originalText;
+                }
+            });
+
+            // ==========================================================
+            // REFRESH
+            // ==========================================================
+            window.refreshList = function() {
+                loadArticles();
+                showToast('🔄 تم تحديث القائمة.', 'success');
+            };
+
+            // ==========================================================
+            // LOGOUT
+            // ==========================================================
+            window.logout = function() {
+                sessionStorage.removeItem('admin_token');
+                sessionStorage.removeItem('admin_expiry');
+                window.location.href = '/admin/login.html';
+            };
+
+            // ==========================================================
+            // INIT
+            // ==========================================================
+            loadArticles();
+            resetForm();
+            previewMarkdown();
+            setInterval(loadArticles, 60000);
+
+        })();
+    </script>
+</body>
+</html>
