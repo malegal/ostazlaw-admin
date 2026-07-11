@@ -1,0 +1,10 @@
+{
+  "name": "ostazlaw-admin",
+  "version": "1.0.0",
+  "description": "لوحة تحكم إدارة المكتبة القانونية",
+  "scripts": {
+    "dev": "vercel dev",
+    "deploy": "vercel deploy"
+  },
+  "dependencies": {}
+}
