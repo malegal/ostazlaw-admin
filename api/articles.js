@@ -28,9 +28,6 @@ export default async function handler(req, res) {
     }
 }
 
-// ==========================================================
-// GET – جلب جميع المقالات
-// ==========================================================
 async function getArticles(req, res) {
     const url = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${ARTICLES_PATH}?ref=${GITHUB_BRANCH}`;
     const response = await fetch(url, {
@@ -89,9 +86,6 @@ async function getArticles(req, res) {
     res.status(200).json({ articles });
 }
 
-// ==========================================================
-// POST – حفظ (إضافة أو تحديث) مقال
-// ==========================================================
 async function saveArticle(req, res) {
     const { slug, title, image, description, content, oldSlug } = req.body;
 
@@ -152,9 +146,6 @@ async function saveArticle(req, res) {
     res.status(200).json({ success: true, slug });
 }
 
-// ==========================================================
-// DELETE – حذف مقال
-// ==========================================================
 async function deleteArticle(req, res) {
     const { slug } = req.body;
     if (!slug) {
@@ -193,9 +184,6 @@ async function deleteArticle(req, res) {
     res.status(200).json({ success: true });
 }
 
-// ==========================================================
-// HELPERS
-// ==========================================================
 async function getFileSha(path) {
     const url = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${path}?ref=${GITHUB_BRANCH}`;
     const response = await fetch(url, {
