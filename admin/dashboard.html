@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; connect-src 'self';" />
-    <title>لوحة التحكم – إدارة المكتبة القانونية</title>
+    <title>لوحة التحكم – إدارة المكتبة القانونية والأخبار</title>
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700;900&family=Tajawal:wght@300;400;500;700;800;900&family=Playfair+Display:wght@400;700;900&family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.css" />
@@ -12,7 +12,7 @@
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
         /* ==========================================================
-           ROOT – الهوية الفاخرة
+           ROOT – الهوية الفاخرة (نفس التنسيقات السابقة مع إضافات)
            ========================================================== */
         :root {
             --very-dark-navy: #0B111B;
@@ -44,7 +44,6 @@
             overflow-x: hidden;
         }
 
-        /* ===== الهيكل الرئيسي ===== */
         .admin-layout {
             display: flex;
             width: 100%;
@@ -119,7 +118,6 @@
             max-width: calc(100vw - 280px);
         }
 
-        /* ===== الهيدر العلوي ===== */
         .dashboard-header {
             display: flex;
             justify-content: space-between;
@@ -216,7 +214,43 @@
         .section-header h2 { font-family: var(--font-serif); font-size: 1.6rem; color: var(--deep-navy); }
         .section-header .sub { font-size: 0.9rem; color: rgba(34, 34, 34, 0.5); margin-top: 0.3rem; display: block;}
 
-        /* ===== نموذج ===== */
+        /* ===== علامات التبويب ===== */
+        .tab-bar {
+            display: flex;
+            gap: 0.5rem;
+            background: var(--light-gray);
+            padding: 0.4rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+        .tab-btn {
+            flex: 1;
+            padding: 0.6rem 1rem;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            color: rgba(34, 34, 34, 0.5);
+            transition: all 0.4s var(--ease-out);
+            background: transparent;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            min-width: 120px;
+        }
+        .tab-btn.active {
+            background: var(--matte-gold);
+            color: #000;
+            box-shadow: 0 2px 15px rgba(176, 141, 87, 0.15);
+        }
+        .tab-btn:hover:not(.active) {
+            color: var(--charcoal);
+            background: rgba(0, 0, 0, 0.02);
+        }
+
+        /* ===== باقي الأنماط ===== */
         .form-group { margin-bottom: 1.5rem; }
         .form-group label {
             display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 700;
@@ -232,7 +266,6 @@
         }
         .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
 
-        /* ===== حقل كلمة المرور مع زر إظهار ===== */
         .password-wrapper {
             position: relative;
         }
@@ -256,14 +289,12 @@
             color: var(--matte-gold);
         }
 
-        /* ===== معاينة الصورة ===== */
         .image-preview-box {
             margin-top: 0.8rem; max-width: 200px; border-radius: 8px; display: none;
             border: 2px dashed rgba(0,0,0,0.1); padding: 0.2rem;
         }
         .image-preview-box img { width: 100%; border-radius: 6px; display: block; }
 
-        /* ===== EasyMDE ===== */
         .editor-toolbar {
             border-radius: 10px 10px 0 0 !important; background: #f8f9fa !important; border-color: rgba(0,0,0,0.1) !important; padding: 10px !important;
         }
@@ -280,7 +311,6 @@
         }
         .CodeMirror-focused { border-color: var(--matte-gold) !important; box-shadow: 0 0 0 4px rgba(176, 141, 87, 0.1) !important; }
 
-        /* ===== معاينة حية ===== */
         .preview-area {
             background: #fff; padding: 2rem; border-radius: 12px; margin-top: 1rem;
             max-height: 500px; overflow-y: auto; font-family: var(--font-serif);
@@ -293,22 +323,21 @@
             padding-top: 0.5rem; padding-bottom: 0.5rem; border-radius: 4px;
         }
 
-        /* ===== قائمة المقالات ===== */
-        .articles-list { display: grid; gap: 1rem; }
-        .article-item {
+        /* ===== قوائم المحتوى ===== */
+        .items-list { display: grid; gap: 1rem; }
+        .item-card {
             display: flex; justify-content: space-between; align-items: center; padding: 1.2rem 1.5rem;
             background: #fff; border-radius: 12px; border: 1px solid rgba(0,0,0,0.06);
             transition: all 0.3s ease; flex-wrap: wrap; gap: 1rem; border-right: 4px solid var(--light-gray);
         }
-        .article-item[data-status="published"] { border-right-color: #059669; }
-        .article-item[data-status="draft"] { border-right-color: #d97706; }
-        .article-item:hover {
+        .item-card[data-status="published"] { border-right-color: #059669; }
+        .item-card[data-status="draft"] { border-right-color: #d97706; }
+        .item-card:hover {
             border-color: var(--matte-gold); box-shadow: var(--shadow-hover); transform: translateX(-5px);
         }
-        .article-item .info h4 { font-size: 1.1rem; color: var(--deep-navy); margin-bottom: 0.4rem; font-family: var(--font-serif); font-weight: 700; }
-        .article-item .meta { font-size: 0.8rem; color: rgba(34,34,34,0.5); display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; }
+        .item-card .info h4 { font-size: 1.1rem; color: var(--deep-navy); margin-bottom: 0.4rem; font-family: var(--font-serif); font-weight: 700; }
+        .item-card .meta { font-size: 0.8rem; color: rgba(34,34,34,0.5); display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; }
 
-        /* ===== العلامات ===== */
         .tags-container { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.5rem; }
         .tag-pill {
             background: var(--matte-gold-light); padding: 0.3rem 0.8rem; border-radius: 20px;
@@ -316,7 +345,6 @@
         }
         .tag-pill .remove-tag { cursor: pointer; color: #dc2626; transition: 0.3s; }
 
-        /* ===== Toast ===== */
         .toast {
             position: fixed; bottom: 2rem; left: 2rem; background: var(--deep-navy); color: #fff;
             padding: 1rem 1.8rem; border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.2);
@@ -334,6 +362,8 @@
         }
         @keyframes spin { to { transform: rotate(360deg); } }
         .hidden { display: none !important; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
 
         /* ===== استجابة ===== */
         @media (max-width: 1024px) {
@@ -363,13 +393,13 @@
             <div class="sidebar-header">
                 <i class="fas fa-balance-scale icon"></i>
                 <h2>المكتبة القانونية</h2>
-                <p>إدارة المحتوى والمقالات</p>
+                <p>إدارة المحتوى والأخبار</p>
             </div>
             <nav class="sidebar-nav">
-                <a href="#dashboard" class="nav-item active" onclick="switchTab(this)"><i class="fas fa-chart-pie"></i> <span>لوحة القيادة</span></a>
-                <a href="#editorSection" class="nav-item" onclick="switchTab(this)"><i class="fas fa-pen-nib"></i> <span>كتابة مقال</span></a>
-                <a href="#articlesListSection" class="nav-item" onclick="switchTab(this)"><i class="fas fa-layer-group"></i> <span>إدارة المقالات</span></a>
-                <a href="#passwordSection" class="nav-item" onclick="switchTab(this)"><i class="fas fa-shield-alt"></i> <span>الأمان والإعدادات</span></a>
+                <a href="#dashboard" class="nav-item active" onclick="switchView('dashboard')"><i class="fas fa-chart-pie"></i> <span>لوحة القيادة</span></a>
+                <a href="#articles" class="nav-item" onclick="switchView('articles')"><i class="fas fa-file-contract"></i> <span>المقالات</span></a>
+                <a href="#news" class="nav-item" onclick="switchView('news')"><i class="fas fa-newspaper"></i> <span>الأخبار</span></a>
+                <a href="#settings" class="nav-item" onclick="switchView('settings')"><i class="fas fa-shield-alt"></i> <span>الأمان والإعدادات</span></a>
             </nav>
         </aside>
 
@@ -378,195 +408,307 @@
             <header class="dashboard-header" id="dashboard">
                 <div class="greeting">أهلاً بك، الأستاذ محمود عبد الحميد 👋</div>
                 <div class="actions">
-                    <button class="btn-sm outline" onclick="refreshList()"><i class="fas fa-sync-alt"></i> تحديث</button>
+                    <button class="btn-sm outline" onclick="refreshAll()"><i class="fas fa-sync-alt"></i> تحديث الكل</button>
                     <button class="btn-sm danger" onclick="logout()"><i class="fas fa-sign-out-alt"></i> خروج</button>
                 </div>
             </header>
 
+            <!-- ===== الإحصائيات ===== -->
             <div class="stats" id="statsContainer">
                 <div class="stat-card">
                     <div class="info">
                         <div class="num" id="totalArticles">0</div>
-                        <div class="label">إجمالي المقالات</div>
+                        <div class="label">📄 إجمالي المقالات</div>
                     </div>
                     <div class="icon"><i class="fas fa-file-contract"></i></div>
                 </div>
                 <div class="stat-card">
                     <div class="info">
+                        <div class="num" id="totalNews">0</div>
+                        <div class="label">📰 إجمالي الأخبار</div>
+                    </div>
+                    <div class="icon"><i class="fas fa-newspaper"></i></div>
+                </div>
+                <div class="stat-card">
+                    <div class="info">
                         <div class="num" id="publishedCount">0</div>
-                        <div class="label">مقال منشور</div>
+                        <div class="label">✅ منشورات</div>
                     </div>
                     <div class="icon" style="color:#059669; background:rgba(5,150,105,0.1);"><i class="fas fa-check-double"></i></div>
                 </div>
                 <div class="stat-card">
                     <div class="info">
                         <div class="num" id="draftCount">0</div>
-                        <div class="label">قيد المراجعة (مسودة)</div>
+                        <div class="label">📝 مسودات</div>
                     </div>
                     <div class="icon" style="color:#d97706; background:rgba(217,119,6,0.1);"><i class="fas fa-edit"></i></div>
                 </div>
             </div>
 
-            <section class="editor-section" id="editorSection">
-                <div class="section-header">
-                    <div>
-                        <h2 id="editorTitle">✍️ صياغة مقال جديد</h2>
-                        <span class="sub" id="editorSub">استخدم الأدوات المتقدمة لتنسيق المذكرات والمقالات القانونية بدقة.</span>
-                    </div>
-                    <button type="button" class="btn-sm outline hidden" onclick="resetForm()" id="cancelEditBtn">
-                        <i class="fas fa-times"></i> إلغاء التعديل
-                    </button>
+            <!-- ===== عرض المقالات ===== -->
+            <div id="view-articles" class="tab-content">
+                <!-- علامات تبويب داخلية للمقالات -->
+                <div class="tab-bar">
+                    <button class="tab-btn active" onclick="switchTab('articlesEditor')">✍️ كتابة مقال</button>
+                    <button class="tab-btn" onclick="switchTab('articlesList')">📖 إدارة المقالات</button>
                 </div>
 
-                <form id="articleForm">
-                    <input type="hidden" id="editSlug" value="">
-                    <input type="hidden" id="editSha" value="">
-
-                    <div class="form-group">
-                        <label for="articleTitle">عنوان المقال (محل البحث) <span style="color:var(--matte-gold);">*</span></label>
-                        <input type="text" id="articleTitle" placeholder="مثال: الدفوع الشكلية في دعاوى البطلان..." required />
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="articleStatus">حالة النشر</label>
-                            <select id="articleStatus">
-                                <option value="published">نشر فوري (عام)</option>
-                                <option value="draft">حفظ كمسودة (مراجعة)</option>
-                                <option value="archived">أرشيف</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="articleCategory">التصنيف القانوني</label>
-                            <select id="articleCategory">
-                                <option value="general">ثقافة قانونية عامة</option>
-                                <option value="civil">القانون المدني</option>
-                                <option value="commercial">القانون التجاري والشركات</option>
-                                <option value="criminal">القانون الجنائي</option>
-                                <option value="family">الأحوال الشخصية</option>
-                                <option value="administrative">القضاء الإداري</option>
-                                <option value="constitutional">القضاء الدستوري</option>
-                                <option value="labor">القانون العمالي</option>
-                                <option value="arbitration">التحكيم وفض المنازعات</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="articleAuthor">اسم الكاتب (المؤلف)</label>
-                            <input type="text" id="articleAuthor" value="الأستاذ / محمود عبد الحميد" placeholder="اسم الكاتب" />
-                        </div>
-                        <div class="form-group">
-                            <label for="seoKeyword">الكلمة المفتاحية الرئيسية (SEO Focus)</label>
-                            <input type="text" id="seoKeyword" placeholder="الكلمة الأساسية لمحركات البحث (مثال: محكمة النقض)" />
-                        </div>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="articleImage">رابط الصورة الرئيسية (غلاف المقال)</label>
-                            <input type="url" id="articleImage" placeholder="https://example.com/image.jpg" oninput="previewImageURL(this.value)" />
-                            <div class="image-preview-box" id="imgPreviewBox">
-                                <img id="imgPreviewElement" src="" alt="معاينة" />
+                <!-- محرر المقالات -->
+                <div id="tab-articlesEditor" class="tab-content active">
+                    <section class="editor-section" id="editorSection">
+                        <div class="section-header">
+                            <div>
+                                <h2 id="editorTitle">✍️ صياغة مقال جديد</h2>
+                                <span class="sub" id="editorSub">استخدم الأدوات المتقدمة لتنسيق المذكرات والمقالات القانونية بدقة.</span>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="articleDescription">
-                                الوصف المختصر (يظهر في جوجل)
-                                <span style="font-weight:normal; font-size:0.75rem; color:#666;" id="descCounter">0 / 160 حرف</span>
-                            </label>
-                            <textarea id="articleDescription" rows="3" placeholder="اكتب ملخصاً جذاباً للمقال يجلب القراء..." maxlength="160" oninput="updateCharCount(this)"></textarea>
-                        </div>
-                    </div>
-
-                    <!-- ===== اقتراح الوسوم التلقائي ===== -->
-                    <div class="form-group">
-                        <label for="articleTags">
-                            الكلمات الدلالية (Tags)
-                            <button type="button" class="btn-sm outline" onclick="suggestTags()" style="padding:0.2rem 0.8rem; font-size:0.7rem;">
-                                <i class="fas fa-magic"></i> اقتراح وسوم تلقائية
+                            <button type="button" class="btn-sm outline hidden" onclick="resetArticleForm()" id="cancelEditBtn">
+                                <i class="fas fa-times"></i> إلغاء التعديل
                             </button>
-                        </label>
-                        <input type="text" id="articleTags" placeholder="افصل بين الكلمات بفاصلة" />
-                        <div class="tags-container" id="tagsPreview"></div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="articleContent">المحتوى والأسانيد <span style="color:var(--matte-gold);">*</span></label>
-                        <textarea id="articleContent" placeholder="اكتب المحتوى هنا..."></textarea>
-                    </div>
-
-                    <div class="form-group">
-                        <label><i class="fas fa-desktop"></i> معاينة المخرج النهائي</label>
-                        <div class="preview-area" id="previewArea">
-                            <span style="color:rgba(34,34,34,0.3);">ستظهر معاينة المقال المنسق هنا أثناء الكتابة...</span>
                         </div>
-                    </div>
+                        <form id="articleForm">
+                            <input type="hidden" id="editSlug" value="">
+                            <input type="hidden" id="editSha" value="">
 
-                    <div style="display:flex; gap:1rem; margin-top:2rem; flex-wrap:wrap;">
-                        <button type="submit" class="btn-sm gold" id="saveBtn" style="padding:0.8rem 3rem; font-size:1.05rem;">
-                            <i class="fas fa-save"></i> حفظ المقال بالنظام
-                        </button>
-                        <button type="button" class="btn-sm outline" onclick="resetForm()">
-                            <i class="fas fa-eraser"></i> تفريغ الحقول
-                        </button>
-                    </div>
-                </form>
-            </section>
+                            <div class="form-group">
+                                <label for="articleTitle">عنوان المقال (محل البحث) <span style="color:var(--matte-gold);">*</span></label>
+                                <input type="text" id="articleTitle" placeholder="مثال: الدفوع الشكلية في دعاوى البطلان..." required />
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="articleStatus">حالة النشر</label>
+                                    <select id="articleStatus">
+                                        <option value="published">نشر فوري (عام)</option>
+                                        <option value="draft">حفظ كمسودة (مراجعة)</option>
+                                        <option value="archived">أرشيف</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="articleCategory">التصنيف القانوني</label>
+                                    <select id="articleCategory">
+                                        <option value="general">ثقافة قانونية عامة</option>
+                                        <option value="civil">القانون المدني</option>
+                                        <option value="commercial">القانون التجاري والشركات</option>
+                                        <option value="criminal">القانون الجنائي</option>
+                                        <option value="family">الأحوال الشخصية</option>
+                                        <option value="administrative">القضاء الإداري</option>
+                                        <option value="constitutional">القضاء الدستوري</option>
+                                        <option value="labor">القانون العمالي</option>
+                                        <option value="arbitration">التحكيم وفض المنازعات</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="articleAuthor">اسم الكاتب (المؤلف)</label>
+                                    <input type="text" id="articleAuthor" value="الأستاذ / محمود عبد الحميد" placeholder="اسم الكاتب" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="seoKeyword">الكلمة المفتاحية الرئيسية (SEO Focus)</label>
+                                    <input type="text" id="seoKeyword" placeholder="الكلمة الأساسية لمحركات البحث" />
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="articleImage">رابط الصورة الرئيسية</label>
+                                    <input type="url" id="articleImage" placeholder="https://example.com/image.jpg" oninput="previewImageURL(this.value, 'article')" />
+                                    <div class="image-preview-box" id="articleImgPreviewBox"><img id="articleImgPreviewElement" src="" alt="معاينة" /></div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="articleDescription">الوصف المختصر <span style="font-weight:normal; font-size:0.75rem;" id="descCounter">0 / 160 حرف</span></label>
+                                    <textarea id="articleDescription" rows="3" placeholder="ملخص جذاب..." maxlength="160" oninput="updateCharCount(this)"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="articleTags">الكلمات الدلالية <button type="button" class="btn-sm outline" onclick="suggestTags('article')" style="padding:0.2rem 0.8rem; font-size:0.7rem;"><i class="fas fa-magic"></i> اقتراح</button></label>
+                                <input type="text" id="articleTags" placeholder="افصل بين الكلمات بفاصلة" />
+                                <div class="tags-container" id="articleTagsPreview"></div>
+                            </div>
+                            <div class="form-group">
+                                <label for="articleContent">المحتوى والأسانيد <span style="color:var(--matte-gold);">*</span></label>
+                                <textarea id="articleContent" placeholder="اكتب المحتوى هنا..."></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label><i class="fas fa-desktop"></i> معاينة المخرج النهائي</label>
+                                <div class="preview-area" id="articlePreviewArea"><span style="color:rgba(34,34,34,0.3);">ستظهر معاينة المقال المنسق هنا أثناء الكتابة...</span></div>
+                            </div>
+                            <div style="display:flex; gap:1rem; margin-top:2rem; flex-wrap:wrap;">
+                                <button type="submit" class="btn-sm gold" id="saveArticleBtn" style="padding:0.8rem 3rem; font-size:1.05rem;"><i class="fas fa-save"></i> حفظ المقال</button>
+                                <button type="button" class="btn-sm outline" onclick="resetArticleForm()"><i class="fas fa-eraser"></i> تفريغ الحقول</button>
+                            </div>
+                        </form>
+                    </section>
+                </div>
 
-            <section class="editor-section" id="articlesListSection">
-                <div class="section-header">
-                    <div>
-                        <h2>📖 أرشيف المقالات</h2>
-                        <span class="sub">إدارة جميع المقالات، تعديلها، أو حذفها من قاعدة البيانات.</span>
-                    </div>
-                    <div style="display:flex; gap:0.5rem; align-items:center;">
-                        <i class="fas fa-search" style="color:var(--matte-gold); margin-left:-30px; z-index:10;"></i>
-                        <input type="text" id="searchArticles" placeholder="ابحث باسم المقال أو التصنيف..." style="padding:0.6rem 2.5rem 0.6rem 1rem; border-radius:8px; border:1px solid rgba(0,0,0,0.1); font-family:var(--font-ar); width:250px; outline:none;" oninput="filterArticles()" />
-                    </div>
-                </div>
-                <div id="articlesList" class="articles-list">
-                    <div style="text-align:center; padding:3rem; color:rgba(34,34,34,0.4);"><span class="loading-spinner" style="border-top-color:var(--matte-gold);"></span> جاري استدعاء البيانات...</div>
-                </div>
-            </section>
-
-            <section class="editor-section" id="passwordSection">
-                <div class="section-header">
-                    <div>
-                        <h2>🔑 إعدادات الأمان</h2>
-                        <span class="sub">تغيير رمز المرور الخاص بمدير النظام.</span>
-                    </div>
-                </div>
-                <form id="passwordForm">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="currentPassword">كلمة المرور الحالية</label>
-                            <div class="password-wrapper">
-                                <input type="password" id="currentPassword" placeholder="••••••••" required />
-                                <button type="button" class="toggle-password" onclick="togglePasswordVisibility('currentPassword', this)"><i class="fas fa-eye"></i></button>
+                <!-- قائمة المقالات -->
+                <div id="tab-articlesList" class="tab-content">
+                    <section class="editor-section" id="articlesListSection">
+                        <div class="section-header">
+                            <div>
+                                <h2>📖 أرشيف المقالات</h2>
+                                <span class="sub">إدارة جميع المقالات، تعديلها، أو حذفها.</span>
+                            </div>
+                            <div style="display:flex; gap:0.5rem; align-items:center;">
+                                <i class="fas fa-search" style="color:var(--matte-gold); margin-left:-30px; z-index:10;"></i>
+                                <input type="text" id="searchArticles" placeholder="ابحث..." style="padding:0.6rem 2.5rem 0.6rem 1rem; border-radius:8px; border:1px solid rgba(0,0,0,0.1); font-family:var(--font-ar); width:250px; outline:none;" oninput="filterArticles()" />
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label for="newPassword">كلمة المرور الجديدة</label>
-                            <div class="password-wrapper">
-                                <input type="password" id="newPassword" placeholder="••••••••" required minlength="8" />
-                                <button type="button" class="toggle-password" onclick="togglePasswordVisibility('newPassword', this)"><i class="fas fa-eye"></i></button>
+                        <div id="articlesList" class="items-list">
+                            <div style="text-align:center; padding:3rem; color:rgba(34,34,34,0.4);"><span class="loading-spinner" style="border-top-color:var(--matte-gold);"></span> جاري التحميل...</div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+
+            <!-- ===== عرض الأخبار ===== -->
+            <div id="view-news" class="tab-content">
+                <div class="tab-bar">
+                    <button class="tab-btn active" onclick="switchTab('newsEditor')">✍️ كتابة خبر</button>
+                    <button class="tab-btn" onclick="switchTab('newsList')">📰 إدارة الأخبار</button>
+                </div>
+
+                <!-- محرر الأخبار -->
+                <div id="tab-newsEditor" class="tab-content active">
+                    <section class="editor-section" id="newsEditorSection">
+                        <div class="section-header">
+                            <div>
+                                <h2 id="newsEditorTitle">✍️ كتابة خبر جديد</h2>
+                                <span class="sub" id="newsEditorSub">أنشئ خبراً جديداً ليظهر في قسم أخبار المؤسسة.</span>
+                            </div>
+                            <button type="button" class="btn-sm outline hidden" onclick="resetNewsForm()" id="cancelNewsEditBtn">
+                                <i class="fas fa-times"></i> إلغاء التعديل
+                            </button>
+                        </div>
+                        <form id="newsForm">
+                            <input type="hidden" id="newsEditSlug" value="">
+                            <input type="hidden" id="newsEditSha" value="">
+
+                            <div class="form-group">
+                                <label for="newsTitle">عنوان الخبر <span style="color:var(--matte-gold);">*</span></label>
+                                <input type="text" id="newsTitle" placeholder="مثال: نقض قضية كبرى..." required />
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="newsCategory">تصنيف الخبر</label>
+                                    <select id="newsCategory">
+                                        <option value="إنجاز قضائي">إنجاز قضائي</option>
+                                        <option value="فعالية">فعالية</option>
+                                        <option value="تطوير">تطوير</option>
+                                        <option value="اجتماع">اجتماع</option>
+                                        <option value="أخبار عامة">أخبار عامة</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="newsIcon">أيقونة (FontAwesome)</label>
+                                    <input type="text" id="newsIcon" placeholder="fa-gavel" value="fa-newspaper" />
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="newsStatus">حالة النشر</label>
+                                    <select id="newsStatus">
+                                        <option value="published">نشر فوري</option>
+                                        <option value="draft">حفظ كمسودة</option>
+                                        <option value="archived">أرشيف</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="newsDate">التاريخ (اختياري)</label>
+                                    <input type="date" id="newsDate" />
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="newsImage">رابط الصورة</label>
+                                    <input type="url" id="newsImage" placeholder="https://example.com/image.jpg" oninput="previewImageURL(this.value, 'news')" />
+                                    <div class="image-preview-box" id="newsImgPreviewBox"><img id="newsImgPreviewElement" src="" alt="معاينة" /></div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="newsDescription">الوصف المختصر <span style="font-weight:normal; font-size:0.75rem;" id="newsDescCounter">0 / 160 حرف</span></label>
+                                    <textarea id="newsDescription" rows="3" placeholder="ملخص الخبر..." maxlength="160" oninput="updateNewsCharCount(this)"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="newsLink">رابط صفحة الخبر (اختياري)</label>
+                                <input type="url" id="newsLink" placeholder="/news/2026-07-15-cassation-win.html" />
+                            </div>
+                            <div class="form-group">
+                                <label for="newsTags">الكلمات الدلالية <button type="button" class="btn-sm outline" onclick="suggestTags('news')" style="padding:0.2rem 0.8rem; font-size:0.7rem;"><i class="fas fa-magic"></i> اقتراح</button></label>
+                                <input type="text" id="newsTags" placeholder="افصل بين الكلمات بفاصلة" />
+                                <div class="tags-container" id="newsTagsPreview"></div>
+                            </div>
+                            <div class="form-group">
+                                <label for="newsContent">المحتوى الكامل <span style="color:var(--matte-gold);">*</span></label>
+                                <textarea id="newsContent" placeholder="اكتب نص الخبر هنا..."></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label><i class="fas fa-desktop"></i> معاينة الخبر</label>
+                                <div class="preview-area" id="newsPreviewArea"><span style="color:rgba(34,34,34,0.3);">ستظهر معاينة الخبر هنا...</span></div>
+                            </div>
+                            <div style="display:flex; gap:1rem; margin-top:2rem; flex-wrap:wrap;">
+                                <button type="submit" class="btn-sm gold" id="saveNewsBtn" style="padding:0.8rem 3rem; font-size:1.05rem;"><i class="fas fa-save"></i> حفظ الخبر</button>
+                                <button type="button" class="btn-sm outline" onclick="resetNewsForm()"><i class="fas fa-eraser"></i> تفريغ الحقول</button>
+                            </div>
+                        </form>
+                    </section>
+                </div>
+
+                <!-- قائمة الأخبار -->
+                <div id="tab-newsList" class="tab-content">
+                    <section class="editor-section" id="newsListSection">
+                        <div class="section-header">
+                            <div>
+                                <h2>📰 أرشيف الأخبار</h2>
+                                <span class="sub">إدارة جميع الأخبار، تعديلها، أو حذفها.</span>
+                            </div>
+                            <div style="display:flex; gap:0.5rem; align-items:center;">
+                                <i class="fas fa-search" style="color:var(--matte-gold); margin-left:-30px; z-index:10;"></i>
+                                <input type="text" id="searchNews" placeholder="ابحث..." style="padding:0.6rem 2.5rem 0.6rem 1rem; border-radius:8px; border:1px solid rgba(0,0,0,0.1); font-family:var(--font-ar); width:250px; outline:none;" oninput="filterNews()" />
                             </div>
                         </div>
-                    </div>
-                    <div class="form-group" style="max-width: 50%;">
-                        <label for="confirmPassword">تأكيد الكلمة الجديدة</label>
-                        <div class="password-wrapper">
-                            <input type="password" id="confirmPassword" placeholder="••••••••" required />
-                            <button type="button" class="toggle-password" onclick="togglePasswordVisibility('confirmPassword', this)"><i class="fas fa-eye"></i></button>
+                        <div id="newsList" class="items-list">
+                            <div style="text-align:center; padding:3rem; color:rgba(34,34,34,0.4);"><span class="loading-spinner" style="border-top-color:var(--matte-gold);"></span> جاري تحميل الأخبار...</div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+
+            <!-- ===== إعدادات الأمان ===== -->
+            <div id="view-settings" class="tab-content">
+                <section class="editor-section" id="passwordSection">
+                    <div class="section-header">
+                        <div>
+                            <h2>🔑 إعدادات الأمان</h2>
+                            <span class="sub">تغيير رمز المرور الخاص بمدير النظام.</span>
                         </div>
                     </div>
-                    <button type="submit" class="btn-sm gold" id="passwordBtn">
-                        <i class="fas fa-lock"></i> تحديث بيانات الدخول
-                    </button>
-                </form>
-            </section>
+                    <form id="passwordForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="currentPassword">كلمة المرور الحالية</label>
+                                <div class="password-wrapper">
+                                    <input type="password" id="currentPassword" placeholder="••••••••" required />
+                                    <button type="button" class="toggle-password" onclick="togglePasswordVisibility('currentPassword', this)"><i class="fas fa-eye"></i></button>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="newPassword">كلمة المرور الجديدة</label>
+                                <div class="password-wrapper">
+                                    <input type="password" id="newPassword" placeholder="••••••••" required minlength="8" />
+                                    <button type="button" class="toggle-password" onclick="togglePasswordVisibility('newPassword', this)"><i class="fas fa-eye"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group" style="max-width: 50%;">
+                            <label for="confirmPassword">تأكيد الكلمة الجديدة</label>
+                            <div class="password-wrapper">
+                                <input type="password" id="confirmPassword" placeholder="••••••••" required />
+                                <button type="button" class="toggle-password" onclick="togglePasswordVisibility('confirmPassword', this)"><i class="fas fa-eye"></i></button>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn-sm gold" id="passwordBtn"><i class="fas fa-lock"></i> تحديث بيانات الدخول</button>
+                    </form>
+                </section>
+            </div>
 
         </main>
     </div>
@@ -590,7 +732,7 @@
             if (!checkAuth()) return;
 
             // ==========================================================
-            // TOGGLE PASSWORD VISIBILITY
+            // TOGGLE PASSWORD
             // ==========================================================
             window.togglePasswordVisibility = function(inputId, btn) {
                 const input = document.getElementById(inputId);
@@ -602,9 +744,9 @@
             };
 
             // ==========================================================
-            // EASYMDE – شريط أدوات متقدم
+            // EASYMDE – محرران (مقالات + أخبار)
             // ==========================================================
-            const easyMDE = new EasyMDE({
+            const articleMDE = new EasyMDE({
                 element: document.getElementById('articleContent'),
                 direction: 'rtl',
                 spellChecker: false,
@@ -620,33 +762,66 @@
                     { name: "heading-2", action: EasyMDE.toggleHeading2, className: "fa fa-header fa-header-x fa-header-2", title: "عنوان فرعي" },
                     { name: "heading-3", action: EasyMDE.toggleHeading3, className: "fa fa-header fa-header-x fa-header-3", title: "عنوان أصغر" },
                     "|",
-                    { name: "quote", action: EasyMDE.toggleBlockquote, className: "fa fa-quote-right", title: "اقتباس قانوني" },
+                    { name: "quote", action: EasyMDE.toggleBlockquote, className: "fa fa-quote-right", title: "اقتباس" },
                     { name: "unordered-list", action: EasyMDE.toggleUnorderedList, className: "fa fa-list-ul", title: "قائمة نقطية" },
                     { name: "ordered-list", action: EasyMDE.toggleOrderedList, className: "fa fa-list-ol", title: "قائمة رقمية" },
-                    { name: "table", action: EasyMDE.drawTable, className: "fa fa-table", title: "إدراج جدول" },
-                    { name: "horizontal-rule", action: EasyMDE.drawHorizontalRule, className: "fa fa-minus", title: "فاصل أفقي" },
+                    { name: "table", action: EasyMDE.drawTable, className: "fa fa-table", title: "جدول" },
+                    { name: "horizontal-rule", action: EasyMDE.drawHorizontalRule, className: "fa fa-minus", title: "فاصل" },
                     "|",
-                    { name: "link", action: EasyMDE.drawLink, className: "fa fa-link", title: "رابط لمرجع" },
-                    { name: "image", action: EasyMDE.drawImage, className: "fa fa-image", title: "إدراج صورة" },
+                    { name: "link", action: EasyMDE.drawLink, className: "fa fa-link", title: "رابط" },
+                    { name: "image", action: EasyMDE.drawImage, className: "fa fa-image", title: "صورة" },
                     "|",
                     { name: "preview", action: EasyMDE.togglePreview, className: "fa fa-eye no-disable", title: "معاينة" },
                     { name: "fullscreen", action: EasyMDE.toggleFullScreen, className: "fa fa-arrows-alt no-disable no-mobile", title: "ملء الشاشة" }
                 ],
-                placeholder: 'ابدأ بصياغة المقال أو المذكرة هنا...',
+                placeholder: 'اكتب محتوى المقال هنا...',
                 previewRender: function(plainText) { return marked.parse(plainText); },
                 renderingConfig: { singleLineBreaks: false, codeSyntaxHighlighting: false },
             });
 
-            easyMDE.codemirror.on('change', function() { updatePreview(); });
+            const newsMDE = new EasyMDE({
+                element: document.getElementById('newsContent'),
+                direction: 'rtl',
+                spellChecker: false,
+                toolbar: [
+                    { name: "undo", action: EasyMDE.toggleUndo, className: "fa fa-undo", title: "تراجع" },
+                    { name: "redo", action: EasyMDE.toggleRedo, className: "fa fa-redo", title: "إعادة" },
+                    "|",
+                    { name: "bold", action: EasyMDE.toggleBold, className: "fa fa-bold", title: "عريض" },
+                    { name: "italic", action: EasyMDE.toggleItalic, className: "fa fa-italic", title: "مائل" },
+                    "|",
+                    { name: "heading-1", action: EasyMDE.toggleHeading1, className: "fa fa-header fa-header-x fa-header-1", title: "عنوان رئيسي" },
+                    { name: "heading-2", action: EasyMDE.toggleHeading2, className: "fa fa-header fa-header-x fa-header-2", title: "عنوان فرعي" },
+                    "|",
+                    { name: "quote", action: EasyMDE.toggleBlockquote, className: "fa fa-quote-right", title: "اقتباس" },
+                    { name: "unordered-list", action: EasyMDE.toggleUnorderedList, className: "fa fa-list-ul", title: "قائمة" },
+                    { name: "ordered-list", action: EasyMDE.toggleOrderedList, className: "fa fa-list-ol", title: "قائمة مرقمة" },
+                    "|",
+                    { name: "link", action: EasyMDE.drawLink, className: "fa fa-link", title: "رابط" },
+                    { name: "image", action: EasyMDE.drawImage, className: "fa fa-image", title: "صورة" },
+                    "|",
+                    { name: "preview", action: EasyMDE.togglePreview, className: "fa fa-eye no-disable", title: "معاينة" },
+                    { name: "fullscreen", action: EasyMDE.toggleFullScreen, className: "fa fa-arrows-alt no-disable no-mobile", title: "ملء الشاشة" }
+                ],
+                placeholder: 'اكتب نص الخبر هنا...',
+                previewRender: function(plainText) { return marked.parse(plainText); },
+                renderingConfig: { singleLineBreaks: false, codeSyntaxHighlighting: false },
+            });
 
-            function updatePreview() {
-                const raw = easyMDE.value();
-                const preview = document.getElementById('previewArea');
+            // ربط التحديث المباشر للمعاينة
+            articleMDE.codemirror.on('change', function() { updatePreview('article'); });
+            newsMDE.codemirror.on('change', function() { updatePreview('news'); });
+
+            function updatePreview(type) {
+                const mde = type === 'article' ? articleMDE : newsMDE;
+                const previewId = type === 'article' ? 'articlePreviewArea' : 'newsPreviewArea';
+                const preview = document.getElementById(previewId);
+                const raw = mde.value();
                 if (raw.trim()) {
                     const html = marked.parse(raw);
                     preview.innerHTML = (typeof DOMPurify !== 'undefined') ? DOMPurify.sanitize(html) : html;
                 } else {
-                    preview.innerHTML = '<span style="color:rgba(34,34,34,0.3);">ستظهر معاينة المقال المنسق هنا أثناء الكتابة...</span>';
+                    preview.innerHTML = '<span style="color:rgba(34,34,34,0.3);">ستظهر معاينة المحتوى هنا أثناء الكتابة...</span>';
                 }
             }
 
@@ -654,53 +829,58 @@
             // DOM REFS
             // ==========================================================
             const DOM = {
-                title: document.getElementById('articleTitle'),
-                image: document.getElementById('articleImage'),
-                desc: document.getElementById('articleDescription'),
-                author: document.getElementById('articleAuthor'),
-                seo: document.getElementById('seoKeyword'),
-                tags: document.getElementById('articleTags'),
-                tagsPreview: document.getElementById('tagsPreview'),
-                status: document.getElementById('articleStatus'),
-                category: document.getElementById('articleCategory'),
-                content: easyMDE,
-                preview: document.getElementById('previewArea'),
-                list: document.getElementById('articlesList'),
-                saveBtn: document.getElementById('saveBtn'),
+                // مقالات
+                articleTitle: document.getElementById('articleTitle'),
+                articleImage: document.getElementById('articleImage'),
+                articleDesc: document.getElementById('articleDescription'),
+                articleAuthor: document.getElementById('articleAuthor'),
+                articleSeo: document.getElementById('seoKeyword'),
+                articleTags: document.getElementById('articleTags'),
+                articleTagsPreview: document.getElementById('articleTagsPreview'),
+                articleStatus: document.getElementById('articleStatus'),
+                articleCategory: document.getElementById('articleCategory'),
+                articleContent: articleMDE,
+                articleList: document.getElementById('articlesList'),
+                saveArticleBtn: document.getElementById('saveArticleBtn'),
                 editorTitle: document.getElementById('editorTitle'),
                 editorSub: document.getElementById('editorSub'),
                 editSlug: document.getElementById('editSlug'),
                 editSha: document.getElementById('editSha'),
-                total: document.getElementById('totalArticles'),
-                draft: document.getElementById('draftCount'),
-                published: document.getElementById('publishedCount'),
-                search: document.getElementById('searchArticles'),
-                cancelBtn: document.getElementById('cancelEditBtn'),
+                cancelEditBtn: document.getElementById('cancelEditBtn'),
+                // أخبار
+                newsTitle: document.getElementById('newsTitle'),
+                newsCategory: document.getElementById('newsCategory'),
+                newsIcon: document.getElementById('newsIcon'),
+                newsStatus: document.getElementById('newsStatus'),
+                newsDate: document.getElementById('newsDate'),
+                newsImage: document.getElementById('newsImage'),
+                newsDesc: document.getElementById('newsDescription'),
+                newsLink: document.getElementById('newsLink'),
+                newsTags: document.getElementById('newsTags'),
+                newsTagsPreview: document.getElementById('newsTagsPreview'),
+                newsContent: newsMDE,
+                newsList: document.getElementById('newsList'),
+                saveNewsBtn: document.getElementById('saveNewsBtn'),
+                newsEditorTitle: document.getElementById('newsEditorTitle'),
+                newsEditorSub: document.getElementById('newsEditorSub'),
+                newsEditSlug: document.getElementById('newsEditSlug'),
+                newsEditSha: document.getElementById('newsEditSha'),
+                cancelNewsEditBtn: document.getElementById('cancelNewsEditBtn'),
+                // عام
+                searchArticles: document.getElementById('searchArticles'),
+                searchNews: document.getElementById('searchNews'),
+                totalArticles: document.getElementById('totalArticles'),
+                totalNews: document.getElementById('totalNews'),
+                publishedCount: document.getElementById('publishedCount'),
+                draftCount: document.getElementById('draftCount'),
             };
+
+            let articles = [];
+            let newsItems = [];
 
             // ==========================================================
-            // TOOLS
+            // TOAST
             // ==========================================================
-            window.switchTab = function(element) {
-                document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-                element.classList.add('active');
-            };
-
-            window.updateCharCount = function(el) {
-                document.getElementById('descCounter').innerText = `${el.value.length} / 160 حرف`;
-            };
-
-            window.previewImageURL = function(url) {
-                const box = document.getElementById('imgPreviewBox');
-                const img = document.getElementById('imgPreviewElement');
-                if(url && (url.match(/\.(jpeg|jpg|gif|png|webp)$/i) || url.startsWith('http'))) {
-                    img.src = url;
-                    box.style.display = 'block';
-                } else {
-                    box.style.display = 'none';
-                }
-            };
-
             function showToast(msg, type = 'success') {
                 const t = document.getElementById('toast');
                 t.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-triangle' : 'fa-info-circle'}"></i> ${msg}`;
@@ -710,20 +890,173 @@
             }
 
             // ==========================================================
-            // SUGGEST TAGS – اقتراح وسوم من محتوى المقال
+            // TABS & VIEWS
             // ==========================================================
-            window.suggestTags = function() {
-                const content = DOM.content.value();
-                const title = DOM.title.value.trim();
-                const combined = title + ' ' + content;
+            window.switchView = function(view) {
+                document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+
+                if (view === 'dashboard') {
+                    document.querySelector('.nav-item[href="#dashboard"]').classList.add('active');
+                    document.getElementById('view-articles').classList.remove('active');
+                    document.getElementById('view-news').classList.remove('active');
+                    document.getElementById('view-settings').classList.remove('active');
+                    // عرض لوحة القيادة (الإحصائيات فقط)
+                } else if (view === 'articles') {
+                    document.querySelector('.nav-item[href="#articles"]').classList.add('active');
+                    document.getElementById('view-articles').classList.add('active');
+                } else if (view === 'news') {
+                    document.querySelector('.nav-item[href="#news"]').classList.add('active');
+                    document.getElementById('view-news').classList.add('active');
+                } else if (view === 'settings') {
+                    document.querySelector('.nav-item[href="#settings"]').classList.add('active');
+                    document.getElementById('view-settings').classList.add('active');
+                }
+            };
+
+            window.switchTab = function(tabId) {
+                // إخفاء كل التبويبات في القسم النشط
+                const parent = document.activeElement?.closest('.tab-content') || document.querySelector('.tab-content.active');
+                if (parent) {
+                    parent.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+                    parent.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+                } else {
+                    // إذا لم نجد الأب، نبحث عن جميع التبويبات
+                    document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+                    document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+                }
+                // تفعيل التبويب المطلوب
+                const targetTab = document.getElementById('tab-' + tabId);
+                if (targetTab) {
+                    targetTab.classList.add('active');
+                    // تفعيل الزر المناسب
+                    const btn = targetTab.closest('.tab-content')?.querySelector(`.tab-btn[onclick*="${tabId}"]`);
+                    if (btn) btn.classList.add('active');
+                }
+            };
+
+            // تفعيل العرض الافتراضي
+            document.getElementById('view-articles').classList.add('active');
+
+            // ==========================================================
+            // FUNCTIONS – ARTICLES
+            // ==========================================================
+            function resetArticleForm() {
+                DOM.articleTitle.value = '';
+                DOM.articleImage.value = '';
+                previewImageURL('', 'article');
+                DOM.articleDesc.value = '';
+                updateCharCount(DOM.articleDesc);
+                DOM.articleAuthor.value = 'الأستاذ / محمود عبد الحميد';
+                DOM.articleSeo.value = '';
+                DOM.articleTags.value = '';
+                DOM.articleTagsPreview.innerHTML = '';
+                DOM.articleStatus.value = 'published';
+                DOM.articleCategory.value = 'general';
+                DOM.articleContent.value('');
+                DOM.editSlug.value = '';
+                DOM.editSha.value = '';
+                DOM.editorTitle.textContent = '✍️ صياغة مقال جديد';
+                DOM.editorSub.textContent = 'استخدم الأدوات المتقدمة لتنسيق المذكرات والمقالات القانونية بدقة.';
+                DOM.saveArticleBtn.innerHTML = '<i class="fas fa-save"></i> حفظ المقال';
+                DOM.cancelEditBtn.classList.add('hidden');
+                updatePreview('article');
+            }
+            window.resetArticleForm = resetArticleForm;
+
+            function renderArticleTags(tags, containerId) {
+                const container = document.getElementById(containerId);
+                container.innerHTML = '';
+                tags.forEach(tag => {
+                    const span = document.createElement('span');
+                    span.className = 'tag-pill';
+                    span.innerHTML = `<i class="fas fa-hashtag" style="opacity:0.5;"></i> ${tag} <span class="remove-tag" data-tag="${tag}"><i class="fas fa-times"></i></span>`;
+                    container.appendChild(span);
+                });
+                container.querySelectorAll('.remove-tag').forEach(el => {
+                    el.addEventListener('click', function() {
+                        const tagToRemove = this.dataset.tag;
+                        const current = DOM.articleTags.value.split(',').map(t => t.trim()).filter(t => t && t !== tagToRemove);
+                        DOM.articleTags.value = current.join(', ');
+                        renderArticleTags(current, 'articleTagsPreview');
+                    });
+                });
+            }
+
+            DOM.articleTags.addEventListener('input', function() {
+                const val = this.value.trim();
+                const tags = val ? val.split(',').map(t => t.trim()).filter(t => t) : [];
+                renderArticleTags(tags, 'articleTagsPreview');
+            });
+
+            // ==========================================================
+            // FUNCTIONS – NEWS
+            // ==========================================================
+            function resetNewsForm() {
+                DOM.newsTitle.value = '';
+                DOM.newsCategory.value = 'إنجاز قضائي';
+                DOM.newsIcon.value = 'fa-newspaper';
+                DOM.newsStatus.value = 'published';
+                DOM.newsDate.value = '';
+                DOM.newsImage.value = '';
+                previewImageURL('', 'news');
+                DOM.newsDesc.value = '';
+                updateNewsCharCount(DOM.newsDesc);
+                DOM.newsLink.value = '';
+                DOM.newsTags.value = '';
+                DOM.newsTagsPreview.innerHTML = '';
+                DOM.newsContent.value('');
+                DOM.newsEditSlug.value = '';
+                DOM.newsEditSha.value = '';
+                DOM.newsEditorTitle.textContent = '✍️ كتابة خبر جديد';
+                DOM.newsEditorSub.textContent = 'أنشئ خبراً جديداً ليظهر في قسم أخبار المؤسسة.';
+                DOM.saveNewsBtn.innerHTML = '<i class="fas fa-save"></i> حفظ الخبر';
+                DOM.cancelNewsEditBtn.classList.add('hidden');
+                updatePreview('news');
+            }
+            window.resetNewsForm = resetNewsForm;
+
+            function renderNewsTags(tags, containerId) {
+                const container = document.getElementById(containerId);
+                container.innerHTML = '';
+                tags.forEach(tag => {
+                    const span = document.createElement('span');
+                    span.className = 'tag-pill';
+                    span.innerHTML = `<i class="fas fa-hashtag" style="opacity:0.5;"></i> ${tag} <span class="remove-tag" data-tag="${tag}"><i class="fas fa-times"></i></span>`;
+                    container.appendChild(span);
+                });
+                container.querySelectorAll('.remove-tag').forEach(el => {
+                    el.addEventListener('click', function() {
+                        const tagToRemove = this.dataset.tag;
+                        const current = DOM.newsTags.value.split(',').map(t => t.trim()).filter(t => t && t !== tagToRemove);
+                        DOM.newsTags.value = current.join(', ');
+                        renderNewsTags(current, 'newsTagsPreview');
+                    });
+                });
+            }
+
+            DOM.newsTags.addEventListener('input', function() {
+                const val = this.value.trim();
+                const tags = val ? val.split(',').map(t => t.trim()).filter(t => t) : [];
+                renderNewsTags(tags, 'newsTagsPreview');
+            });
+
+            // ==========================================================
+            // SUGGEST TAGS
+            // ==========================================================
+            window.suggestTags = function(type) {
+                const titleField = type === 'article' ? DOM.articleTitle : DOM.newsTitle;
+                const contentField = type === 'article' ? DOM.articleContent : DOM.newsContent;
+                const tagsField = type === 'article' ? DOM.articleTags : DOM.newsTags;
+                const previewField = type === 'article' ? 'articleTagsPreview' : 'newsTagsPreview';
+                const combined = (titleField.value || '') + ' ' + (contentField.value() || '');
                 if (combined.length < 20) {
                     showToast('اكتب محتوى أطول للحصول على اقتراحات ذكية.', 'info');
                     return;
                 }
-                // استخراج الكلمات المفتاحية: نأخذ الكلمات التي تظهر بكثرة
                 const words = combined.replace(/[^\u0600-\u06FF\s\w]/g, ' ').split(/\s+/);
                 const freq = {};
-                const stopWords = ['من', 'إلى', 'على', 'عن', 'في', 'في', 'هذا', 'هذه', 'ذلك', 'كما', 'حيث', 'بين', 'بعد', 'قبل', 'تحت', 'فوق', 'الذي', 'التي', 'الذين', 'عند', 'لقد', 'قد', 'إذا', 'إن', 'ما', 'و', 'ف', 'ب', 'ك', 'ل', 'هو', 'هي', 'هم'];
+                const stopWords = ['من', 'إلى', 'على', 'عن', 'في', 'هذا', 'هذه', 'ذلك', 'كما', 'حيث', 'بين', 'بعد', 'قبل', 'تحت', 'فوق', 'الذي', 'التي', 'الذين', 'عند', 'لقد', 'قد', 'إذا', 'إن', 'ما', 'و', 'ف', 'ب', 'ك', 'ل', 'هو', 'هي', 'هم'];
                 words.forEach(w => {
                     w = w.trim();
                     if (w.length > 2 && !stopWords.includes(w)) {
@@ -736,88 +1069,58 @@
                     showToast('لم نتمكن من استخراج وسوم. حاول كتابة محتوى أكثر تفصيلاً.', 'info');
                     return;
                 }
-                // دمج مع الوسوم الموجودة
-                const existing = DOM.tags.value.split(',').map(t => t.trim()).filter(t => t);
+                const existing = tagsField.value.split(',').map(t => t.trim()).filter(t => t);
                 const allTags = [...new Set([...existing, ...topTags])];
-                DOM.tags.value = allTags.join(', ');
-                renderTagsPreview(allTags);
+                tagsField.value = allTags.join(', ');
+                if (type === 'article') {
+                    renderArticleTags(allTags, previewField);
+                } else {
+                    renderNewsTags(allTags, previewField);
+                }
                 showToast('✅ تم اقتراح ' + topTags.length + ' وسوم تلقائياً!', 'success');
             };
 
             // ==========================================================
-            // RESET FORM
+            // IMAGE PREVIEW
             // ==========================================================
-            function resetForm() {
-                DOM.title.value = '';
-                DOM.image.value = '';
-                previewImageURL('');
-                DOM.desc.value = '';
-                updateCharCount(DOM.desc);
-                DOM.author.value = 'الأستاذ / محمود عبد الحميد';
-                DOM.seo.value = '';
-                DOM.tags.value = '';
-                DOM.tagsPreview.innerHTML = '';
-                DOM.status.value = 'published';
-                DOM.category.value = 'general';
-                DOM.content.value('');
-                DOM.editSlug.value = '';
-                DOM.editSha.value = '';
-                DOM.editorTitle.textContent = '✍️ صياغة مقال جديد';
-                DOM.editorSub.textContent = 'استخدم الأدوات المتقدمة لتنسيق المذكرات والمقالات القانونية بدقة.';
-                DOM.saveBtn.innerHTML = '<i class="fas fa-save"></i> حفظ المقال بالنظام';
-                DOM.cancelBtn.classList.add('hidden');
-                updatePreview();
-                document.getElementById('editorSection').scrollIntoView({ behavior: 'smooth' });
-            }
-            window.resetForm = resetForm;
+            window.previewImageURL = function(url, type) {
+                const boxId = type === 'article' ? 'articleImgPreviewBox' : 'newsImgPreviewBox';
+                const imgId = type === 'article' ? 'articleImgPreviewElement' : 'newsImgPreviewElement';
+                const box = document.getElementById(boxId);
+                const img = document.getElementById(imgId);
+                if (url && (url.match(/\.(jpeg|jpg|gif|png|webp)$/i) || url.startsWith('http'))) {
+                    img.src = url;
+                    box.style.display = 'block';
+                } else {
+                    box.style.display = 'none';
+                }
+            };
 
-            // ==========================================================
-            // TAGS
-            // ==========================================================
-            DOM.tags.addEventListener('input', function() {
-                const val = this.value.trim();
-                const tags = val ? val.split(',').map(t => t.trim()).filter(t => t) : [];
-                renderTagsPreview(tags);
-            });
-
-            function renderTagsPreview(tags) {
-                DOM.tagsPreview.innerHTML = '';
-                tags.forEach(tag => {
-                    const span = document.createElement('span');
-                    span.className = 'tag-pill';
-                    span.innerHTML = `<i class="fas fa-hashtag" style="opacity:0.5;"></i> ${tag} <span class="remove-tag" data-tag="${tag}"><i class="fas fa-times"></i></span>`;
-                    DOM.tagsPreview.appendChild(span);
-                });
-                DOM.tagsPreview.querySelectorAll('.remove-tag').forEach(el => {
-                    el.addEventListener('click', function() {
-                        const tagToRemove = this.dataset.tag;
-                        const current = DOM.tags.value.split(',').map(t => t.trim()).filter(t => t && t !== tagToRemove);
-                        DOM.tags.value = current.join(', ');
-                        renderTagsPreview(current);
-                    });
-                });
-            }
+            window.updateCharCount = function(el) {
+                document.getElementById('descCounter').innerText = `${el.value.length} / 160 حرف`;
+            };
+            window.updateNewsCharCount = function(el) {
+                document.getElementById('newsDescCounter').innerText = `${el.value.length} / 160 حرف`;
+            };
 
             // ==========================================================
             // LOAD ARTICLES
             // ==========================================================
-            let articles = [];
-
             async function loadArticles() {
                 try {
                     const res = await fetch('/api/articles');
-                    if (!res.ok) throw new Error('فشل استدعاء البيانات من الخادم');
+                    if (!res.ok) throw new Error('فشل استدعاء المقالات');
                     const data = await res.json();
                     articles = data.articles || [];
                     renderArticles();
                     updateStats();
                 } catch (err) {
-                    DOM.list.innerHTML = `<div style="text-align:center;padding:2rem;color:#dc2626;"><i class="fas fa-exclamation-triangle"></i> تعذر الاتصال بقاعدة البيانات: ${err.message}</div>`;
+                    DOM.articleList.innerHTML = `<div style="text-align:center;padding:2rem;color:#dc2626;"><i class="fas fa-exclamation-triangle"></i> ${err.message}</div>`;
                 }
             }
 
             function renderArticles() {
-                const searchTerm = (DOM.search?.value || '').toLowerCase();
+                const searchTerm = (DOM.searchArticles?.value || '').toLowerCase();
                 let filtered = articles;
                 if (searchTerm) {
                     filtered = articles.filter(a =>
@@ -826,25 +1129,23 @@
                         (a.slug || '').toLowerCase().includes(searchTerm)
                     );
                 }
-
                 if (filtered.length === 0) {
-                    DOM.list.innerHTML = `<div style="text-align:center;padding:3rem;color:rgba(34,34,34,0.4);">لا توجد ملفات مطابقة لشروط البحث.</div>`;
+                    DOM.articleList.innerHTML = `<div style="text-align:center;padding:3rem;color:rgba(34,34,34,0.4);">لا توجد مقالات مطابقة.</div>`;
                     return;
                 }
-
                 let html = '';
                 filtered.forEach(art => {
                     const title = art.title || art.slug.replace(/-/g, ' ');
                     const date = art.updated_at ? new Date(art.updated_at).toLocaleDateString('ar-EG') : 'غير محدد';
                     const status = art.status || 'published';
                     const categoryLabels = {
-                        general: 'ثقافة عامة', civil: 'مدني', commercial: 'تجاري',
+                        general: 'عام', civil: 'مدني', commercial: 'تجاري',
                         criminal: 'جنائي', family: 'أحوال شخصية', administrative: 'إداري',
                         constitutional: 'دستوري', labor: 'عمالي', arbitration: 'تحكيم'
                     };
                     const category = categoryLabels[art.category] || 'عام';
                     html += `
-                        <div class="article-item" data-status="${status}">
+                        <div class="item-card" data-status="${status}">
                             <div class="info">
                                 <h4>${title}</h4>
                                 <div class="meta">
@@ -861,62 +1162,51 @@
                         </div>
                     `;
                 });
-                DOM.list.innerHTML = html;
+                DOM.articleList.innerHTML = html;
             }
-
             window.filterArticles = renderArticles;
 
-            function updateStats() {
-                DOM.total.textContent = articles.length;
-                DOM.draft.textContent = articles.filter(a => a.status === 'draft').length;
-                DOM.published.textContent = articles.filter(a => a.status === 'published').length;
-            }
-
-            // ==========================================================
-            // EDIT ARTICLE
-            // ==========================================================
             window.editArticle = function(slug) {
                 const art = articles.find(a => a.slug === slug);
                 if (!art) return;
-
-                DOM.title.value = art.title || '';
-                DOM.image.value = art.image || '';
-                previewImageURL(art.image || '');
-                DOM.desc.value = art.description || '';
-                updateCharCount(DOM.desc);
-                DOM.author.value = art.author || 'الأستاذ / محمود عبد الحميد';
-                DOM.seo.value = art.seoKeyword || '';
-                DOM.tags.value = (art.tags || []).join(', ');
-                renderTagsPreview(art.tags || []);
-                DOM.status.value = art.status || 'published';
-                DOM.category.value = art.category || 'general';
-                DOM.content.value(art.content || '');
+                DOM.articleTitle.value = art.title || '';
+                DOM.articleImage.value = art.image || '';
+                previewImageURL(art.image || '', 'article');
+                DOM.articleDesc.value = art.description || '';
+                updateCharCount(DOM.articleDesc);
+                DOM.articleAuthor.value = art.author || 'الأستاذ / محمود عبد الحميد';
+                DOM.articleSeo.value = art.seoKeyword || '';
+                DOM.articleTags.value = (art.tags || []).join(', ');
+                renderArticleTags(art.tags || [], 'articleTagsPreview');
+                DOM.articleStatus.value = art.status || 'published';
+                DOM.articleCategory.value = art.category || 'general';
+                DOM.articleContent.value(art.content || '');
                 DOM.editSlug.value = slug;
                 DOM.editSha.value = art.sha || '';
-
-                DOM.editorTitle.textContent = '✏️ تعديل الملف: ' + (art.title || slug);
+                DOM.editorTitle.textContent = '✏️ تعديل المقال: ' + (art.title || slug);
                 DOM.editorSub.textContent = 'أنت الآن في وضع التعديل. احفظ التغييرات عند الانتهاء.';
-                DOM.saveBtn.innerHTML = '<i class="fas fa-save"></i> تحديث المقال';
-                DOM.cancelBtn.classList.remove('hidden');
-
-                updatePreview();
+                DOM.saveArticleBtn.innerHTML = '<i class="fas fa-save"></i> تحديث المقال';
+                DOM.cancelEditBtn.classList.remove('hidden');
+                updatePreview('article');
                 document.getElementById('editorSection').scrollIntoView({ behavior: 'smooth' });
+                // تفعيل تبويب المحرر
+                document.querySelectorAll('#view-articles .tab-btn').forEach(el => el.classList.remove('active'));
+                document.querySelector('#view-articles .tab-btn[onclick*="articlesEditor"]').classList.add('active');
+                document.querySelectorAll('#view-articles .tab-content').forEach(el => el.classList.remove('active'));
+                document.getElementById('tab-articlesEditor').classList.add('active');
             };
 
-            // ==========================================================
-            // DELETE ARTICLE
-            // ==========================================================
             window.deleteArticle = async function(slug) {
-                if (!confirm(`تحذير: هل أنت متأكد من رغبتك في إزالة المادة "${slug}" من السجلات نهائياً؟`)) return;
+                if (!confirm(`تحذير: هل أنت متأكد من حذف المادة "${slug}" نهائياً؟`)) return;
                 try {
                     const res = await fetch('/api/articles', {
                         method: 'DELETE',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ slug })
                     });
-                    if (!res.ok) throw new Error('تعذر تنفيذ أمر الحذف');
-                    showToast(`تم إزالة الملف "${slug}" من قاعدة البيانات.`, 'success');
-                    if (DOM.editSlug.value === slug) resetForm();
+                    if (!res.ok) throw new Error('تعذر الحذف');
+                    showToast(`تم حذف "${slug}"`, 'success');
+                    if (DOM.editSlug.value === slug) resetArticleForm();
                     await loadArticles();
                 } catch (err) {
                     showToast(err.message, 'error');
@@ -924,19 +1214,141 @@
             };
 
             // ==========================================================
-            // SAVE / UPDATE ARTICLE
+            // LOAD NEWS
+            // ==========================================================
+            async function loadNews() {
+                try {
+                    const res = await fetch('/api/news');
+                    if (!res.ok) throw new Error('فشل استدعاء الأخبار');
+                    const data = await res.json();
+                    newsItems = data.news || [];
+                    renderNews();
+                    updateStats();
+                } catch (err) {
+                    DOM.newsList.innerHTML = `<div style="text-align:center;padding:2rem;color:#dc2626;"><i class="fas fa-exclamation-triangle"></i> ${err.message}</div>`;
+                }
+            }
+
+            function renderNews() {
+                const searchTerm = (DOM.searchNews?.value || '').toLowerCase();
+                let filtered = newsItems;
+                if (searchTerm) {
+                    filtered = newsItems.filter(n =>
+                        (n.title || '').toLowerCase().includes(searchTerm) ||
+                        (n.category || '').toLowerCase().includes(searchTerm) ||
+                        (n.slug || '').toLowerCase().includes(searchTerm)
+                    );
+                }
+                if (filtered.length === 0) {
+                    DOM.newsList.innerHTML = `<div style="text-align:center;padding:3rem;color:rgba(34,34,34,0.4);">لا توجد أخبار مطابقة.</div>`;
+                    return;
+                }
+                let html = '';
+                filtered.forEach(n => {
+                    const title = n.title || n.slug.replace(/-/g, ' ');
+                    const date = n.date || (n.updated_at ? new Date(n.updated_at).toLocaleDateString('ar-EG') : 'غير محدد');
+                    const status = n.status || 'published';
+                    const category = n.category || 'عام';
+                    html += `
+                        <div class="item-card" data-status="${status}">
+                            <div class="info">
+                                <h4>${title}</h4>
+                                <div class="meta">
+                                    <span><i class="far fa-calendar-alt"></i> ${date}</span>
+                                    <span><i class="fas fa-tag"></i> ${category}</span>
+                                    <span><i class="fas fa-link"></i> ${n.slug}</span>
+                                    ${n.link ? `<span><i class="fas fa-external-link-alt"></i> <a href="${n.link}" target="_blank">رابط</a></span>` : ''}
+                                </div>
+                            </div>
+                            <div class="actions" style="display:flex; gap:0.5rem;">
+                                <button class="btn-sm outline" onclick="editNews('${n.slug}')"><i class="fas fa-edit"></i> تعديل</button>
+                                <button class="btn-sm danger" onclick="deleteNews('${n.slug}')"><i class="fas fa-trash"></i> إزالة</button>
+                            </div>
+                        </div>
+                    `;
+                });
+                DOM.newsList.innerHTML = html;
+            }
+            window.filterNews = renderNews;
+
+            window.editNews = function(slug) {
+                const n = newsItems.find(item => item.slug === slug);
+                if (!n) return;
+                DOM.newsTitle.value = n.title || '';
+                DOM.newsCategory.value = n.category || 'إنجاز قضائي';
+                DOM.newsIcon.value = n.icon || 'fa-newspaper';
+                DOM.newsStatus.value = n.status || 'published';
+                DOM.newsDate.value = n.date || '';
+                DOM.newsImage.value = n.image || '';
+                previewImageURL(n.image || '', 'news');
+                DOM.newsDesc.value = n.description || '';
+                updateNewsCharCount(DOM.newsDesc);
+                DOM.newsLink.value = n.link || '';
+                DOM.newsTags.value = (n.tags || []).join(', ');
+                renderNewsTags(n.tags || [], 'newsTagsPreview');
+                DOM.newsContent.value(n.content || '');
+                DOM.newsEditSlug.value = slug;
+                DOM.newsEditSha.value = n.sha || '';
+                DOM.newsEditorTitle.textContent = '✏️ تعديل الخبر: ' + (n.title || slug);
+                DOM.newsEditorSub.textContent = 'أنت الآن في وضع التعديل. احفظ التغييرات عند الانتهاء.';
+                DOM.saveNewsBtn.innerHTML = '<i class="fas fa-save"></i> تحديث الخبر';
+                DOM.cancelNewsEditBtn.classList.remove('hidden');
+                updatePreview('news');
+                document.getElementById('newsEditorSection').scrollIntoView({ behavior: 'smooth' });
+                // تفعيل تبويب المحرر
+                document.querySelectorAll('#view-news .tab-btn').forEach(el => el.classList.remove('active'));
+                document.querySelector('#view-news .tab-btn[onclick*="newsEditor"]').classList.add('active');
+                document.querySelectorAll('#view-news .tab-content').forEach(el => el.classList.remove('active'));
+                document.getElementById('tab-newsEditor').classList.add('active');
+            };
+
+            window.deleteNews = async function(slug) {
+                if (!confirm(`تحذير: هل أنت متأكد من حذف الخبر "${slug}" نهائياً؟`)) return;
+                try {
+                    const res = await fetch('/api/news', {
+                        method: 'DELETE',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ slug })
+                    });
+                    if (!res.ok) throw new Error('تعذر الحذف');
+                    showToast(`تم حذف الخبر "${slug}"`, 'success');
+                    if (DOM.newsEditSlug.value === slug) resetNewsForm();
+                    await loadNews();
+                } catch (err) {
+                    showToast(err.message, 'error');
+                }
+            };
+
+            // ==========================================================
+            // UPDATE STATS
+            // ==========================================================
+            function updateStats() {
+                const totalArt = articles.length;
+                const totalNews = newsItems.length;
+                const publishedArt = articles.filter(a => a.status === 'published').length;
+                const publishedNews = newsItems.filter(n => n.status === 'published').length;
+                const draftArt = articles.filter(a => a.status === 'draft').length;
+                const draftNews = newsItems.filter(n => n.status === 'draft').length;
+
+                DOM.totalArticles.textContent = totalArt;
+                DOM.totalNews.textContent = totalNews;
+                DOM.publishedCount.textContent = publishedArt + publishedNews;
+                DOM.draftCount.textContent = draftArt + draftNews;
+            }
+
+            // ==========================================================
+            // SAVE ARTICLE
             // ==========================================================
             document.getElementById('articleForm').addEventListener('submit', async function(e) {
                 e.preventDefault();
-
-                const title = DOM.title.value.trim();
-                const content = DOM.content.value();
-                const tagsInput = DOM.tags.value.trim();
+                const title = DOM.articleTitle.value.trim();
+                const content = DOM.articleContent.value();
+                const tagsInput = DOM.articleTags.value.trim();
                 const tags = tagsInput ? tagsInput.split(',').map(t => t.trim()).filter(t => t) : [];
                 const editSlug = DOM.editSlug.value;
 
                 if (!title || !content) {
-                    showToast('يجب إدراج عنوان ومحتوى للمقال قبل الحفظ.', 'error');
+                    showToast('يجب إدراج عنوان ومحتوى للمقال.', 'error');
                     return;
                 }
 
@@ -948,20 +1360,21 @@
                     title,
                     content,
                     tags,
-                    image: DOM.image.value.trim(),
-                    description: DOM.desc.value.trim(),
-                    status: DOM.status.value,
-                    category: DOM.category.value,
-                    author: DOM.author.value.trim(),
-                    seoKeyword: DOM.seo.value.trim(),
+                    image: DOM.articleImage.value.trim(),
+                    description: DOM.articleDesc.value.trim(),
+                    status: DOM.articleStatus.value,
+                    category: DOM.articleCategory.value,
+                    author: DOM.articleAuthor.value.trim(),
+                    seoKeyword: DOM.articleSeo.value.trim(),
                     oldSlug: editSlug || undefined,
-                    sha: DOM.editSha.value || undefined
+                    sha: DOM.editSha.value || undefined,
+                    type: 'article'
                 };
 
-                const btn = DOM.saveBtn;
-                const originalText = btn.innerHTML;
+                const btn = DOM.saveArticleBtn;
+                const original = btn.innerHTML;
                 btn.disabled = true;
-                btn.innerHTML = '<span class="loading-spinner"></span> جاري التوثيق...';
+                btn.innerHTML = '<span class="loading-spinner"></span> جاري الحفظ...';
 
                 try {
                     const res = await fetch('/api/articles', {
@@ -969,37 +1382,82 @@
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(payload)
                     });
-                    if (!res.ok) throw new Error('تعذر حفظ البيانات');
-                    showToast(`تم ${editSlug ? 'تحديث' : 'نشر'} المادة القانونية بنجاح.`);
-                    resetForm();
+                    if (!res.ok) throw new Error('تعذر حفظ المقال');
+                    showToast(`تم ${editSlug ? 'تحديث' : 'نشر'} المقال بنجاح.`);
+                    resetArticleForm();
                     await loadArticles();
                 } catch (err) {
                     showToast(err.message, 'error');
                 } finally {
                     btn.disabled = false;
-                    btn.innerHTML = originalText;
+                    btn.innerHTML = original;
                 }
             });
 
             // ==========================================================
-            // REFRESH & LOGOUT
+            // SAVE NEWS
             // ==========================================================
-            window.refreshList = function() {
-                loadArticles();
-                showToast('تم تحديث البيانات المتصلة بالخادم.', 'info');
-            };
+            document.getElementById('newsForm').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const title = DOM.newsTitle.value.trim();
+                const content = DOM.newsContent.value();
+                const tagsInput = DOM.newsTags.value.trim();
+                const tags = tagsInput ? tagsInput.split(',').map(t => t.trim()).filter(t => t) : [];
+                const editSlug = DOM.newsEditSlug.value;
 
-            window.logout = function() {
-                sessionStorage.clear();
-                window.location.href = '/admin/login.html';
-            };
+                if (!title || !content) {
+                    showToast('يجب إدراج عنوان ومحتوى للخبر.', 'error');
+                    return;
+                }
+
+                let slug = editSlug || title.replace(/[^\u0600-\u06FF\s\w-]/g, '').replace(/\s+/g, '-').toLowerCase().replace(/--+/g, '-');
+                if (!slug) slug = 'news-' + Date.now().toString();
+
+                const payload = {
+                    slug,
+                    title,
+                    content,
+                    tags,
+                    category: DOM.newsCategory.value,
+                    icon: DOM.newsIcon.value.trim() || 'fa-newspaper',
+                    image: DOM.newsImage.value.trim(),
+                    description: DOM.newsDesc.value.trim(),
+                    status: DOM.newsStatus.value,
+                    date: DOM.newsDate.value || new Date().toISOString().split('T')[0],
+                    link: DOM.newsLink.value.trim(),
+                    oldSlug: editSlug || undefined,
+                    sha: DOM.newsEditSha.value || undefined,
+                    type: 'news'
+                };
+
+                const btn = DOM.saveNewsBtn;
+                const original = btn.innerHTML;
+                btn.disabled = true;
+                btn.innerHTML = '<span class="loading-spinner"></span> جاري الحفظ...';
+
+                try {
+                    const res = await fetch('/api/news', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    if (!res.ok) throw new Error('تعذر حفظ الخبر');
+                    showToast(`تم ${editSlug ? 'تحديث' : 'نشر'} الخبر بنجاح.`);
+                    resetNewsForm();
+                    await loadNews();
+                } catch (err) {
+                    showToast(err.message, 'error');
+                } finally {
+                    btn.disabled = false;
+                    btn.innerHTML = original;
+                }
+            });
 
             // ==========================================================
-            // CHANGE PASSWORD – مع تأكيد التغيير الفعلي
+            // CHANGE PASSWORD
             // ==========================================================
             document.getElementById('passwordForm').addEventListener('submit', async function(e) {
                 e.preventDefault();
-
                 const cp = document.getElementById('currentPassword').value.trim();
                 const np = document.getElementById('newPassword').value.trim();
                 const cnp = document.getElementById('confirmPassword').value.trim();
@@ -1030,18 +1488,14 @@
                     });
                     const data = await res.json();
                     if (!res.ok) throw new Error(data.message || 'تأكد من صحة كلمة المرور الحالية');
-
-                    showToast('✅ تم تحديث كلمة المرور بنجاح! سيتم تسجيل الخروج لتطبيق التغيير.', 'success');
+                    showToast('✅ تم تحديث كلمة المرور بنجاح!', 'success');
                     document.getElementById('currentPassword').value = '';
                     document.getElementById('newPassword').value = '';
                     document.getElementById('confirmPassword').value = '';
-
-                    // تسجيل الخروج بعد 2.5 ثانية لتطبيق كلمة المرور الجديدة
                     setTimeout(() => {
                         sessionStorage.clear();
                         window.location.href = '/admin/login.html';
                     }, 2500);
-
                 } catch (err) {
                     showToast('❌ ' + err.message, 'error');
                 } finally {
@@ -1051,11 +1505,28 @@
             });
 
             // ==========================================================
+            // REFRESH & LOGOUT
+            // ==========================================================
+            window.refreshAll = function() {
+                loadArticles();
+                loadNews();
+                showToast('تم تحديث جميع البيانات.', 'info');
+            };
+
+            window.logout = function() {
+                sessionStorage.clear();
+                window.location.href = '/admin/login.html';
+            };
+
+            // ==========================================================
             // INIT
             // ==========================================================
             loadArticles();
-            resetForm();
+            loadNews();
+            resetArticleForm();
+            resetNewsForm();
             setInterval(loadArticles, 60000);
+            setInterval(loadNews, 60000);
 
         })();
     </script>
