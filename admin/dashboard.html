@@ -916,7 +916,7 @@
     </div>
 
     <!-- ==========================================================
-    JAVASCRIPT – الكامل المتكامل مع GitHub API والتاريخ
+    JAVASCRIPT – الكامل المتكامل مع أدوات التنسيق المتقدمة
     ========================================================== -->
     <script>
         (function() {
@@ -934,7 +934,7 @@
             };
 
             // ==========================================================
-            // 2. دالة استخراج التاريخ من Front Matter (مطابقة للموقع)
+            // 2. دالة استخراج التاريخ من Front Matter
             // ==========================================================
             function extractDateFromFile(content) {
                 const yamlMatch = content.match(/---\s*([\s\S]*?)\s*---/);
@@ -961,7 +961,7 @@
             // ==========================================================
             async function fetchGitHubFiles(path) {
                 const url =
-                `https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/contents/${path}?ref=${CONFIG.branch}`;
+                    `https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/contents/${path}?ref=${CONFIG.branch}`;
                 const res = await fetch(url);
                 if (!res.ok) throw new Error(`فشل جلب ${path} (${res.status})`);
                 return await res.json();
@@ -1077,7 +1077,7 @@
             window.showToast = showToast;
 
             // ==========================================================
-            // 5. TOGGLE SIDEBAR (موبايل)
+            // 5. TOGGLE SIDEBAR
             // ==========================================================
             window.toggleSidebar = function(open) {
                 const sidebar = document.getElementById('sidebar');
@@ -1136,7 +1136,7 @@
 
             window.switchInnerTab = function(tabId) {
                 const parent = document.activeElement?.closest('.tab-content') || document.querySelector(
-                '.tab-content.active');
+                    '.tab-content.active');
                 if (parent) {
                     parent.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
                     parent.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
@@ -1149,33 +1149,115 @@
             document.getElementById('view-articles').classList.add('active');
 
             // ==========================================================
-            // 8. EASYMDE محرران
+            // 8. EASYMDE مع أدوات التنسيق المتقدمة (حجم، لون، نوع الخط)
             // ==========================================================
+            // دالة مساعدة لتطبيق التنسيق على النص المحدد
+            function applyInlineStyle(editor, style, promptMsg, defaultValue) {
+                const selected = editor.getSelection();
+                if (!selected) {
+                    showToast('حدد النص المراد تنسيقه أولاً.', 'info');
+                    return;
+                }
+                const value = prompt(promptMsg, defaultValue);
+                if (value === null) return;
+                const sanitized = value.trim();
+                const wrapped = `<span style="${style}: ${sanitized};">${selected}</span>`;
+                editor.replaceSelection(wrapped);
+            }
+
+            // محرر المقالات
             const articleMDE = new EasyMDE({
                 element: document.getElementById('articleContent'),
                 direction: 'rtl',
                 spellChecker: false,
-                toolbar: ["undo", "redo", "|", "bold", "italic", "strikethrough", "|", "heading-1", "heading-2",
-                    "heading-3", "|", "quote", "unordered-list", "ordered-list", "table", "horizontal-rule", "|",
-                    "link", "image", "|", "preview", "fullscreen"
+                toolbar: [
+                    "undo", "redo", "|",
+                    "bold", "italic", "strikethrough", "|",
+                    {
+                        name: "font-size",
+                        action: function(editor) {
+                            applyInlineStyle(editor, 'font-size', 'أدخل حجم الخط (مثال: 14, 16, 18, 20) أو قيمة مثل 1.2em:', '16');
+                        },
+                        className: "fa fa-text-height",
+                        title: "حجم الخط"
+                    },
+                    {
+                        name: "font-color",
+                        action: function(editor) {
+                            applyInlineStyle(editor, 'color', 'أدخل لون الخط (مثال: #B08D57, red, navy):', '#B08D57');
+                        },
+                        className: "fa fa-palette",
+                        title: "لون الخط"
+                    },
+                    {
+                        name: "font-family",
+                        action: function(editor) {
+                            const families = 'Amiri, Tajawal, Playfair Display, Montserrat, Cairo, Readex Pro, Georgia, Arial';
+                            applyInlineStyle(editor, 'font-family', 'اختر نوع الخط من القائمة (أو اكتب اسم الخط):\n' + families, 'Tajawal');
+                        },
+                        className: "fa fa-font",
+                        title: "نوع الخط"
+                    },
+                    "|",
+                    "heading-1", "heading-2", "heading-3", "|",
+                    "quote", "unordered-list", "ordered-list", "table", "horizontal-rule", "|",
+                    "link", "image", "|",
+                    "preview", "fullscreen"
                 ],
                 placeholder: 'اكتب محتوى المقال هنا...',
-                previewRender: function(text) { return marked.parse(text); },
+                previewRender: function(text) {
+                    return marked.parse(text, { sanitize: false });
+                },
                 renderingConfig: { singleLineBreaks: false }
             });
 
+            // محرر الأخبار
             const newsMDE = new EasyMDE({
                 element: document.getElementById('newsContent'),
                 direction: 'rtl',
                 spellChecker: false,
-                toolbar: ["undo", "redo", "|", "bold", "italic", "|", "heading-1", "heading-2", "|", "quote",
-                    "unordered-list", "ordered-list", "|", "link", "image", "|", "preview", "fullscreen"
+                toolbar: [
+                    "undo", "redo", "|",
+                    "bold", "italic", "|",
+                    {
+                        name: "font-size",
+                        action: function(editor) {
+                            applyInlineStyle(editor, 'font-size', 'أدخل حجم الخط (مثال: 14, 16, 18, 20) أو قيمة مثل 1.2em:', '16');
+                        },
+                        className: "fa fa-text-height",
+                        title: "حجم الخط"
+                    },
+                    {
+                        name: "font-color",
+                        action: function(editor) {
+                            applyInlineStyle(editor, 'color', 'أدخل لون الخط (مثال: #B08D57, red, navy):', '#B08D57');
+                        },
+                        className: "fa fa-palette",
+                        title: "لون الخط"
+                    },
+                    {
+                        name: "font-family",
+                        action: function(editor) {
+                            const families = 'Amiri, Tajawal, Playfair Display, Montserrat, Cairo, Readex Pro, Georgia, Arial';
+                            applyInlineStyle(editor, 'font-family', 'اختر نوع الخط من القائمة (أو اكتب اسم الخط):\n' + families, 'Tajawal');
+                        },
+                        className: "fa fa-font",
+                        title: "نوع الخط"
+                    },
+                    "|",
+                    "heading-1", "heading-2", "|",
+                    "quote", "unordered-list", "ordered-list", "|",
+                    "link", "image", "|",
+                    "preview", "fullscreen"
                 ],
                 placeholder: 'اكتب نص الخبر هنا...',
-                previewRender: function(text) { return marked.parse(text); },
+                previewRender: function(text) {
+                    return marked.parse(text, { sanitize: false });
+                },
                 renderingConfig: { singleLineBreaks: false }
             });
 
+            // ربط التحديث المباشر للمعاينة (مع دعم HTML)
             articleMDE.codemirror.on('change', function() { updatePreview('article'); });
             newsMDE.codemirror.on('change', function() { updatePreview('news'); });
 
@@ -1184,8 +1266,8 @@
                 const previewId = type === 'article' ? 'articlePreview' : 'newsPreview';
                 const preview = document.getElementById(previewId);
                 const raw = mde.value();
-                preview.innerHTML = raw.trim() ? marked.parse(raw) : (type === 'article' ? '📄 ستظهر المعاينة هنا...' :
-                    '📰 ستظهر المعاينة هنا...');
+                preview.innerHTML = raw.trim() ? marked.parse(raw, { sanitize: false }) :
+                    (type === 'article' ? '📄 ستظهر المعاينة هنا...' : '📰 ستظهر المعاينة هنا...');
             }
 
             // ==========================================================
@@ -1310,7 +1392,7 @@
                 }
                 if (filtered.length === 0) {
                     list.innerHTML =
-                    '<div style="text-align:center;padding:2rem;color:rgba(34,34,34,0.4);">📭 لا توجد مقالات.</div>';
+                        '<div style="text-align:center;padding:2rem;color:rgba(34,34,34,0.4);">📭 لا توجد مقالات.</div>';
                     return;
                 }
                 let html = '';
@@ -1359,7 +1441,7 @@
                 }
                 if (filtered.length === 0) {
                     list.innerHTML =
-                    '<div style="text-align:center;padding:2rem;color:rgba(34,34,34,0.4);">📭 لا توجد أخبار.</div>';
+                        '<div style="text-align:center;padding:2rem;color:rgba(34,34,34,0.4);">📭 لا توجد أخبار.</div>';
                     return;
                 }
                 let html = '';
@@ -1403,7 +1485,7 @@
             }
 
             // ==========================================================
-            // 16. دوال التعديل والحذف (ستُرسل إلى الخادم)
+            // 16. دوال التعديل والحذف
             // ==========================================================
             window.editArticle = function(slug) {
                 const a = articles.find(art => art.slug === slug);
@@ -1499,7 +1581,7 @@
             };
 
             // ==========================================================
-            // 17. دوال حفظ المقالات والأخبار (إرسال إلى الخادم)
+            // 17. دوال حفظ المقالات والأخبار (مع إرسال التاريخ)
             // ==========================================================
             document.getElementById('articleForm').addEventListener('submit', async function(e) {
                 e.preventDefault();
@@ -1691,13 +1773,12 @@
                     return;
                 }
 
-                // محاكاة للتحقق (في الواقع سيُرسل إلى الخادم)
+                // محاكاة التحقق (في الواقع سيُرسل إلى الخادم)
                 if (cp !== 'admin123') {
                     showToast('❌ كلمة المرور الحالية غير صحيحة.', 'error');
                     return;
                 }
 
-                // حفظ كلمة المرور الجديدة (محاكاة)
                 localStorage.setItem('admin_password', np);
                 showToast('✅ تم تحديث كلمة المرور بنجاح!', 'success');
                 document.getElementById('currentPassword').value = '';
