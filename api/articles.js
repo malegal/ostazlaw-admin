@@ -55,6 +55,7 @@ async function getArticles(req, res) {
             const content = await contentRes.text();
 
             let title = slug.replace(/-/g, ' ');
+            let date = '';
             let image = '';
             let description = '';
             let body = content;
@@ -64,6 +65,11 @@ async function getArticles(req, res) {
                 const frontMatter = yamlMatch[1];
                 const titleMatch = frontMatter.match(/title:\s*(.*)/i);
                 if (titleMatch) title = titleMatch[1].replace(/['"]/g, '').trim();
+                
+                // ✅ استخراج التاريخ
+                const dateMatch = frontMatter.match(/date:\s*(.*)/i);
+                if (dateMatch) date = dateMatch[1].replace(/['"]/g, '').trim();
+                
                 const imageMatch = frontMatter.match(/image:\s*(.*)/i);
                 if (imageMatch) image = imageMatch[1].replace(/['"]/g, '').trim();
                 const descMatch = frontMatter.match(/description:\s*(.*)/i);
@@ -74,6 +80,7 @@ async function getArticles(req, res) {
             articles.push({
                 slug,
                 title,
+                date,        // ✅ إضافة التاريخ للوحة التحكم
                 image,
                 description,
                 content: body,
@@ -82,19 +89,28 @@ async function getArticles(req, res) {
         }
     }
 
-    articles.sort((a, b) => (a.updated_at > b.updated_at ? -1 : 1));
+    // ترتيب حسب التاريخ (إذا كان موجوداً) أو حسب آخر تحديث
+    articles.sort((a, b) => {
+        if (a.date && b.date) {
+            return new Date(b.date) - new Date(a.date);
+        }
+        return (a.updated_at > b.updated_at ? -1 : 1);
+    });
     res.status(200).json({ articles });
 }
 
 async function saveArticle(req, res) {
-    const { slug, title, image, description, content, oldSlug } = req.body;
+    // ✅ إضافة date إلى الـ destructuring
+    const { slug, title, date, image, description, content, oldSlug } = req.body;
 
     if (!slug || !content) {
         return res.status(400).json({ message: 'Slug and content are required' });
     }
 
+    // ✅ إضافة التاريخ إلى Front Matter
     let frontMatter = '---\n';
     if (title) frontMatter += `title: "${title}"\n`;
+    if (date) frontMatter += `date: ${date}\n`;  // <-- الإضافة الجوهرية
     if (image) frontMatter += `image: "${image}"\n`;
     if (description) frontMatter += `description: "${description}"\n`;
     frontMatter += '---\n\n';
