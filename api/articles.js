@@ -58,6 +58,7 @@ async function getArticles(req, res) {
             let date = '';
             let image = '';
             let description = '';
+            let author = '';
             let body = content;
 
             const yamlMatch = content.match(/^---\s*([\s\S]*?)\s*---/);
@@ -65,24 +66,30 @@ async function getArticles(req, res) {
                 const frontMatter = yamlMatch[1];
                 const titleMatch = frontMatter.match(/title:\s*(.*)/i);
                 if (titleMatch) title = titleMatch[1].replace(/['"]/g, '').trim();
-                
-                // ✅ استخراج التاريخ
+
                 const dateMatch = frontMatter.match(/date:\s*(.*)/i);
                 if (dateMatch) date = dateMatch[1].replace(/['"]/g, '').trim();
-                
+
                 const imageMatch = frontMatter.match(/image:\s*(.*)/i);
                 if (imageMatch) image = imageMatch[1].replace(/['"]/g, '').trim();
+
                 const descMatch = frontMatter.match(/description:\s*(.*)/i);
                 if (descMatch) description = descMatch[1].replace(/['"]/g, '').trim();
+
+                // ✅ استخراج الكاتب
+                const authorMatch = frontMatter.match(/author:\s*(.*)/i);
+                if (authorMatch) author = authorMatch[1].replace(/['"]/g, '').trim();
+
                 body = content.replace(/^---\s*[\s\S]*?\s*---/, '').trim();
             }
 
             articles.push({
                 slug,
                 title,
-                date,        // ✅ إضافة التاريخ للوحة التحكم
+                date,
                 image,
                 description,
+                author,           // ✅ إضافة الكاتب
                 content: body,
                 updated_at: file.sha
             });
@@ -100,20 +107,26 @@ async function getArticles(req, res) {
 }
 
 async function saveArticle(req, res) {
-    // ✅ إضافة date إلى الـ destructuring
-    const { slug, title, date, image, description, content, oldSlug } = req.body;
+    // ✅ إضافة author و date إلى الـ destructuring
+    const { slug, title, date, image, description, content, oldSlug, author } = req.body;
 
     if (!slug || !content) {
         return res.status(400).json({ message: 'Slug and content are required' });
     }
 
-    // ✅ إضافة التاريخ إلى Front Matter
+    // ===== تعيين القيم الافتراضية =====
+    const finalDate = date || new Date().toISOString().split('T')[0];
+    const finalAuthor = author || 'الأستاذ / محمود عبد الحميد';
+
+    // ===== بناء Front Matter =====
     let frontMatter = '---\n';
     if (title) frontMatter += `title: "${title}"\n`;
-    if (date) frontMatter += `date: ${date}\n`;  // <-- الإضافة الجوهرية
+    frontMatter += `date: ${finalDate}\n`;          // دائماً موجود
+    frontMatter += `author: "${finalAuthor}"\n`;     // دائماً موجود
     if (image) frontMatter += `image: "${image}"\n`;
     if (description) frontMatter += `description: "${description}"\n`;
     frontMatter += '---\n\n';
+
     const fileContent = frontMatter + content;
 
     const filename = `${slug}.md`;
