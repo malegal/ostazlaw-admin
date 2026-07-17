@@ -10,7 +10,9 @@
     <script src="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
-        /* ===== ROOT ===== */
+        /* ==========================================================
+           ROOT & RESET
+           ========================================================== */
         :root {
             --very-dark-navy: #0B111B;
             --deep-navy: #102A43;
@@ -37,8 +39,8 @@
             display: flex;
             overflow-x: hidden;
         }
-        /* ===== LAYOUT ===== */
         .admin-layout { display: flex; width: 100%; min-height: 100vh; }
+
         /* ===== SIDEBAR ===== */
         .sidebar {
             width: 260px;
@@ -61,22 +63,9 @@
             border-bottom: 1px solid rgba(176, 141, 87, 0.15);
             background: linear-gradient(180deg, rgba(16,42,67,1) 0%, var(--sidebar-bg) 100%);
         }
-        .sidebar-header .icon {
-            font-size: 2.2rem;
-            color: var(--matte-gold);
-            display: block;
-            margin-bottom: 0.6rem;
-        }
-        .sidebar-header h2 {
-            font-family: var(--font-playfair);
-            font-size: 1.2rem;
-            color: var(--matte-gold);
-        }
-        .sidebar-header p {
-            font-size: 0.7rem;
-            color: rgba(255,255,255,0.4);
-            margin-top: 0.2rem;
-        }
+        .sidebar-header .icon { font-size: 2.2rem; color: var(--matte-gold); display: block; margin-bottom: 0.6rem; }
+        .sidebar-header h2 { font-family: var(--font-playfair); font-size: 1.2rem; color: var(--matte-gold); }
+        .sidebar-header p { font-size: 0.7rem; color: rgba(255,255,255,0.4); margin-top: 0.2rem; }
         .sidebar-nav { padding: 1rem 0; flex: 1; }
         .nav-item {
             display: flex;
@@ -96,6 +85,7 @@
             border-right-color: var(--matte-gold);
         }
         .nav-item i { width: 24px; text-align: center; font-size: 1.1rem; }
+
         /* ===== MAIN ===== */
         .main-content {
             flex: 1;
@@ -116,16 +106,9 @@
             margin-bottom: 2rem;
             border: 1px solid rgba(176, 141, 87, 0.06);
         }
-        .dashboard-header .greeting {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: var(--deep-navy);
-        }
-        .dashboard-header .actions {
-            display: flex;
-            gap: 0.6rem;
-            flex-wrap: wrap;
-        }
+        .dashboard-header .greeting { font-size: 1.1rem; font-weight: 700; color: var(--deep-navy); }
+        .dashboard-header .actions { display: flex; gap: 0.6rem; flex-wrap: wrap; }
+
         /* ===== BUTTONS ===== */
         .btn-sm {
             padding: 0.5rem 1.2rem;
@@ -152,6 +135,7 @@
         .btn-sm.outline:hover { background: var(--matte-gold); color: #fff; }
         .btn-sm.success { background: #059669; color: #fff; }
         .btn-sm.success:hover { background: #047857; }
+
         /* ===== STATS ===== */
         .stats {
             display: grid;
@@ -172,12 +156,7 @@
             min-height: 80px;
         }
         .stat-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-hover); }
-        .stat-card .info .num {
-            font-family: var(--font-serif);
-            font-size: 1.8rem;
-            font-weight: 900;
-            color: var(--deep-navy);
-        }
+        .stat-card .info .num { font-family: var(--font-serif); font-size: 1.8rem; font-weight: 900; color: var(--deep-navy); }
         .stat-card .info .label { font-size: 0.75rem; color: rgba(34,34,34,0.5); font-weight: 600; }
         .stat-card .icon {
             width: 48px; height: 48px;
@@ -190,6 +169,7 @@
             color: var(--matte-gold);
             flex-shrink: 0;
         }
+
         /* ===== TABS ===== */
         .tab-bar {
             display: flex;
@@ -219,12 +199,9 @@
             border: none;
             font-family: var(--font-ar);
         }
-        .tab-btn.active {
-            background: var(--matte-gold);
-            color: #000;
-            box-shadow: 0 2px 15px rgba(176,141,87,0.15);
-        }
+        .tab-btn.active { background: var(--matte-gold); color: #000; box-shadow: 0 2px 15px rgba(176,141,87,0.15); }
         .tab-btn:hover:not(.active) { color: var(--charcoal); background: rgba(0,0,0,0.02); }
+
         /* ===== EDITOR SECTIONS ===== */
         .editor-section {
             background: var(--pure-white);
@@ -244,16 +221,9 @@
             padding-bottom: 1rem;
             border-bottom: 1px solid rgba(0,0,0,0.05);
         }
-        .section-header h2 {
-            font-family: var(--font-serif);
-            font-size: 1.3rem;
-            color: var(--deep-navy);
-        }
-        .section-header .sub {
-            font-size: 0.8rem;
-            color: rgba(34,34,34,0.4);
-            display: block;
-        }
+        .section-header h2 { font-family: var(--font-serif); font-size: 1.3rem; color: var(--deep-navy); }
+        .section-header .sub { font-size: 0.8rem; color: rgba(34,34,34,0.4); display: block; }
+
         /* ===== FORMS ===== */
         .form-group { margin-bottom: 1.2rem; }
         .form-group label {
@@ -289,14 +259,8 @@
             box-shadow: 0 0 0 4px rgba(176,141,87,0.08);
             outline: none;
         }
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-        }
-        .password-wrapper {
-            position: relative;
-        }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        .password-wrapper { position: relative; }
         .password-wrapper input { padding-left: 3rem !important; }
         .toggle-password {
             position: absolute;
@@ -320,12 +284,7 @@
             padding: 0.2rem;
         }
         .image-preview-box img { width: 100%; border-radius: 6px; display: block; }
-        .tags-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.4rem;
-            margin-top: 0.5rem;
-        }
+        .tags-container { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.5rem; }
         .tag-pill {
             background: var(--matte-gold-light);
             padding: 0.2rem 0.7rem;
@@ -337,15 +296,57 @@
             align-items: center;
             gap: 0.3rem;
         }
-        .tag-pill .remove-tag {
-            cursor: pointer;
-            color: #dc2626;
-            font-size: 0.7rem;
-            touch-action: manipulation;
+        .tag-pill .remove-tag { cursor: pointer; color: #dc2626; font-size: 0.7rem; touch-action: manipulation; }
+
+        /* ===== CUSTOM FORMAT BAR (مثل ورد) ===== */
+        .custom-format-bar {
+            display: flex;
+            gap: 0.8rem;
+            background: #f8f9fa;
+            padding: 0.8rem;
+            border: 1px solid rgba(0,0,0,0.06);
+            border-radius: 10px 10px 0 0;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-top: 0.5rem;
         }
-        /* ===== EDITOR ===== */
+        .custom-format-bar select {
+            padding: 0.4rem 0.6rem;
+            border-radius: 6px;
+            border: 1px solid rgba(0,0,0,0.1);
+            font-family: var(--font-ar, 'Tajawal', sans-serif);
+            font-size: 0.85rem;
+            cursor: pointer;
+            outline: none;
+            background: #fff;
+            color: #2c3e50;
+        }
+        .custom-format-bar select:focus { border-color: var(--matte-gold); }
+        .color-picker-wrap {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #2c3e50;
+        }
+        .color-picker-wrap input[type="color"] {
+            padding: 0;
+            height: 30px;
+            width: 30px;
+            border: none;
+            background: none;
+            cursor: pointer;
+        }
+        .custom-format-bar .btn-sm {
+            padding: 0.3rem 0.8rem;
+            font-size: 0.75rem;
+        }
+
+        /* ===== EASYMDE OVERRIDES ===== */
         .editor-toolbar {
-            border-radius: 10px 10px 0 0 !important;
+            border-radius: 0 !important;
+            border-top: none !important;
             background: #f8f9fa !important;
             border-color: rgba(0,0,0,0.06) !important;
             padding: 8px !important;
@@ -367,11 +368,16 @@
             border-radius: 0 0 10px 10px !important;
             min-height: 300px !important;
             border-color: rgba(0,0,0,0.06) !important;
-            font-family: var(--font-ar) !important;
-            font-size: 0.95rem !important;
-            line-height: 1.8 !important;
+            font-family: var(--font-ar, 'Tajawal', sans-serif) !important;
+            font-size: 1.15rem !important;
+            line-height: 1.9 !important;
         }
         .CodeMirror-focused { border-color: var(--matte-gold) !important; }
+        .editor-preview, .editor-preview-side {
+            font-family: var(--font-ar, 'Tajawal', sans-serif) !important;
+            font-size: 1.15rem !important;
+            line-height: 2 !important;
+        }
         .preview-area {
             background: #fff;
             padding: 1.5rem;
@@ -385,6 +391,7 @@
             border: 1px solid rgba(0,0,0,0.06);
             box-shadow: inset 0 2px 10px rgba(0,0,0,0.02);
         }
+
         /* ===== ITEMS LIST ===== */
         .items-list { display: grid; gap: 0.8rem; }
         .item-card {
@@ -402,30 +409,11 @@
         }
         .item-card[data-status="published"] { border-right-color: #059669; }
         .item-card[data-status="draft"] { border-right-color: #d97706; }
-        .item-card:hover {
-            border-color: var(--matte-gold);
-            box-shadow: var(--shadow-hover);
-            transform: translateX(-4px);
-        }
-        .item-card .info h4 {
-            font-size: 0.95rem;
-            color: var(--deep-navy);
-            font-family: var(--font-serif);
-            font-weight: 700;
-        }
-        .item-card .meta {
-            font-size: 0.7rem;
-            color: rgba(34,34,34,0.4);
-            display: flex;
-            gap: 0.8rem;
-            flex-wrap: wrap;
-            margin-top: 0.3rem;
-        }
-        .item-card .actions {
-            display: flex;
-            gap: 0.4rem;
-            flex-wrap: wrap;
-        }
+        .item-card:hover { border-color: var(--matte-gold); box-shadow: var(--shadow-hover); transform: translateX(-4px); }
+        .item-card .info h4 { font-size: 0.95rem; color: var(--deep-navy); font-family: var(--font-serif); font-weight: 700; }
+        .item-card .meta { font-size: 0.7rem; color: rgba(34,34,34,0.4); display: flex; gap: 0.8rem; flex-wrap: wrap; margin-top: 0.3rem; }
+        .item-card .actions { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+
         /* ===== TOAST ===== */
         .toast {
             position: fixed;
@@ -465,19 +453,10 @@
         .hidden { display: none !important; }
         .tab-content { display: none; }
         .tab-content.active { display: block; }
+
         /* ===== SEARCH ===== */
-        .search-wrap {
-            display: flex;
-            align-items: center;
-            position: relative;
-        }
-        .search-wrap i {
-            position: absolute;
-            left: 12px;
-            color: rgba(34,34,34,0.3);
-            pointer-events: none;
-            font-size: 0.9rem;
-        }
+        .search-wrap { display: flex; align-items: center; position: relative; }
+        .search-wrap i { position: absolute; left: 12px; color: rgba(34,34,34,0.3); pointer-events: none; font-size: 0.9rem; }
         .search-wrap input {
             padding: 0.5rem 2.2rem 0.5rem 0.8rem;
             border-radius: 8px;
@@ -489,30 +468,12 @@
             background: #fafafa;
             transition: all 0.3s;
         }
-        .search-wrap input:focus {
-            border-color: var(--matte-gold);
-            background: #fff;
-            box-shadow: 0 0 0 3px rgba(176,141,87,0.08);
-        }
-        /* ===== SIDEBAR TOGGLE (mobile) ===== */
-        .sidebar-toggle {
-            display: none;
-            background: none;
-            border: none;
-            color: var(--deep-navy);
-            font-size: 1.4rem;
-            padding: 0.5rem;
-            cursor: pointer;
-            touch-action: manipulation;
-        }
-        .sidebar-overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.4);
-            z-index: 999;
-            backdrop-filter: blur(4px);
-        }
+        .search-wrap input:focus { border-color: var(--matte-gold); background: #fff; box-shadow: 0 0 0 3px rgba(176,141,87,0.08); }
+
+        /* ===== SIDEBAR TOGGLE ===== */
+        .sidebar-toggle { display: none; background: none; border: none; color: var(--deep-navy); font-size: 1.4rem; padding: 0.5rem; cursor: pointer; touch-action: manipulation; }
+        .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 999; backdrop-filter: blur(4px); }
+
         /* ===== RESPONSIVE ===== */
         @media (max-width: 1024px) {
             .sidebar { width: 220px; }
@@ -520,23 +481,19 @@
             .form-row { grid-template-columns: 1fr 1fr; }
         }
         @media (max-width: 820px) {
-            .sidebar {
-                transform: translateX(110%);
-                width: 280px;
-                box-shadow: -10px 0 40px rgba(0,0,0,0.2);
-            }
+            .sidebar { transform: translateX(110%); width: 280px; box-shadow: -10px 0 40px rgba(0,0,0,0.2); }
             .sidebar.open { transform: translateX(0); }
             .sidebar-toggle { display: block; }
             .sidebar-overlay.open { display: block; }
-            .main-content {
-                margin-right: 0;
-                max-width: 100vw;
-                padding: 1rem;
-            }
+            .main-content { margin-right: 0; max-width: 100vw; padding: 1rem; }
             .stats { grid-template-columns: repeat(2, 1fr); }
             .form-row { grid-template-columns: 1fr; }
             .dashboard-header .greeting { font-size: 1rem; }
             .search-wrap input { width: 140px; font-size: 0.8rem; }
+            .custom-format-bar { gap: 0.5rem; padding: 0.5rem; }
+            .custom-format-bar select { font-size: 0.75rem; padding: 0.3rem 0.4rem; }
+            .color-picker-wrap { font-size: 0.75rem; }
+            .color-picker-wrap input[type="color"] { height: 24px; width: 24px; }
         }
         @media (max-width: 480px) {
             .main-content { padding: 0.7rem; }
@@ -558,10 +515,11 @@
             .sidebar-header { padding: 1.2rem 1rem; }
             .sidebar-header h2 { font-size: 1rem; }
             .nav-item { padding: 0.7rem 1.2rem; font-size: 0.85rem; }
-            .CodeMirror { min-height: 200px !important; font-size: 0.9rem !important; }
+            .CodeMirror { min-height: 200px !important; font-size: 1rem !important; }
             .preview-area { max-height: 250px; font-size: 0.9rem; padding: 1rem; }
+            .custom-format-bar { flex-direction: column; align-items: stretch; }
+            .custom-format-bar select, .custom-format-bar .color-picker-wrap { width: 100%; }
         }
-        /* ===== SCROLLBAR ===== */
         .sidebar::-webkit-scrollbar { width: 4px; }
         .sidebar::-webkit-scrollbar-track { background: transparent; }
         .sidebar::-webkit-scrollbar-thumb { background: var(--matte-gold); border-radius: 4px; }
@@ -621,31 +579,19 @@
             <!-- ===== STATS ===== -->
             <div class="stats" id="statsContainer">
                 <div class="stat-card">
-                    <div class="info">
-                        <div class="num" id="totalArticles">0</div>
-                        <div class="label">📄 مقالات</div>
-                    </div>
+                    <div class="info"><div class="num" id="totalArticles">0</div><div class="label">📄 مقالات</div></div>
                     <div class="icon"><i class="fas fa-file-contract"></i></div>
                 </div>
                 <div class="stat-card">
-                    <div class="info">
-                        <div class="num" id="totalNews">0</div>
-                        <div class="label">📰 أخبار</div>
-                    </div>
+                    <div class="info"><div class="num" id="totalNews">0</div><div class="label">📰 أخبار</div></div>
                     <div class="icon"><i class="fas fa-newspaper"></i></div>
                 </div>
                 <div class="stat-card">
-                    <div class="info">
-                        <div class="num" id="publishedCount">0</div>
-                        <div class="label">✅ منشورات</div>
-                    </div>
+                    <div class="info"><div class="num" id="publishedCount">0</div><div class="label">✅ منشورات</div></div>
                     <div class="icon" style="color:#059669;background:rgba(5,150,105,0.1);"><i class="fas fa-check-double"></i></div>
                 </div>
                 <div class="stat-card">
-                    <div class="info">
-                        <div class="num" id="draftCount">0</div>
-                        <div class="label">📝 مسودات</div>
-                    </div>
+                    <div class="info"><div class="num" id="draftCount">0</div><div class="label">📝 مسودات</div></div>
                     <div class="icon" style="color:#d97706;background:rgba(217,119,6,0.1);"><i class="fas fa-edit"></i></div>
                 </div>
             </div>
@@ -727,16 +673,56 @@
                                 <input type="text" id="articleTags" placeholder="افصل بين الوسوم بفاصلة" />
                                 <div class="tags-container" id="articleTagsPreview"></div>
                             </div>
+
+                            <!-- ===== شريط التنسيق (مثل ورد) ===== -->
+                            <div class="custom-format-bar">
+                                <span style="font-weight:700;color:var(--deep-navy);margin-left:0.5rem;">🎨 تنسيق النص:</span>
+                                <select id="fontFamilySelect" onchange="applyFormat('font-family', this.value); this.selectedIndex=0;">
+                                    <option value="">🔤 نوع الخط</option>
+                                    <option value="Tajawal">Tajawal</option>
+                                    <option value="Amiri">Amiri</option>
+                                    <option value="Cairo">Cairo</option>
+                                    <option value="Playfair Display">Playfair Display</option>
+                                    <option value="Montserrat">Montserrat</option>
+                                    <option value="Arial">Arial</option>
+                                </select>
+                                <select id="fontSizeSelect" onchange="applyFormat('font-size', this.value); this.selectedIndex=0;">
+                                    <option value="">📏 حجم الخط</option>
+                                    <option value="14px">صغير (14px)</option>
+                                    <option value="18px">عادي (18px)</option>
+                                    <option value="22px">كبير (22px)</option>
+                                    <option value="28px">كبير جداً (28px)</option>
+                                    <option value="36px">عنوان رئيسي (36px)</option>
+                                    <option value="48px">عنوان عملاق (48px)</option>
+                                </select>
+                                <div class="color-picker-wrap">
+                                    <label>🎨 لون:</label>
+                                    <input type="color" id="fontColorPicker" onchange="applyFormat('color', this.value)" value="#222222" title="لون النص">
+                                </div>
+                                <div class="color-picker-wrap">
+                                    <label>🖍️ خلفية:</label>
+                                    <input type="color" id="bgColorPicker" onchange="applyFormat('background-color', this.value)" value="#FFF9E6" title="لون الخلفية">
+                                </div>
+                                <button type="button" class="btn-sm outline" onclick="removeFormat()" style="padding:0.3rem 1rem;font-size:0.75rem;">
+                                    <i class="fas fa-eraser"></i> إزالة التنسيق
+                                </button>
+                            </div>
+
+                            <!-- محرر EasyMDE -->
                             <div class="form-group">
                                 <label for="articleContent">المحتوى <span style="color:var(--matte-gold);">*</span></label>
-                                <textarea id="articleContent" placeholder="اكتب المحتوى هنا..."></textarea>
+                                <textarea id="articleContent" placeholder="اكتب المحتوى هنا... استخدم شريط التنسيق العلوي لتغيير الحجم واللون والنوع، وزر 'رابط' في الشريط السفلي لإضافة روابط."></textarea>
                             </div>
+
+                            <!-- معاينة -->
                             <div class="form-group">
                                 <label><i class="fas fa-desktop"></i> معاينة</label>
                                 <div class="preview-area" id="articlePreview">📄 ستظهر المعاينة هنا...</div>
                             </div>
+
+                            <!-- أزرار الحفظ -->
                             <div style="display:flex; gap:0.8rem; flex-wrap:wrap; margin-top:1.5rem;">
-                                <button type="submit" class="btn-sm gold" id="articleSaveBtn" style="padding:0.7rem 2.5rem;font-size:1rem;"><i class="fas fa-save"></i> حفظ</button>
+                                <button type="submit" class="btn-sm gold" id="articleSaveBtn" style="padding:0.7rem 2.5rem;font-size:1rem;"><i class="fas fa-save"></i> حفظ المقال</button>
                                 <button type="button" class="btn-sm outline" onclick="resetArticleForm()"><i class="fas fa-eraser"></i> تفريغ</button>
                             </div>
                         </form>
@@ -839,16 +825,56 @@
                                 <input type="text" id="newsTags" placeholder="افصل بين الوسوم بفاصلة" />
                                 <div class="tags-container" id="newsTagsPreview"></div>
                             </div>
+
+                            <!-- ===== شريط التنسيق (مثل ورد) ===== -->
+                            <div class="custom-format-bar">
+                                <span style="font-weight:700;color:var(--deep-navy);margin-left:0.5rem;">🎨 تنسيق النص:</span>
+                                <select onchange="applyFormat('font-family', this.value); this.selectedIndex=0;">
+                                    <option value="">🔤 نوع الخط</option>
+                                    <option value="Tajawal">Tajawal</option>
+                                    <option value="Amiri">Amiri</option>
+                                    <option value="Cairo">Cairo</option>
+                                    <option value="Playfair Display">Playfair Display</option>
+                                    <option value="Montserrat">Montserrat</option>
+                                    <option value="Arial">Arial</option>
+                                </select>
+                                <select onchange="applyFormat('font-size', this.value); this.selectedIndex=0;">
+                                    <option value="">📏 حجم الخط</option>
+                                    <option value="14px">صغير (14px)</option>
+                                    <option value="18px">عادي (18px)</option>
+                                    <option value="22px">كبير (22px)</option>
+                                    <option value="28px">كبير جداً (28px)</option>
+                                    <option value="36px">عنوان رئيسي (36px)</option>
+                                    <option value="48px">عنوان عملاق (48px)</option>
+                                </select>
+                                <div class="color-picker-wrap">
+                                    <label>🎨 لون:</label>
+                                    <input type="color" onchange="applyFormat('color', this.value)" value="#222222" title="لون النص">
+                                </div>
+                                <div class="color-picker-wrap">
+                                    <label>🖍️ خلفية:</label>
+                                    <input type="color" onchange="applyFormat('background-color', this.value)" value="#FFF9E6" title="لون الخلفية">
+                                </div>
+                                <button type="button" class="btn-sm outline" onclick="removeFormat()" style="padding:0.3rem 1rem;font-size:0.75rem;">
+                                    <i class="fas fa-eraser"></i> إزالة التنسيق
+                                </button>
+                            </div>
+
+                            <!-- محرر EasyMDE -->
                             <div class="form-group">
                                 <label for="newsContent">المحتوى <span style="color:var(--matte-gold);">*</span></label>
                                 <textarea id="newsContent" placeholder="اكتب نص الخبر هنا..."></textarea>
                             </div>
+
+                            <!-- معاينة -->
                             <div class="form-group">
                                 <label><i class="fas fa-desktop"></i> معاينة</label>
                                 <div class="preview-area" id="newsPreview">📰 ستظهر المعاينة هنا...</div>
                             </div>
+
+                            <!-- أزرار الحفظ -->
                             <div style="display:flex; gap:0.8rem; flex-wrap:wrap; margin-top:1.5rem;">
-                                <button type="submit" class="btn-sm gold" id="newsSaveBtn" style="padding:0.7rem 2.5rem;font-size:1rem;"><i class="fas fa-save"></i> حفظ</button>
+                                <button type="submit" class="btn-sm gold" id="newsSaveBtn" style="padding:0.7rem 2.5rem;font-size:1rem;"><i class="fas fa-save"></i> حفظ الخبر</button>
                                 <button type="button" class="btn-sm outline" onclick="resetNewsForm()"><i class="fas fa-eraser"></i> تفريغ</button>
                             </div>
                         </form>
@@ -900,7 +926,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group" style="max-width:100%;">
+                        <div class="form-group">
                             <label for="confirmPassword">تأكيد الكلمة الجديدة</label>
                             <div class="password-wrapper">
                                 <input type="password" id="confirmPassword" placeholder="••••••••" required />
@@ -915,15 +941,15 @@
         </main>
     </div>
 
-    <!-- ==========================================================
-    JAVASCRIPT – الكامل المتكامل مع أدوات التنسيق المتقدمة
-    ========================================================== -->
+    <!-- ========================================================== -->
+    <!-- JAVASCRIPT – الكامل المتكامل مع تنسيقات متقدمة (مثل ورد) -->
+    <!-- ========================================================== -->
     <script>
         (function() {
             'use strict';
 
             // ==========================================================
-            // 1. التكوين – نفس إعدادات الموقع العام
+            // 1. التكوين
             // ==========================================================
             const CONFIG = {
                 owner: 'malegal',
@@ -934,30 +960,196 @@
             };
 
             // ==========================================================
-            // 2. دالة استخراج التاريخ من Front Matter
+            // 2. دوال مساعدة (TOAST, SIDEBAR, إلخ)
             // ==========================================================
-            function extractDateFromFile(content) {
-                const yamlMatch = content.match(/---\s*([\s\S]*?)\s*---/);
-                if (yamlMatch) {
-                    const dateMatch = yamlMatch[1].match(/date:\s*(.*)/i);
-                    if (dateMatch) {
-                        const dateStr = dateMatch[1].replace(/['"]/g, '').trim();
-                        let d = new Date(dateStr);
-                        if (!isNaN(d.getTime())) return d.getTime();
-                        const parts = dateStr.split(/[-/]/);
-                        if (parts.length === 3 && parts[2].length === 4) {
-                            d = new Date(`${parts[2]}-${parts[1]}-${parts[0]}`);
-                            if (!isNaN(d.getTime())) return d.getTime();
-                        }
-                        const parsed = Date.parse(dateStr);
-                        if (!isNaN(parsed)) return parsed;
-                    }
+            function showToast(msg, type = 'success') {
+                const t = document.getElementById('toast');
+                const icons = { success: 'fa-check-circle', error: 'fa-exclamation-triangle', info: 'fa-info-circle' };
+                t.innerHTML = `<i class="fas ${icons[type] || icons.info}"></i> ${msg}`;
+                t.className = 'toast ' + type + ' show';
+                clearTimeout(t._hide);
+                t._hide = setTimeout(() => t.classList.remove('show'), 4000);
+            }
+            window.showToast = showToast;
+
+            window.toggleSidebar = function(open) {
+                const sidebar = document.getElementById('sidebar');
+                const overlay = document.getElementById('sidebarOverlay');
+                if (open === true) {
+                    sidebar.classList.add('open');
+                    overlay.classList.add('open');
+                    document.body.style.overflow = 'hidden';
+                } else {
+                    sidebar.classList.remove('open');
+                    overlay.classList.remove('open');
+                    document.body.style.overflow = '';
                 }
-                return 0;
+            };
+            window.addEventListener('resize', function() {
+                if (window.innerWidth > 820) {
+                    document.getElementById('sidebar').classList.remove('open');
+                    document.getElementById('sidebarOverlay').classList.remove('open');
+                    document.body.style.overflow = '';
+                }
+            });
+
+            window.togglePassword = function(id, btn) {
+                const input = document.getElementById(id);
+                if (!input) return;
+                const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
+                input.setAttribute('type', type);
+                btn.querySelector('i').classList.toggle('fa-eye');
+                btn.querySelector('i').classList.toggle('fa-eye-slash');
+            };
+
+            // ==========================================================
+            // 3. VIEWS & TABS
+            // ==========================================================
+            window.switchView = function(view) {
+                document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+                if (view === 'dashboard') {
+                    document.querySelector('.nav-item[onclick*="dashboard"]')?.classList.add('active');
+                } else if (view === 'articles') {
+                    document.querySelector('.nav-item[onclick*="articles"]')?.classList.add('active');
+                    document.getElementById('view-articles').classList.add('active');
+                } else if (view === 'news') {
+                    document.querySelector('.nav-item[onclick*="news"]')?.classList.add('active');
+                    document.getElementById('view-news').classList.add('active');
+                } else if (view === 'settings') {
+                    document.querySelector('.nav-item[onclick*="settings"]')?.classList.add('active');
+                    document.getElementById('view-settings').classList.add('active');
+                }
+                if (window.innerWidth <= 820) toggleSidebar(false);
+            };
+
+            window.switchInnerTab = function(tabId) {
+                const parent = document.activeElement?.closest('.tab-content') || document.querySelector(
+                    '.tab-content.active');
+                if (parent) {
+                    parent.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+                    parent.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+                    const target = document.getElementById('tab-' + tabId);
+                    if (target) target.classList.add('active');
+                    const btn = parent.querySelector(`.tab-btn[onclick*="${tabId}"]`);
+                    if (btn) btn.classList.add('active');
+                }
+            };
+            document.getElementById('view-articles').classList.add('active');
+
+            // ==========================================================
+            // 4. EASYMDE – المحررين مع دعم الروابط والصور
+            // ==========================================================
+            const commonToolbar = [
+                "undo", "redo", "|",
+                "bold", "italic", "strikethrough", "|",
+                "heading-1", "heading-2", "heading-3", "|",
+                "quote", "unordered-list", "ordered-list", "table", "horizontal-rule", "|",
+                "link", "image", "|",  // ✅ أزرار إضافة الروابط والصور (مثل ورد)
+                "preview", "fullscreen"
+            ];
+
+            const articleMDE = new EasyMDE({
+                element: document.getElementById('articleContent'),
+                direction: 'rtl',
+                spellChecker: false,
+                toolbar: commonToolbar,
+                placeholder: 'اكتب المحتوى... استخدم شريط التنسيق العلوي للتحكم بالحجم واللون، وزر "رابط" لإضافة روابط.',
+                previewRender: function(text) { return marked.parse(text, { sanitize: false }); },
+                renderingConfig: { singleLineBreaks: false }
+            });
+
+            const newsMDE = new EasyMDE({
+                element: document.getElementById('newsContent'),
+                direction: 'rtl',
+                spellChecker: false,
+                toolbar: commonToolbar,
+                placeholder: 'اكتب نص الخبر... استخدم شريط التنسيق العلوي للتحكم بالحجم واللون، وزر "رابط" لإضافة روابط.',
+                previewRender: function(text) { return marked.parse(text, { sanitize: false }); },
+                renderingConfig: { singleLineBreaks: false }
+            });
+
+            articleMDE.codemirror.on('change', function() { updatePreview('article'); });
+            newsMDE.codemirror.on('change', function() { updatePreview('news'); });
+
+            function updatePreview(type) {
+                const mde = type === 'article' ? articleMDE : newsMDE;
+                const previewId = type === 'article' ? 'articlePreview' : 'newsPreview';
+                const preview = document.getElementById(previewId);
+                const raw = mde.value();
+                preview.innerHTML = raw.trim() ? marked.parse(raw, { sanitize: false }) :
+                    (type === 'article' ? '📄 ستظهر المعاينة هنا...' : '📰 ستظهر المعاينة هنا...');
             }
 
             // ==========================================================
-            // 3. دوال جلب البيانات من GitHub
+            // 5. دوال التنسيق المتقدمة (حجم، لون، نوع، خلفية) – مثل ورد
+            // ==========================================================
+            function getActiveEditor() {
+                const articlesTab = document.getElementById('tab-articlesEditor');
+                const newsTab = document.getElementById('tab-newsEditor');
+                if (articlesTab && articlesTab.classList.contains('active')) return articleMDE;
+                if (newsTab && newsTab.classList.contains('active')) return newsMDE;
+                return articleMDE;
+            }
+
+            window.applyFormat = function(styleType, styleValue) {
+                if (!styleValue) return;
+                const editor = getActiveEditor();
+                const cm = editor.codemirror;
+                const selected = cm.getSelection();
+
+                if (!selected) {
+                    showToast('⚠️ حدد النص المراد تنسيقه أولاً.', 'info');
+                    return;
+                }
+
+                // منطق ذكي لدمج التنسيقات الجديدة مع القديمة (بدون فقدان السابق)
+                let currentStyles = {};
+                const spanRegex = /^<span style="([^"]*)">(.*)<\/span>$/s;
+                const match = selected.match(spanRegex);
+                if (match) {
+                    const existingStyles = match[1];
+                    const innerText = match[2];
+                    const stylePairs = existingStyles.split(';').map(s => s.trim()).filter(s => s);
+                    stylePairs.forEach(pair => {
+                        const [key, value] = pair.split(':').map(s => s.trim());
+                        if (key && value) currentStyles[key] = value;
+                    });
+                    currentStyles[styleType] = styleValue;
+                    const newStyleStr = Object.entries(currentStyles).map(([k, v]) => `${k}: ${v}`).join('; ');
+                    const wrapped = `<span style="${newStyleStr}">${innerText}</span>`;
+                    cm.replaceSelection(wrapped);
+                    cm.focus();
+                    showToast(`✅ تم تطبيق "${styleType}: ${styleValue}"`, 'success');
+                    return;
+                }
+
+                const wrapped = `<span style="${styleType}: ${styleValue};">${selected}</span>`;
+                cm.replaceSelection(wrapped);
+                cm.focus();
+                showToast(`✅ تم تطبيق "${styleType}: ${styleValue}"`, 'success');
+            };
+
+            window.removeFormat = function() {
+                const editor = getActiveEditor();
+                const cm = editor.codemirror;
+                const selected = cm.getSelection();
+                if (!selected) {
+                    showToast('⚠️ حدد النص المراد إزالة تنسيقه.', 'info');
+                    return;
+                }
+                const cleaned = selected.replace(/<span[^>]*>/g, '').replace(/<\/span>/g, '');
+                if (cleaned !== selected) {
+                    cm.replaceSelection(cleaned);
+                    cm.focus();
+                    showToast('✅ تم إزالة التنسيقات.', 'success');
+                } else {
+                    showToast('ℹ️ لا توجد تنسيقات لإزالتها.', 'info');
+                }
+            };
+
+            // ==========================================================
+            // 6. دوال جلب البيانات من GitHub
             // ==========================================================
             async function fetchGitHubFiles(path) {
                 const url =
@@ -1009,10 +1201,7 @@
                         articles.push(data);
                     }
                     return articles;
-                } catch (e) {
-                    console.error('خطأ في جلب المقالات:', e);
-                    return [];
-                }
+                } catch (e) { console.error(e); return []; }
             }
 
             async function loadNewsFromGitHub() {
@@ -1057,327 +1246,14 @@
                         news.push(data);
                     }
                     return news;
-                } catch (e) {
-                    console.error('خطأ في جلب الأخبار:', e);
-                    return [];
-                }
+                } catch (e) { console.error(e); return []; }
             }
 
             // ==========================================================
-            // 4. TOAST
-            // ==========================================================
-            function showToast(msg, type = 'success') {
-                const t = document.getElementById('toast');
-                const icons = { success: 'fa-check-circle', error: 'fa-exclamation-triangle', info: 'fa-info-circle' };
-                t.innerHTML = `<i class="fas ${icons[type] || icons.info}"></i> ${msg}`;
-                t.className = 'toast ' + type + ' show';
-                clearTimeout(t._hide);
-                t._hide = setTimeout(() => t.classList.remove('show'), 4000);
-            }
-            window.showToast = showToast;
-
-            // ==========================================================
-            // 5. TOGGLE SIDEBAR
-            // ==========================================================
-            window.toggleSidebar = function(open) {
-                const sidebar = document.getElementById('sidebar');
-                const overlay = document.getElementById('sidebarOverlay');
-                if (open === true) {
-                    sidebar.classList.add('open');
-                    overlay.classList.add('open');
-                    document.body.style.overflow = 'hidden';
-                } else {
-                    sidebar.classList.remove('open');
-                    overlay.classList.remove('open');
-                    document.body.style.overflow = '';
-                }
-            };
-            window.addEventListener('resize', function() {
-                if (window.innerWidth > 820) {
-                    document.getElementById('sidebar').classList.remove('open');
-                    document.getElementById('sidebarOverlay').classList.remove('open');
-                    document.body.style.overflow = '';
-                }
-            });
-
-            // ==========================================================
-            // 6. TOGGLE PASSWORD
-            // ==========================================================
-            window.togglePassword = function(id, btn) {
-                const input = document.getElementById(id);
-                if (!input) return;
-                const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
-                input.setAttribute('type', type);
-                btn.querySelector('i').classList.toggle('fa-eye');
-                btn.querySelector('i').classList.toggle('fa-eye-slash');
-            };
-
-            // ==========================================================
-            // 7. VIEWS & INNER TABS
-            // ==========================================================
-            window.switchView = function(view) {
-                document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-                document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-
-                if (view === 'dashboard') {
-                    document.querySelector('.nav-item[onclick*="dashboard"]')?.classList.add('active');
-                } else if (view === 'articles') {
-                    document.querySelector('.nav-item[onclick*="articles"]')?.classList.add('active');
-                    document.getElementById('view-articles').classList.add('active');
-                } else if (view === 'news') {
-                    document.querySelector('.nav-item[onclick*="news"]')?.classList.add('active');
-                    document.getElementById('view-news').classList.add('active');
-                } else if (view === 'settings') {
-                    document.querySelector('.nav-item[onclick*="settings"]')?.classList.add('active');
-                    document.getElementById('view-settings').classList.add('active');
-                }
-                if (window.innerWidth <= 820) toggleSidebar(false);
-            };
-
-            window.switchInnerTab = function(tabId) {
-                const parent = document.activeElement?.closest('.tab-content') || document.querySelector(
-                    '.tab-content.active');
-                if (parent) {
-                    parent.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-                    parent.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-                    const target = document.getElementById('tab-' + tabId);
-                    if (target) target.classList.add('active');
-                    const btn = parent.querySelector(`.tab-btn[onclick*="${tabId}"]`);
-                    if (btn) btn.classList.add('active');
-                }
-            };
-            document.getElementById('view-articles').classList.add('active');
-
-            // ==========================================================
-            // 8. EASYMDE مع أدوات التنسيق المتقدمة (حجم، لون، نوع الخط)
-            // ==========================================================
-            // دالة مساعدة لتطبيق التنسيق على النص المحدد
-            function applyInlineStyle(editor, style, promptMsg, defaultValue) {
-                const selected = editor.getSelection();
-                if (!selected) {
-                    showToast('حدد النص المراد تنسيقه أولاً.', 'info');
-                    return;
-                }
-                const value = prompt(promptMsg, defaultValue);
-                if (value === null) return;
-                const sanitized = value.trim();
-                const wrapped = `<span style="${style}: ${sanitized};">${selected}</span>`;
-                editor.replaceSelection(wrapped);
-            }
-
-            // محرر المقالات
-            const articleMDE = new EasyMDE({
-                element: document.getElementById('articleContent'),
-                direction: 'rtl',
-                spellChecker: false,
-                toolbar: [
-                    "undo", "redo", "|",
-                    "bold", "italic", "strikethrough", "|",
-                    {
-                        name: "font-size",
-                        action: function(editor) {
-                            applyInlineStyle(editor, 'font-size', 'أدخل حجم الخط (مثال: 14, 16, 18, 20) أو قيمة مثل 1.2em:', '16');
-                        },
-                        className: "fa fa-text-height",
-                        title: "حجم الخط"
-                    },
-                    {
-                        name: "font-color",
-                        action: function(editor) {
-                            applyInlineStyle(editor, 'color', 'أدخل لون الخط (مثال: #B08D57, red, navy):', '#B08D57');
-                        },
-                        className: "fa fa-palette",
-                        title: "لون الخط"
-                    },
-                    {
-                        name: "font-family",
-                        action: function(editor) {
-                            const families = 'Amiri, Tajawal, Playfair Display, Montserrat, Cairo, Readex Pro, Georgia, Arial';
-                            applyInlineStyle(editor, 'font-family', 'اختر نوع الخط من القائمة (أو اكتب اسم الخط):\n' + families, 'Tajawal');
-                        },
-                        className: "fa fa-font",
-                        title: "نوع الخط"
-                    },
-                    "|",
-                    "heading-1", "heading-2", "heading-3", "|",
-                    "quote", "unordered-list", "ordered-list", "table", "horizontal-rule", "|",
-                    "link", "image", "|",
-                    "preview", "fullscreen"
-                ],
-                placeholder: 'اكتب محتوى المقال هنا...',
-                previewRender: function(text) {
-                    return marked.parse(text, { sanitize: false });
-                },
-                renderingConfig: { singleLineBreaks: false }
-            });
-
-            // محرر الأخبار
-            const newsMDE = new EasyMDE({
-                element: document.getElementById('newsContent'),
-                direction: 'rtl',
-                spellChecker: false,
-                toolbar: [
-                    "undo", "redo", "|",
-                    "bold", "italic", "|",
-                    {
-                        name: "font-size",
-                        action: function(editor) {
-                            applyInlineStyle(editor, 'font-size', 'أدخل حجم الخط (مثال: 14, 16, 18, 20) أو قيمة مثل 1.2em:', '16');
-                        },
-                        className: "fa fa-text-height",
-                        title: "حجم الخط"
-                    },
-                    {
-                        name: "font-color",
-                        action: function(editor) {
-                            applyInlineStyle(editor, 'color', 'أدخل لون الخط (مثال: #B08D57, red, navy):', '#B08D57');
-                        },
-                        className: "fa fa-palette",
-                        title: "لون الخط"
-                    },
-                    {
-                        name: "font-family",
-                        action: function(editor) {
-                            const families = 'Amiri, Tajawal, Playfair Display, Montserrat, Cairo, Readex Pro, Georgia, Arial';
-                            applyInlineStyle(editor, 'font-family', 'اختر نوع الخط من القائمة (أو اكتب اسم الخط):\n' + families, 'Tajawal');
-                        },
-                        className: "fa fa-font",
-                        title: "نوع الخط"
-                    },
-                    "|",
-                    "heading-1", "heading-2", "|",
-                    "quote", "unordered-list", "ordered-list", "|",
-                    "link", "image", "|",
-                    "preview", "fullscreen"
-                ],
-                placeholder: 'اكتب نص الخبر هنا...',
-                previewRender: function(text) {
-                    return marked.parse(text, { sanitize: false });
-                },
-                renderingConfig: { singleLineBreaks: false }
-            });
-
-            // ربط التحديث المباشر للمعاينة (مع دعم HTML)
-            articleMDE.codemirror.on('change', function() { updatePreview('article'); });
-            newsMDE.codemirror.on('change', function() { updatePreview('news'); });
-
-            function updatePreview(type) {
-                const mde = type === 'article' ? articleMDE : newsMDE;
-                const previewId = type === 'article' ? 'articlePreview' : 'newsPreview';
-                const preview = document.getElementById(previewId);
-                const raw = mde.value();
-                preview.innerHTML = raw.trim() ? marked.parse(raw, { sanitize: false }) :
-                    (type === 'article' ? '📄 ستظهر المعاينة هنا...' : '📰 ستظهر المعاينة هنا...');
-            }
-
-            // ==========================================================
-            // 9. IMAGE PREVIEW & CHAR COUNT
-            // ==========================================================
-            window.previewImage = function(url, type) {
-                const boxId = type === 'article' ? 'articleImgPreview' : 'newsImgPreview';
-                const imgId = type === 'article' ? 'articleImgElement' : 'newsImgElement';
-                const box = document.getElementById(boxId);
-                const img = document.getElementById(imgId);
-                if (url && (url.match(/\.(jpeg|jpg|gif|png|webp)$/i) || url.startsWith('http'))) {
-                    img.src = url;
-                    box.style.display = 'block';
-                } else {
-                    box.style.display = 'none';
-                }
-            };
-
-            window.updateCharCount = function(el, counterId) {
-                const counter = document.getElementById(counterId);
-                if (counter) counter.innerText = `${el.value.length}/160`;
-            };
-
-            // ==========================================================
-            // 10. TAGS HELPERS
-            // ==========================================================
-            function renderTags(tags, containerId, inputId) {
-                const container = document.getElementById(containerId);
-                container.innerHTML = '';
-                tags.forEach(tag => {
-                    const span = document.createElement('span');
-                    span.className = 'tag-pill';
-                    span.innerHTML =
-                        `${tag} <span class="remove-tag" onclick="removeTag('${tag}','${containerId}','${inputId}')"><i class="fas fa-times"></i></span>`;
-                    container.appendChild(span);
-                });
-            }
-            window.removeTag = function(tag, containerId, inputId) {
-                const input = document.getElementById(inputId);
-                const current = input.value.split(',').map(t => t.trim()).filter(t => t && t !== tag);
-                input.value = current.join(', ');
-                renderTags(current, containerId, inputId);
-            };
-
-            document.getElementById('articleTags').addEventListener('input', function() {
-                const val = this.value.trim();
-                const tags = val ? val.split(',').map(t => t.trim()).filter(t => t) : [];
-                renderTags(tags, 'articleTagsPreview', 'articleTags');
-            });
-            document.getElementById('newsTags').addEventListener('input', function() {
-                const val = this.value.trim();
-                const tags = val ? val.split(',').map(t => t.trim()).filter(t => t) : [];
-                renderTags(tags, 'newsTagsPreview', 'newsTags');
-            });
-
-            // ==========================================================
-            // 11. SUGGEST TAGS (ذكي)
-            // ==========================================================
-            window.suggestTags = function(type) {
-                const titleField = type === 'article' ? document.getElementById('articleTitle') : document.getElementById(
-                    'newsTitle');
-                const contentField = type === 'article' ? articleMDE : newsMDE;
-                const tagsField = type === 'article' ? document.getElementById('articleTags') : document.getElementById(
-                    'newsTags');
-                const previewId = type === 'article' ? 'articleTagsPreview' : 'newsTagsPreview';
-
-                const combined = (titleField.value || '') + ' ' + (contentField.value() || '');
-                if (combined.length < 20) {
-                    showToast('اكتب محتوى أطول للحصول على اقتراحات.', 'info');
-                    return;
-                }
-                const words = combined.replace(/[^\u0600-\u06FF\s\w]/g, ' ').split(/\s+/);
-                const freq = {};
-                const stopWords = ['من', 'إلى', 'على', 'عن', 'في', 'هذا', 'هذه', 'ذلك', 'كما', 'حيث', 'بين', 'بعد', 'قبل',
-                    'تحت', 'فوق', 'الذي', 'التي', 'الذين', 'عند', 'لقد', 'قد', 'إذا', 'إن', 'ما', 'و', 'ف', 'ب', 'ك', 'ل',
-                    'هو', 'هي', 'هم'
-                ];
-                words.forEach(w => {
-                    w = w.trim();
-                    if (w.length > 2 && !stopWords.includes(w)) {
-                        freq[w] = (freq[w] || 0) + 1;
-                    }
-                });
-                const sorted = Object.entries(freq).sort((a, b) => b[1] - a[1]);
-                const topTags = sorted.slice(0, 5).map(item => item[0]);
-                if (topTags.length === 0) {
-                    showToast('لم نتمكن من استخراج وسوم.', 'info');
-                    return;
-                }
-                const existing = tagsField.value.split(',').map(t => t.trim()).filter(t => t);
-                const allTags = [...new Set([...existing, ...topTags])];
-                tagsField.value = allTags.join(', ');
-                renderTags(allTags, previewId, tagsField.id);
-                showToast('✅ تم اقتراح ' + topTags.length + ' وسوم!', 'success');
-            };
-
-            // ==========================================================
-            // 12. البيانات والمتغيرات
+            // 7. عرض البيانات والإحصائيات
             // ==========================================================
             let articles = [];
             let newsItems = [];
-
-            // ==========================================================
-            // 13. تحميل المقالات من GitHub
-            // ==========================================================
-            async function loadArticles() {
-                articles = await loadArticlesFromGitHub();
-                renderArticles();
-                updateStats();
-            }
 
             function renderArticles() {
                 const list = document.getElementById('articlesList');
@@ -1386,18 +1262,16 @@
                 if (search) {
                     filtered = articles.filter(a =>
                         (a.title || '').toLowerCase().includes(search) ||
-                        (a.slug || '').toLowerCase().includes(search) ||
-                        (a.category || '').toLowerCase().includes(search)
+                        (a.slug || '').toLowerCase().includes(search)
                     );
                 }
                 if (filtered.length === 0) {
-                    list.innerHTML =
-                        '<div style="text-align:center;padding:2rem;color:rgba(34,34,34,0.4);">📭 لا توجد مقالات.</div>';
+                    list.innerHTML = '<div style="text-align:center;padding:2rem;color:rgba(34,34,34,0.4);">📭 لا توجد مقالات.</div>';
                     return;
                 }
                 let html = '';
                 filtered.forEach(a => {
-                    const date = a.date || (a.updatedAt ? new Date(a.updatedAt).toLocaleDateString('ar-EG') : '—');
+                    const date = a.date || '—';
                     html += `
                         <div class="item-card" data-status="${a.status || 'published'}">
                             <div class="info">
@@ -1405,7 +1279,6 @@
                                 <div class="meta">
                                     <span><i class="far fa-calendar-alt"></i> ${date}</span>
                                     <span><i class="fas fa-tag"></i> ${a.category || 'عام'}</span>
-                                    ${a.seoKeyword ? `<span><i class="fas fa-key"></i> ${a.seoKeyword}</span>` : ''}
                                 </div>
                             </div>
                             <div class="actions">
@@ -1419,15 +1292,6 @@
             }
             window.renderArticles = renderArticles;
 
-            // ==========================================================
-            // 14. تحميل الأخبار من GitHub
-            // ==========================================================
-            async function loadNews() {
-                newsItems = await loadNewsFromGitHub();
-                renderNews();
-                updateStats();
-            }
-
             function renderNews() {
                 const list = document.getElementById('newsList');
                 const search = document.getElementById('searchNews').value.toLowerCase();
@@ -1435,18 +1299,16 @@
                 if (search) {
                     filtered = newsItems.filter(n =>
                         (n.title || '').toLowerCase().includes(search) ||
-                        (n.slug || '').toLowerCase().includes(search) ||
-                        (n.category || '').toLowerCase().includes(search)
+                        (n.slug || '').toLowerCase().includes(search)
                     );
                 }
                 if (filtered.length === 0) {
-                    list.innerHTML =
-                        '<div style="text-align:center;padding:2rem;color:rgba(34,34,34,0.4);">📭 لا توجد أخبار.</div>';
+                    list.innerHTML = '<div style="text-align:center;padding:2rem;color:rgba(34,34,34,0.4);">📭 لا توجد أخبار.</div>';
                     return;
                 }
                 let html = '';
                 filtered.forEach(n => {
-                    const date = n.date || (n.updatedAt ? new Date(n.updatedAt).toLocaleDateString('ar-EG') : '—');
+                    const date = n.date || '—';
                     html += `
                         <div class="item-card" data-status="${n.status || 'published'}">
                             <div class="info">
@@ -1454,7 +1316,6 @@
                                 <div class="meta">
                                     <span><i class="far fa-calendar-alt"></i> ${date}</span>
                                     <span><i class="fas fa-tag"></i> ${n.category || 'عام'}</span>
-                                    ${n.link ? `<span><i class="fas fa-link"></i> <a href="${n.link}" target="_blank" style="color:var(--matte-gold);text-decoration:none;">رابط</a></span>` : ''}
                                 </div>
                             </div>
                             <div class="actions">
@@ -1468,9 +1329,6 @@
             }
             window.renderNews = renderNews;
 
-            // ==========================================================
-            // 15. تحديث الإحصائيات
-            // ==========================================================
             function updateStats() {
                 const totalArt = articles.length;
                 const totalNews = newsItems.length;
@@ -1484,8 +1342,20 @@
                 document.getElementById('draftCount').textContent = drafts;
             }
 
+            async function loadArticles() {
+                articles = await loadArticlesFromGitHub();
+                renderArticles();
+                updateStats();
+            }
+
+            async function loadNews() {
+                newsItems = await loadNewsFromGitHub();
+                renderNews();
+                updateStats();
+            }
+
             // ==========================================================
-            // 16. دوال التعديل والحذف
+            // 8. دوال التعديل والحذف (API)
             // ==========================================================
             window.editArticle = function(slug) {
                 const a = articles.find(art => art.slug === slug);
@@ -1528,9 +1398,7 @@
                     showToast('✅ تم الحذف', 'success');
                     if (document.getElementById('articleEditSlug').value === slug) resetArticleForm();
                     await loadArticles();
-                } catch (err) {
-                    showToast(err.message, 'error');
-                }
+                } catch (err) { showToast(err.message, 'error'); }
             };
 
             window.editNews = function(slug) {
@@ -1575,39 +1443,28 @@
                     showToast('✅ تم الحذف', 'success');
                     if (document.getElementById('newsEditSlug').value === slug) resetNewsForm();
                     await loadNews();
-                } catch (err) {
-                    showToast(err.message, 'error');
-                }
+                } catch (err) { showToast(err.message, 'error'); }
             };
 
             // ==========================================================
-            // 17. دوال حفظ المقالات والأخبار (مع إرسال التاريخ)
+            // 9. دوال حفظ المقالات والأخبار (مع التاريخ والتنسيق)
             // ==========================================================
             document.getElementById('articleForm').addEventListener('submit', async function(e) {
                 e.preventDefault();
                 const title = document.getElementById('articleTitle').value.trim();
                 const content = articleMDE.value();
                 const editSlug = document.getElementById('articleEditSlug').value;
-
-                if (!title || !content) {
-                    showToast('⚠️ العنوان والمحتوى مطلوبان.', 'error');
-                    return;
-                }
+                if (!title || !content) { showToast('⚠️ العنوان والمحتوى مطلوبان.', 'error'); return; }
 
                 let slug = editSlug || title.replace(/[^\u0600-\u06FF\s\w-]/g, '').replace(/\s+/g, '-').toLowerCase()
                     .replace(/--+/g, '-');
                 if (!slug) slug = 'article-' + Date.now();
-
                 const date = document.getElementById('articleDate').value || new Date().toISOString().split('T')[0];
                 const tagsInput = document.getElementById('articleTags').value.trim();
                 const tags = tagsInput ? tagsInput.split(',').map(t => t.trim()).filter(t => t) : [];
 
                 const payload = {
-                    slug,
-                    title,
-                    content,
-                    date,
-                    tags,
+                    slug, title, content, date, tags,
                     image: document.getElementById('articleImage').value.trim(),
                     description: document.getElementById('articleDescription').value.trim(),
                     status: document.getElementById('articleStatus').value,
@@ -1623,7 +1480,6 @@
                 const orig = btn.innerHTML;
                 btn.disabled = true;
                 btn.innerHTML = '<span class="loading-spinner"></span> جاري...';
-
                 try {
                     const res = await fetch('/api/articles', {
                         method: 'POST',
@@ -1634,12 +1490,8 @@
                     showToast(editSlug ? '✅ تم التحديث' : '✅ تم النشر', 'success');
                     resetArticleForm();
                     await loadArticles();
-                } catch (err) {
-                    showToast('❌ ' + err.message, 'error');
-                } finally {
-                    btn.disabled = false;
-                    btn.innerHTML = orig;
-                }
+                } catch (err) { showToast('❌ ' + err.message, 'error'); } finally { btn.disabled = false;
+                    btn.innerHTML = orig; }
             });
 
             document.getElementById('newsForm').addEventListener('submit', async function(e) {
@@ -1647,26 +1499,17 @@
                 const title = document.getElementById('newsTitle').value.trim();
                 const content = newsMDE.value();
                 const editSlug = document.getElementById('newsEditSlug').value;
-
-                if (!title || !content) {
-                    showToast('⚠️ العنوان والمحتوى مطلوبان.', 'error');
-                    return;
-                }
+                if (!title || !content) { showToast('⚠️ العنوان والمحتوى مطلوبان.', 'error'); return; }
 
                 let slug = editSlug || title.replace(/[^\u0600-\u06FF\s\w-]/g, '').replace(/\s+/g, '-').toLowerCase()
                     .replace(/--+/g, '-');
                 if (!slug) slug = 'news-' + Date.now();
-
                 const date = document.getElementById('newsDate').value || new Date().toISOString().split('T')[0];
                 const tagsInput = document.getElementById('newsTags').value.trim();
                 const tags = tagsInput ? tagsInput.split(',').map(t => t.trim()).filter(t => t) : [];
 
                 const payload = {
-                    slug,
-                    title,
-                    content,
-                    date,
-                    tags,
+                    slug, title, content, date, tags,
                     category: document.getElementById('newsCategory').value,
                     icon: document.getElementById('newsIcon').value.trim() || 'fa-newspaper',
                     image: document.getElementById('newsImage').value.trim(),
@@ -1682,7 +1525,6 @@
                 const orig = btn.innerHTML;
                 btn.disabled = true;
                 btn.innerHTML = '<span class="loading-spinner"></span> جاري...';
-
                 try {
                     const res = await fetch('/api/news', {
                         method: 'POST',
@@ -1693,16 +1535,12 @@
                     showToast(editSlug ? '✅ تم تحديث الخبر' : '✅ تم نشر الخبر', 'success');
                     resetNewsForm();
                     await loadNews();
-                } catch (err) {
-                    showToast('❌ ' + err.message, 'error');
-                } finally {
-                    btn.disabled = false;
-                    btn.innerHTML = orig;
-                }
+                } catch (err) { showToast('❌ ' + err.message, 'error'); } finally { btn.disabled = false;
+                    btn.innerHTML = orig; }
             });
 
             // ==========================================================
-            // 18. دوال إعادة تعيين النماذج
+            // 10. دوال إعادة تعيين النماذج
             // ==========================================================
             function resetArticleForm() {
                 document.getElementById('articleTitle').value = '';
@@ -1752,71 +1590,121 @@
             window.resetNewsForm = resetNewsForm;
 
             // ==========================================================
-            // 19. تغيير كلمة المرور
+            // 11. دوال مساعدة (صور، وسوم، عدادات)
+            // ==========================================================
+            window.previewImage = function(url, type) {
+                const boxId = type === 'article' ? 'articleImgPreview' : 'newsImgPreview';
+                const imgId = type === 'article' ? 'articleImgElement' : 'newsImgElement';
+                const box = document.getElementById(boxId);
+                const img = document.getElementById(imgId);
+                if (url && (url.match(/\.(jpeg|jpg|gif|png|webp)$/i) || url.startsWith('http'))) {
+                    img.src = url;
+                    box.style.display = 'block';
+                } else { box.style.display = 'none'; }
+            };
+
+            window.updateCharCount = function(el, counterId) {
+                const counter = document.getElementById(counterId);
+                if (counter) counter.innerText = `${el.value.length}/160`;
+            };
+
+            function renderTags(tags, containerId, inputId) {
+                const container = document.getElementById(containerId);
+                container.innerHTML = '';
+                tags.forEach(tag => {
+                    const span = document.createElement('span');
+                    span.className = 'tag-pill';
+                    span.innerHTML =
+                        `${tag} <span class="remove-tag" onclick="removeTag('${tag}','${containerId}','${inputId}')"><i class="fas fa-times"></i></span>`;
+                    container.appendChild(span);
+                });
+            }
+            window.removeTag = function(tag, containerId, inputId) {
+                const input = document.getElementById(inputId);
+                const current = input.value.split(',').map(t => t.trim()).filter(t => t && t !== tag);
+                input.value = current.join(', ');
+                renderTags(current, containerId, inputId);
+            };
+
+            document.getElementById('articleTags').addEventListener('input', function() {
+                const val = this.value.trim();
+                const tags = val ? val.split(',').map(t => t.trim()).filter(t => t) : [];
+                renderTags(tags, 'articleTagsPreview', 'articleTags');
+            });
+            document.getElementById('newsTags').addEventListener('input', function() {
+                const val = this.value.trim();
+                const tags = val ? val.split(',').map(t => t.trim()).filter(t => t) : [];
+                renderTags(tags, 'newsTagsPreview', 'newsTags');
+            });
+
+            window.suggestTags = function(type) {
+                const titleField = type === 'article' ? document.getElementById('articleTitle') : document.getElementById(
+                    'newsTitle');
+                const contentField = type === 'article' ? articleMDE : newsMDE;
+                const tagsField = type === 'article' ? document.getElementById('articleTags') : document.getElementById(
+                    'newsTags');
+                const previewId = type === 'article' ? 'articleTagsPreview' : 'newsTagsPreview';
+                const combined = (titleField.value || '') + ' ' + (contentField.value() || '');
+                if (combined.length < 20) { showToast('اكتب محتوى أطول للحصول على اقتراحات.', 'info'); return; }
+                const words = combined.replace(/[^\u0600-\u06FF\s\w]/g, ' ').split(/\s+/);
+                const freq = {};
+                const stopWords = ['من', 'إلى', 'على', 'عن', 'في', 'هذا', 'هذه', 'ذلك', 'كما', 'حيث', 'بين', 'بعد', 'قبل',
+                    'تحت', 'فوق', 'الذي', 'التي', 'الذين', 'عند', 'لقد', 'قد', 'إذا', 'إن', 'ما', 'و', 'ف', 'ب', 'ك', 'ل',
+                    'هو', 'هي', 'هم'
+                ];
+                words.forEach(w => { w = w.trim(); if (w.length > 2 && !stopWords.includes(w)) freq[w] = (freq[w] || 0) +
+                        1; });
+                const sorted = Object.entries(freq).sort((a, b) => b[1] - a[1]);
+                const topTags = sorted.slice(0, 5).map(item => item[0]);
+                if (topTags.length === 0) { showToast('لم نتمكن من استخراج وسوم.', 'info'); return; }
+                const existing = tagsField.value.split(',').map(t => t.trim()).filter(t => t);
+                const allTags = [...new Set([...existing, ...topTags])];
+                tagsField.value = allTags.join(', ');
+                renderTags(allTags, previewId, tagsField.id);
+                showToast('✅ تم اقتراح ' + topTags.length + ' وسوم!', 'success');
+            };
+
+            // ==========================================================
+            // 12. الأمان (كلمة المرور)
             // ==========================================================
             document.getElementById('passwordForm').addEventListener('submit', function(e) {
                 e.preventDefault();
                 const cp = document.getElementById('currentPassword').value.trim();
                 const np = document.getElementById('newPassword').value.trim();
                 const cnp = document.getElementById('confirmPassword').value.trim();
-
-                if (!cp || !np || !cnp) {
-                    showToast('⚠️ جميع الحقول مطلوبة.', 'error');
-                    return;
-                }
-                if (np !== cnp) {
-                    showToast('❌ كلمتا المرور غير متطابقتين.', 'error');
-                    return;
-                }
-                if (np.length < 8) {
-                    showToast('❌ كلمة المرور يجب أن تكون 8 أحرف على الأقل.', 'error');
-                    return;
-                }
-
-                // محاكاة التحقق (في الواقع سيُرسل إلى الخادم)
-                if (cp !== 'admin123') {
-                    showToast('❌ كلمة المرور الحالية غير صحيحة.', 'error');
-                    return;
-                }
-
+                if (!cp || !np || !cnp) { showToast('⚠️ جميع الحقول مطلوبة.', 'error'); return; }
+                if (np !== cnp) { showToast('❌ كلمتا المرور غير متطابقتين.', 'error'); return; }
+                if (np.length < 8) { showToast('❌ كلمة المرور يجب أن تكون 8 أحرف.', 'error'); return; }
+                if (cp !== 'admin123') { showToast('❌ كلمة المرور الحالية غير صحيحة.', 'error'); return; }
                 localStorage.setItem('admin_password', np);
-                showToast('✅ تم تحديث كلمة المرور بنجاح!', 'success');
+                showToast('✅ تم تحديث كلمة المرور!', 'success');
                 document.getElementById('currentPassword').value = '';
                 document.getElementById('newPassword').value = '';
                 document.getElementById('confirmPassword').value = '';
             });
 
             // ==========================================================
-            // 20. تحديث الكل والخروج
+            // 13. تحديث الكل والخروج
             // ==========================================================
-            window.refreshAll = function() {
-                loadArticles();
+            window.refreshAll = function() { loadArticles();
                 loadNews();
-                showToast('🔄 تم تحديث جميع البيانات.', 'info');
-            };
-
+                showToast('🔄 تم التحديث.', 'info'); };
             window.logout = function() {
                 sessionStorage.clear();
                 showToast('👋 تم تسجيل الخروج.', 'info');
-                setTimeout(() => {
-                    // في بيئة حقيقية: window.location.href = '/admin/login.html';
-                    location.reload();
-                }, 500);
+                setTimeout(() => { location.reload(); }, 500);
             };
 
             // ==========================================================
-            // 21. التهيئة
+            // 14. التهيئة
             // ==========================================================
             loadArticles();
             loadNews();
             resetArticleForm();
             resetNewsForm();
-
-            // تحديث تلقائي كل دقيقة
             setInterval(() => { loadArticles();
                 loadNews(); }, 60000);
-
-            console.log('✅ لوحة التحكم جاهزة. عدد المقالات:', articles.length, 'عدد الأخبار:', newsItems.length);
+            console.log('✅ لوحة التحكم جاهزة مع تنسيقات متقدمة (مثل ورد).');
 
         })();
     </script>
