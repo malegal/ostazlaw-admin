@@ -76,7 +76,6 @@ async function getArticles(req, res) {
                 const descMatch = frontMatter.match(/description:\s*(.*)/i);
                 if (descMatch) description = descMatch[1].replace(/['"]/g, '').trim();
 
-                // ✅ استخراج الكاتب
                 const authorMatch = frontMatter.match(/author:\s*(.*)/i);
                 if (authorMatch) author = authorMatch[1].replace(/['"]/g, '').trim();
 
@@ -89,14 +88,14 @@ async function getArticles(req, res) {
                 date,
                 image,
                 description,
-                author,           // ✅ إضافة الكاتب
+                author,
                 content: body,
                 updated_at: file.sha
             });
         }
     }
 
-    // ترتيب حسب التاريخ (إذا كان موجوداً) أو حسب آخر تحديث
+    // ترتيب حسب التاريخ
     articles.sort((a, b) => {
         if (a.date && b.date) {
             return new Date(b.date) - new Date(a.date);
@@ -107,8 +106,7 @@ async function getArticles(req, res) {
 }
 
 async function saveArticle(req, res) {
-    // ✅ إضافة author و date إلى الـ destructuring
-    const { slug, title, date, image, description, content, oldSlug, author } = req.body;
+    const { slug, title, date, image, description, content, oldSlug, author, tags } = req.body;
 
     if (!slug || !content) {
         return res.status(400).json({ message: 'Slug and content are required' });
@@ -117,17 +115,25 @@ async function saveArticle(req, res) {
     // ===== تعيين القيم الافتراضية =====
     const finalDate = date || new Date().toISOString().split('T')[0];
     const finalAuthor = author || 'الأستاذ / محمود عبد الحميد';
+    const finalTitle = title || slug.replace(/-/g, ' ');
+    const finalDescription = description || '';
 
     // ===== بناء Front Matter =====
     let frontMatter = '---\n';
-    if (title) frontMatter += `title: "${title}"\n`;
-    frontMatter += `date: ${finalDate}\n`;          // دائماً موجود
-    frontMatter += `author: "${finalAuthor}"\n`;     // دائماً موجود
+    frontMatter += `title: "${finalTitle}"\n`;
+    frontMatter += `date: ${finalDate}\n`;
+    frontMatter += `author: "${finalAuthor}"\n`;
     if (image) frontMatter += `image: "${image}"\n`;
-    if (description) frontMatter += `description: "${description}"\n`;
+    if (finalDescription) frontMatter += `description: "${finalDescription}"\n`;
+    if (tags && tags.length > 0) {
+        frontMatter += `tags: ${tags.join(', ')}\n`;
+    }
     frontMatter += '---\n\n';
 
-    const fileContent = frontMatter + content;
+    // ===== المحتوى النظيف (بدون أي بيانات وصفية) =====
+    const cleanContent = content.trim();
+
+    const fileContent = frontMatter + cleanContent;
 
     const filename = `${slug}.md`;
     const path = `${ARTICLES_PATH}/${filename}`;
