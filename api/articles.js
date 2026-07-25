@@ -1,6 +1,6 @@
 // api/articles.js
 const GITHUB_OWNER = process.env.GITHUB_OWNER || 'malegal';
-const GITHUB_REPO = process.env.GITHUB_REPO || 'mahmoud-legal';
+const GITHUB_REPO = process.env.GITHUB_REPO || 'ostazlaw';
 const GITHUB_BRANCH = process.env.GITHUB_BRANCH || 'main';
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 const ARTICLES_PATH = 'blog/articles';
