@@ -29,108 +29,164 @@ export default async function handler(req, res) {
 }
 
 async function getNews(req, res) {
-    const url = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${NEWS_PATH}?ref=${GITHUB_BRANCH}`;
-    const response = await fetch(url, {
-        headers: {
-            'Authorization': `Bearer ${GITHUB_TOKEN}`,
-            'Accept': 'application/vnd.github.v3+json',
-            'User-Agent': 'Vercel-Admin'
-        }
-    });
-
-    if (!response.ok) {
-        if (response.status === 404) {
-            return res.status(200).json({ news: [] });
-        }
-        throw new Error(`GitHub API error: ${response.status}`);
-    }
-
-    const data = await response.json();
-    const newsItems = [];
-
-    for (const file of data) {
-        if (file.type === 'file' && file.name.endsWith('.md')) {
-            const slug = file.name.replace('.md', '');
-            const contentRes = await fetch(file.download_url);
-            const content = await contentRes.text();
-
-            let title = slug.replace(/-/g, ' ');
-            let image = '';
-            let description = '';
-            let category = 'أخبار عامة';
-            let icon = 'fa-newspaper';
-            let date = '';
-            let link = '';
-            let status = 'published';
-            let tags = [];
-            let body = content;
-
-            const yamlMatch = content.match(/^---\s*([\s\S]*?)\s*---/);
-            if (yamlMatch) {
-                const frontMatter = yamlMatch[1];
-                const titleMatch = frontMatter.match(/title:\s*(.*)/i);
-                if (titleMatch) title = titleMatch[1].replace(/['"]/g, '').trim();
-                const imageMatch = frontMatter.match(/image:\s*(.*)/i);
-                if (imageMatch) image = imageMatch[1].replace(/['"]/g, '').trim();
-                const descMatch = frontMatter.match(/description:\s*(.*)/i);
-                if (descMatch) description = descMatch[1].replace(/['"]/g, '').trim();
-                const catMatch = frontMatter.match(/category:\s*(.*)/i);
-                if (catMatch) category = catMatch[1].replace(/['"]/g, '').trim();
-                const iconMatch = frontMatter.match(/icon:\s*(.*)/i);
-                if (iconMatch) icon = iconMatch[1].replace(/['"]/g, '').trim();
-                const dateMatch = frontMatter.match(/date:\s*(.*)/i);
-                if (dateMatch) date = dateMatch[1].replace(/['"]/g, '').trim();
-                const linkMatch = frontMatter.match(/link:\s*(.*)/i);
-                if (linkMatch) link = linkMatch[1].replace(/['"]/g, '').trim();
-                const statusMatch = frontMatter.match(/status:\s*(.*)/i);
-                if (statusMatch) status = statusMatch[1].replace(/['"]/g, '').trim();
-                const tagsMatch = frontMatter.match(/tags:\s*\[(.*)\]/i);
-                if (tagsMatch) {
-                    tags = tagsMatch[1].split(',').map(t => t.trim().replace(/['"]/g, ''));
-                }
-                body = content.replace(/^---\s*[\s\S]*?\s*---/, '').trim();
+    try {
+        const url = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${NEWS_PATH}?ref=${GITHUB_BRANCH}`;
+        const response = await fetch(url, {
+            headers: {
+                'Authorization': `Bearer ${GITHUB_TOKEN}`,
+                'Accept': 'application/vnd.github.v3+json',
+                'User-Agent': 'Vercel-Admin'
             }
+        });
 
-            newsItems.push({
-                slug,
-                title,
-                image,
-                description,
-                category,
-                icon,
-                date,
-                link,
-                status,
-                tags,
-                content: body,
-                updated_at: file.sha
-            });
+        if (!response.ok) {
+            if (response.status === 404) {
+                return res.status(200).json({ news: [] });
+            }
+            throw new Error(`GitHub API error: ${response.status}`);
         }
-    }
 
-    newsItems.sort((a, b) => (a.updated_at > b.updated_at ? -1 : 1));
-    res.status(200).json({ news: newsItems });
+        const data = await response.json();
+        const newsItems = [];
+
+        for (const file of data) {
+            if (file.type === 'file' && file.name.endsWith('.md')) {
+                try {
+                    const slug = file.name.replace('.md', '');
+                    const contentRes = await fetch(file.download_url);
+                    const content = await contentRes.text();
+
+                    let title = slug.replace(/-/g, ' ');
+                    let image = '';
+                    let description = '';
+                    let category = 'إنجاز قضائي';
+                    let icon = 'fa-newspaper';
+                    let date = '';
+                    let link = '';
+                    let status = 'published';
+                    let tags = [];
+                    let body = content;
+
+                    const yamlMatch = content.match(/^---\s*([\s\S]*?)\s*---/);
+                    if (yamlMatch) {
+                        const frontMatter = yamlMatch[1];
+                        
+                        const titleMatch = frontMatter.match(/title:\s*(.*)/i);
+                        if (titleMatch) title = titleMatch[1].replace(/['"]/g, '').trim();
+
+                        const imageMatch = frontMatter.match(/image:\s*(.*)/i);
+                        if (imageMatch) image = imageMatch[1].replace(/['"]/g, '').trim();
+
+                        const descMatch = frontMatter.match(/description:\s*(.*)/i);
+                        if (descMatch) description = descMatch[1].replace(/['"]/g, '').trim();
+
+                        const catMatch = frontMatter.match(/category:\s*(.*)/i);
+                        if (catMatch) category = catMatch[1].replace(/['"]/g, '').trim();
+
+                        const iconMatch = frontMatter.match(/icon:\s*(.*)/i);
+                        if (iconMatch) icon = iconMatch[1].replace(/['"]/g, '').trim();
+
+                        const dateMatch = frontMatter.match(/date:\s*(.*)/i);
+                        if (dateMatch) date = dateMatch[1].replace(/['"]/g, '').trim();
+
+                        const linkMatch = frontMatter.match(/link:\s*(.*)/i);
+                        if (linkMatch) link = linkMatch[1].replace(/['"]/g, '').trim();
+
+                        const statusMatch = frontMatter.match(/status:\s*(.*)/i);
+                        if (statusMatch) status = statusMatch[1].replace(/['"]/g, '').trim();
+
+                        const tagsMatch = frontMatter.match(/tags:\s*(.*)/i);
+                        if (tagsMatch) {
+                            const rawTags = tagsMatch[1].replace(/['"]/g, '').trim();
+                            tags = rawTags.split(',').map(t => t.trim()).filter(t => t);
+                        }
+
+                        body = content.replace(/^---\s*[\s\S]*?\s*---/, '').trim();
+                    }
+
+                    newsItems.push({
+                        slug,
+                        title,
+                        image,
+                        description,
+                        category,
+                        icon,
+                        date,
+                        link,
+                        status,
+                        tags,
+                        content: body,
+                        sha: file.sha,
+                        updated_at: file.sha
+                    });
+                } catch (fileError) {
+                    console.error('❌ خطأ في قراءة ملف الخبر:', file.name, fileError);
+                }
+            }
+        }
+
+        newsItems.sort((a, b) => {
+            if (a.date && b.date) {
+                return new Date(b.date) - new Date(a.date);
+            }
+            return 0;
+        });
+
+        console.log(`✅ تم جلب ${newsItems.length} خبر من GitHub`);
+        res.status(200).json({ news: newsItems });
+        
+    } catch (error) {
+        console.error('❌ خطأ في getNews:', error);
+        res.status(500).json({ 
+            message: error.message || 'Internal server error',
+            news: [] 
+        });
+    }
 }
 
 async function saveNews(req, res) {
-    const { slug, title, image, description, content, category, icon, date, link, status, tags, oldSlug } = req.body;
+    const { 
+        slug, 
+        title, 
+        image, 
+        description, 
+        content, 
+        category, 
+        icon, 
+        date, 
+        link, 
+        status, 
+        tags, 
+        oldSlug 
+    } = req.body;
 
     if (!slug || !content) {
         return res.status(400).json({ message: 'Slug and content are required' });
     }
 
+    const finalDate = date || new Date().toISOString().split('T')[0];
+    const finalTitle = title || slug.replace(/-/g, ' ');
+    const finalStatus = status || 'published';
+    const finalCategory = category || 'إنجاز قضائي';
+    const finalIcon = icon || 'fa-newspaper';
+    const finalTags = tags && Array.isArray(tags) ? tags : [];
+
     let frontMatter = '---\n';
-    if (title) frontMatter += `title: "${title}"\n`;
-    if (image) frontMatter += `image: "${image}"\n`;
+    frontMatter += `title: "${finalTitle}"\n`;
+    frontMatter += `date: "${finalDate}"\n`;
+    frontMatter += `status: "${finalStatus}"\n`;
+    frontMatter += `category: "${finalCategory}"\n`;
+    frontMatter += `icon: "${finalIcon}"\n`;
     if (description) frontMatter += `description: "${description}"\n`;
-    if (category) frontMatter += `category: "${category}"\n`;
-    if (icon) frontMatter += `icon: "${icon}"\n`;
-    if (date) frontMatter += `date: "${date}"\n`;
+    if (image) frontMatter += `image: "${image}"\n`;
     if (link) frontMatter += `link: "${link}"\n`;
-    if (status) frontMatter += `status: "${status}"\n`;
-    if (tags && tags.length) frontMatter += `tags: [${tags.map(t => `"${t}"`).join(', ')}]\n`;
+    if (finalTags.length > 0) {
+        frontMatter += `tags: [${finalTags.map(t => `"${t}"`).join(', ')}]\n`;
+    }
     frontMatter += '---\n\n';
-    const fileContent = frontMatter + content;
+
+    const cleanContent = content.trim();
+    const fileContent = frontMatter + cleanContent;
 
     const filename = `${slug}.md`;
     const path = `${NEWS_PATH}/${filename}`;
