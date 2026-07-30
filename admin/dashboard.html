@@ -298,7 +298,7 @@
         }
         .tag-pill .remove-tag { cursor: pointer; color: #dc2626; font-size: 0.7rem; touch-action: manipulation; }
 
-        /* ===== CUSTOM FORMAT BAR (مثل ورد) ===== */
+        /* ===== CUSTOM FORMAT BAR ===== */
         .custom-format-bar {
             display: flex;
             gap: 0.8rem;
@@ -409,6 +409,7 @@
         }
         .item-card[data-status="published"] { border-right-color: #059669; }
         .item-card[data-status="draft"] { border-right-color: #d97706; }
+        .item-card[data-status="archived"] { border-right-color: #6b7280; }
         .item-card:hover { border-color: var(--matte-gold); box-shadow: var(--shadow-hover); transform: translateX(-4px); }
         .item-card .info h4 { font-size: 0.95rem; color: var(--deep-navy); font-family: var(--font-serif); font-weight: 700; }
         .item-card .meta { font-size: 0.7rem; color: rgba(34,34,34,0.4); display: flex; gap: 0.8rem; flex-wrap: wrap; margin-top: 0.3rem; }
@@ -674,7 +675,7 @@
                                 <div class="tags-container" id="articleTagsPreview"></div>
                             </div>
 
-                            <!-- ===== شريط التنسيق (مثل ورد) ===== -->
+                            <!-- ===== شريط التنسيق ===== -->
                             <div class="custom-format-bar">
                                 <span style="font-weight:700;color:var(--deep-navy);margin-left:0.5rem;">🎨 تنسيق النص:</span>
                                 <select id="fontFamilySelect" onchange="applyFormat('font-family', this.value); this.selectedIndex=0;">
@@ -826,7 +827,7 @@
                                 <div class="tags-container" id="newsTagsPreview"></div>
                             </div>
 
-                            <!-- ===== شريط التنسيق (مثل ورد) ===== -->
+                            <!-- ===== شريط التنسيق ===== -->
                             <div class="custom-format-bar">
                                 <span style="font-weight:700;color:var(--deep-navy);margin-left:0.5rem;">🎨 تنسيق النص:</span>
                                 <select onchange="applyFormat('font-family', this.value); this.selectedIndex=0;">
@@ -942,11 +943,23 @@
     </div>
 
     <!-- ========================================================== -->
-    <!-- JAVASCRIPT – الكامل المتكامل مع تنسيقات متقدمة (مثل ورد) -->
+    <!-- JAVASCRIPT – الكامل المتكامل مع تنسيقات متقدمة -->
     <!-- ========================================================== -->
     <script>
         (function() {
             'use strict';
+
+            // ==========================================================
+            // 0. التحقق من المصادقة
+            // ==========================================================
+            function checkAuth() {
+                const token = sessionStorage.getItem('admin_token');
+                const expiry = sessionStorage.getItem('admin_expiry');
+                if (!token || !expiry || Date.now() > parseInt(expiry)) {
+                    window.location.href = '/admin/login.html';
+                }
+            }
+            checkAuth();
 
             // ==========================================================
             // 1. التكوين
@@ -1045,7 +1058,7 @@
                 "bold", "italic", "strikethrough", "|",
                 "heading-1", "heading-2", "heading-3", "|",
                 "quote", "unordered-list", "ordered-list", "table", "horizontal-rule", "|",
-                "link", "image", "|",  // ✅ أزرار إضافة الروابط والصور (مثل ورد)
+                "link", "image", "|",
                 "preview", "fullscreen"
             ];
 
@@ -1082,7 +1095,7 @@
             }
 
             // ==========================================================
-            // 5. دوال التنسيق المتقدمة (حجم، لون، نوع، خلفية) – مثل ورد
+            // 5. دوال التنسيق المتقدمة
             // ==========================================================
             function getActiveEditor() {
                 const articlesTab = document.getElementById('tab-articlesEditor');
@@ -1103,7 +1116,6 @@
                     return;
                 }
 
-                // منطق ذكي لدمج التنسيقات الجديدة مع القديمة (بدون فقدان السابق)
                 let currentStyles = {};
                 const spanRegex = /^<span style="([^"]*)">(.*)<\/span>$/s;
                 const match = selected.match(spanRegex);
@@ -1120,14 +1132,14 @@
                     const wrapped = `<span style="${newStyleStr}">${innerText}</span>`;
                     cm.replaceSelection(wrapped);
                     cm.focus();
-                    showToast(`✅ تم تطبيق "${styleType}: ${styleValue}"`, 'success');
+                    showToast(`✅ تم تطبيق التنسيق`, 'success');
                     return;
                 }
 
                 const wrapped = `<span style="${styleType}: ${styleValue};">${selected}</span>`;
                 cm.replaceSelection(wrapped);
                 cm.focus();
-                showToast(`✅ تم تطبيق "${styleType}: ${styleValue}"`, 'success');
+                showToast(`✅ تم تطبيق التنسيق`, 'success');
             };
 
             window.removeFormat = function() {
@@ -1149,104 +1161,62 @@
             };
 
             // ==========================================================
-            // 6. دوال جلب البيانات من GitHub
+            // 6. دوال جلب البيانات من GitHub عبر API
             // ==========================================================
-            async function fetchGitHubFiles(path) {
-                const url =
-                    `https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/contents/${path}?ref=${CONFIG.branch}`;
-                const res = await fetch(url);
-                if (!res.ok) throw new Error(`فشل جلب ${path} (${res.status})`);
-                return await res.json();
+            async function loadArticles() {
+                try {
+                    const response = await fetch('/api/articles');
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    const data = await response.json();
+                    
+                    if (data.articles && Array.isArray(data.articles)) {
+                        articles = data.articles;
+                    } else if (Array.isArray(data)) {
+                        articles = data;
+                    } else {
+                        articles = [];
+                    }
+                    
+                    console.log(`📄 تم تحميل ${articles.length} مقالة`);
+                    renderArticles();
+                    updateStats();
+                } catch (error) {
+                    console.error('❌ خطأ في تحميل المقالات:', error);
+                    showToast('⚠️ فشل تحميل المقالات: ' + error.message, 'error');
+                    articles = [];
+                    renderArticles();
+                    updateStats();
+                }
             }
 
-            async function loadArticlesFromGitHub() {
+            async function loadNews() {
                 try {
-                    const files = await fetchGitHubFiles(CONFIG.articlesPath);
-                    const mdFiles = files.filter(f => f.type === 'file' && f.name.endsWith('.md'));
-                    const articles = [];
-                    for (const file of mdFiles) {
-                        const contentRes = await fetch(file.download_url);
-                        const content = await contentRes.text();
-                        const yamlMatch = content.match(/---\s*([\s\S]*?)\s*---/);
-                        let data = {
-                            slug: file.name.replace('.md', ''),
-                            sha: file.sha,
-                            content: content,
-                            title: file.name.replace('.md', '').replace(/-/g, ' '),
-                            date: '',
-                            status: 'published',
-                            category: 'general',
-                            author: '',
-                            seoKeyword: '',
-                            tags: [],
-                            image: '',
-                            description: ''
-                        };
-                        if (yamlMatch) {
-                            const front = yamlMatch[1];
-                            const get = (key) => {
-                                const m = front.match(new RegExp(key + ':\\s*(.*)', 'i'));
-                                return m ? m[1].replace(/['"]/g, '').trim() : '';
-                            };
-                            data.title = get('title') || data.title;
-                            data.date = get('date');
-                            data.status = get('status') || 'published';
-                            data.category = get('category') || 'general';
-                            data.author = get('author') || '';
-                            data.seoKeyword = get('seoKeyword') || '';
-                            data.tags = get('tags') ? get('tags').split(',').map(t => t.trim()) : [];
-                            data.image = get('image') || '';
-                            data.description = get('description') || '';
-                        }
-                        articles.push(data);
+                    const response = await fetch('/api/news');
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
                     }
-                    return articles;
-                } catch (e) { console.error(e); return []; }
-            }
-
-            async function loadNewsFromGitHub() {
-                try {
-                    const files = await fetchGitHubFiles(CONFIG.newsPath);
-                    const mdFiles = files.filter(f => f.type === 'file' && f.name.endsWith('.md'));
-                    const news = [];
-                    for (const file of mdFiles) {
-                        const contentRes = await fetch(file.download_url);
-                        const content = await contentRes.text();
-                        const yamlMatch = content.match(/---\s*([\s\S]*?)\s*---/);
-                        let data = {
-                            slug: file.name.replace('.md', ''),
-                            sha: file.sha,
-                            content: content,
-                            title: file.name.replace('.md', '').replace(/-/g, ' '),
-                            date: '',
-                            status: 'published',
-                            category: 'إنجاز قضائي',
-                            icon: 'fa-newspaper',
-                            tags: [],
-                            image: '',
-                            description: '',
-                            link: ''
-                        };
-                        if (yamlMatch) {
-                            const front = yamlMatch[1];
-                            const get = (key) => {
-                                const m = front.match(new RegExp(key + ':\\s*(.*)', 'i'));
-                                return m ? m[1].replace(/['"]/g, '').trim() : '';
-                            };
-                            data.title = get('title') || data.title;
-                            data.date = get('date');
-                            data.status = get('status') || 'published';
-                            data.category = get('category') || 'إنجاز قضائي';
-                            data.icon = get('icon') || 'fa-newspaper';
-                            data.tags = get('tags') ? get('tags').split(',').map(t => t.trim()) : [];
-                            data.image = get('image') || '';
-                            data.description = get('description') || '';
-                            data.link = get('link') || '';
-                        }
-                        news.push(data);
+                    const data = await response.json();
+                    
+                    if (data.news && Array.isArray(data.news)) {
+                        newsItems = data.news;
+                    } else if (Array.isArray(data)) {
+                        newsItems = data;
+                    } else {
+                        newsItems = [];
                     }
-                    return news;
-                } catch (e) { console.error(e); return []; }
+                    
+                    console.log(`📰 تم تحميل ${newsItems.length} خبر`);
+                    renderNews();
+                    updateStats();
+                } catch (error) {
+                    console.error('❌ خطأ في تحميل الأخبار:', error);
+                    showToast('⚠️ فشل تحميل الأخبار: ' + error.message, 'error');
+                    newsItems = [];
+                    renderNews();
+                    updateStats();
+                }
             }
 
             // ==========================================================
@@ -1279,6 +1249,7 @@
                                 <div class="meta">
                                     <span><i class="far fa-calendar-alt"></i> ${date}</span>
                                     <span><i class="fas fa-tag"></i> ${a.category || 'عام'}</span>
+                                    <span><i class="fas fa-circle" style="color:${a.status === 'published' ? '#059669' : a.status === 'draft' ? '#d97706' : '#6b7280'};font-size:0.5rem;"></i> ${a.status || 'published'}</span>
                                 </div>
                             </div>
                             <div class="actions">
@@ -1316,6 +1287,7 @@
                                 <div class="meta">
                                     <span><i class="far fa-calendar-alt"></i> ${date}</span>
                                     <span><i class="fas fa-tag"></i> ${n.category || 'عام'}</span>
+                                    <span><i class="fas fa-circle" style="color:${n.status === 'published' ? '#059669' : n.status === 'draft' ? '#d97706' : '#6b7280'};font-size:0.5rem;"></i> ${n.status || 'published'}</span>
                                 </div>
                             </div>
                             <div class="actions">
@@ -1342,24 +1314,15 @@
                 document.getElementById('draftCount').textContent = drafts;
             }
 
-            async function loadArticles() {
-                articles = await loadArticlesFromGitHub();
-                renderArticles();
-                updateStats();
-            }
-
-            async function loadNews() {
-                newsItems = await loadNewsFromGitHub();
-                renderNews();
-                updateStats();
-            }
-
             // ==========================================================
-            // 8. دوال التعديل والحذف (API)
+            // 8. دوال التعديل والحذف
             // ==========================================================
             window.editArticle = function(slug) {
                 const a = articles.find(art => art.slug === slug);
-                if (!a) return;
+                if (!a) {
+                    showToast('⚠️ المقال غير موجود', 'error');
+                    return;
+                }
                 document.getElementById('articleTitle').value = a.title || '';
                 document.getElementById('articleStatus').value = a.status || 'published';
                 document.getElementById('articleCategory').value = a.category || 'general';
@@ -1387,23 +1350,31 @@
             };
 
             window.deleteArticle = async function(slug) {
-                if (!confirm(`هل أنت متأكد من حذف "${slug}"؟`)) return;
+                if (!confirm(`⚠️ هل أنت متأكد من حذف "${slug}"؟`)) return;
                 try {
-                    const res = await fetch('/api/articles', {
+                    const response = await fetch('/api/articles', {
                         method: 'DELETE',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ slug })
                     });
-                    if (!res.ok) throw new Error('تعذر الحذف');
-                    showToast('✅ تم الحذف', 'success');
+                    if (!response.ok) {
+                        const errorData = await response.json().catch(() => ({}));
+                        throw new Error(errorData.message || `خطأ ${response.status}`);
+                    }
+                    showToast('✅ تم حذف المقال', 'success');
                     if (document.getElementById('articleEditSlug').value === slug) resetArticleForm();
                     await loadArticles();
-                } catch (err) { showToast(err.message, 'error'); }
+                } catch (err) {
+                    showToast('❌ ' + err.message, 'error');
+                }
             };
 
             window.editNews = function(slug) {
                 const n = newsItems.find(item => item.slug === slug);
-                if (!n) return;
+                if (!n) {
+                    showToast('⚠️ الخبر غير موجود', 'error');
+                    return;
+                }
                 document.getElementById('newsTitle').value = n.title || '';
                 document.getElementById('newsCategory').value = n.category || 'إنجاز قضائي';
                 document.getElementById('newsIcon').value = n.icon || 'fa-newspaper';
@@ -1432,33 +1403,48 @@
             };
 
             window.deleteNews = async function(slug) {
-                if (!confirm(`هل أنت متأكد من حذف الخبر "${slug}"؟`)) return;
+                if (!confirm(`⚠️ هل أنت متأكد من حذف الخبر "${slug}"؟`)) return;
                 try {
-                    const res = await fetch('/api/news', {
+                    const response = await fetch('/api/news', {
                         method: 'DELETE',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ slug })
                     });
-                    if (!res.ok) throw new Error('تعذر الحذف');
-                    showToast('✅ تم الحذف', 'success');
+                    if (!response.ok) {
+                        const errorData = await response.json().catch(() => ({}));
+                        throw new Error(errorData.message || `خطأ ${response.status}`);
+                    }
+                    showToast('✅ تم حذف الخبر', 'success');
                     if (document.getElementById('newsEditSlug').value === slug) resetNewsForm();
                     await loadNews();
-                } catch (err) { showToast(err.message, 'error'); }
+                } catch (err) {
+                    showToast('❌ ' + err.message, 'error');
+                }
             };
 
             // ==========================================================
-            // 9. دوال حفظ المقالات والأخبار (مع التاريخ والتنسيق)
+            // 9. دوال حفظ المقالات والأخبار
             // ==========================================================
             document.getElementById('articleForm').addEventListener('submit', async function(e) {
                 e.preventDefault();
+                
                 const title = document.getElementById('articleTitle').value.trim();
                 const content = articleMDE.value();
                 const editSlug = document.getElementById('articleEditSlug').value;
-                if (!title || !content) { showToast('⚠️ العنوان والمحتوى مطلوبان.', 'error'); return; }
+                
+                if (!title) {
+                    showToast('⚠️ العنوان مطلوب.', 'error');
+                    return;
+                }
+                if (!content) {
+                    showToast('⚠️ المحتوى مطلوب.', 'error');
+                    return;
+                }
 
                 let slug = editSlug || title.replace(/[^\u0600-\u06FF\s\w-]/g, '').replace(/\s+/g, '-').toLowerCase()
                     .replace(/--+/g, '-');
                 if (!slug) slug = 'article-' + Date.now();
+
                 const date = document.getElementById('articleDate').value || new Date().toISOString().split('T')[0];
                 const tagsInput = document.getElementById('articleTags').value.trim();
                 const tags = tagsInput ? tagsInput.split(',').map(t => t.trim()).filter(t => t) : [];
@@ -1472,38 +1458,60 @@
                     author: document.getElementById('articleAuthor').value.trim() || 'الأستاذ / محمود عبد الحميد',
                     seoKeyword: document.getElementById('seoKeyword')?.value?.trim() || '',
                     oldSlug: editSlug || undefined,
-                    sha: document.getElementById('articleEditSha').value || undefined,
-                    type: 'article'
+                    sha: document.getElementById('articleEditSha').value || undefined
                 };
 
                 const btn = document.getElementById('articleSaveBtn');
                 const orig = btn.innerHTML;
                 btn.disabled = true;
                 btn.innerHTML = '<span class="loading-spinner"></span> جاري...';
+
                 try {
-                    const res = await fetch('/api/articles', {
+                    const response = await fetch('/api/articles', {
                         method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
+                        headers: { 
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        },
                         body: JSON.stringify(payload)
                     });
-                    if (!res.ok) throw new Error('تعذر الحفظ');
-                    showToast(editSlug ? '✅ تم التحديث' : '✅ تم النشر', 'success');
+
+                    if (!response.ok) {
+                        const errorData = await response.json().catch(() => ({}));
+                        throw new Error(errorData.message || `خطأ ${response.status}`);
+                    }
+
+                    showToast(editSlug ? '✅ تم تحديث المقال' : '✅ تم نشر المقال', 'success');
                     resetArticleForm();
                     await loadArticles();
-                } catch (err) { showToast('❌ ' + err.message, 'error'); } finally { btn.disabled = false;
-                    btn.innerHTML = orig; }
+                } catch (err) {
+                    showToast('❌ ' + err.message, 'error');
+                } finally {
+                    btn.disabled = false;
+                    btn.innerHTML = orig;
+                }
             });
 
             document.getElementById('newsForm').addEventListener('submit', async function(e) {
                 e.preventDefault();
+                
                 const title = document.getElementById('newsTitle').value.trim();
                 const content = newsMDE.value();
                 const editSlug = document.getElementById('newsEditSlug').value;
-                if (!title || !content) { showToast('⚠️ العنوان والمحتوى مطلوبان.', 'error'); return; }
+                
+                if (!title) {
+                    showToast('⚠️ عنوان الخبر مطلوب.', 'error');
+                    return;
+                }
+                if (!content) {
+                    showToast('⚠️ محتوى الخبر مطلوب.', 'error');
+                    return;
+                }
 
                 let slug = editSlug || title.replace(/[^\u0600-\u06FF\s\w-]/g, '').replace(/\s+/g, '-').toLowerCase()
                     .replace(/--+/g, '-');
                 if (!slug) slug = 'news-' + Date.now();
+
                 const date = document.getElementById('newsDate').value || new Date().toISOString().split('T')[0];
                 const tagsInput = document.getElementById('newsTags').value.trim();
                 const tags = tagsInput ? tagsInput.split(',').map(t => t.trim()).filter(t => t) : [];
@@ -1517,26 +1525,38 @@
                     status: document.getElementById('newsStatus').value,
                     link: document.getElementById('newsLink').value.trim(),
                     oldSlug: editSlug || undefined,
-                    sha: document.getElementById('newsEditSha').value || undefined,
-                    type: 'news'
+                    sha: document.getElementById('newsEditSha').value || undefined
                 };
 
                 const btn = document.getElementById('newsSaveBtn');
                 const orig = btn.innerHTML;
                 btn.disabled = true;
                 btn.innerHTML = '<span class="loading-spinner"></span> جاري...';
+
                 try {
-                    const res = await fetch('/api/news', {
+                    const response = await fetch('/api/news', {
                         method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
+                        headers: { 
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        },
                         body: JSON.stringify(payload)
                     });
-                    if (!res.ok) throw new Error('تعذر الحفظ');
+
+                    if (!response.ok) {
+                        const errorData = await response.json().catch(() => ({}));
+                        throw new Error(errorData.message || `خطأ ${response.status}`);
+                    }
+
                     showToast(editSlug ? '✅ تم تحديث الخبر' : '✅ تم نشر الخبر', 'success');
                     resetNewsForm();
                     await loadNews();
-                } catch (err) { showToast('❌ ' + err.message, 'error'); } finally { btn.disabled = false;
-                    btn.innerHTML = orig; }
+                } catch (err) {
+                    showToast('❌ ' + err.message, 'error');
+                } finally {
+                    btn.disabled = false;
+                    btn.innerHTML = orig;
+                }
             });
 
             // ==========================================================
@@ -1667,32 +1687,72 @@
             // ==========================================================
             // 12. الأمان (كلمة المرور)
             // ==========================================================
-            document.getElementById('passwordForm').addEventListener('submit', function(e) {
+            document.getElementById('passwordForm').addEventListener('submit', async function(e) {
                 e.preventDefault();
-                const cp = document.getElementById('currentPassword').value.trim();
-                const np = document.getElementById('newPassword').value.trim();
-                const cnp = document.getElementById('confirmPassword').value.trim();
-                if (!cp || !np || !cnp) { showToast('⚠️ جميع الحقول مطلوبة.', 'error'); return; }
-                if (np !== cnp) { showToast('❌ كلمتا المرور غير متطابقتين.', 'error'); return; }
-                if (np.length < 8) { showToast('❌ كلمة المرور يجب أن تكون 8 أحرف.', 'error'); return; }
-                if (cp !== 'admin123') { showToast('❌ كلمة المرور الحالية غير صحيحة.', 'error'); return; }
-                localStorage.setItem('admin_password', np);
-                showToast('✅ تم تحديث كلمة المرور!', 'success');
-                document.getElementById('currentPassword').value = '';
-                document.getElementById('newPassword').value = '';
-                document.getElementById('confirmPassword').value = '';
+                
+                const currentPassword = document.getElementById('currentPassword').value.trim();
+                const newPassword = document.getElementById('newPassword').value.trim();
+                const confirmPassword = document.getElementById('confirmPassword').value.trim();
+                
+                if (!currentPassword || !newPassword || !confirmPassword) {
+                    showToast('⚠️ جميع الحقول مطلوبة.', 'error');
+                    return;
+                }
+                if (newPassword !== confirmPassword) {
+                    showToast('❌ كلمتا المرور غير متطابقتين.', 'error');
+                    return;
+                }
+                if (newPassword.length < 8) {
+                    showToast('❌ كلمة المرور يجب أن تكون 8 أحرف على الأقل.', 'error');
+                    return;
+                }
+
+                const btn = this.querySelector('button[type="submit"]');
+                const orig = btn.innerHTML;
+                btn.disabled = true;
+                btn.innerHTML = '<span class="loading-spinner"></span> جاري...';
+
+                try {
+                    const response = await fetch('/api/update-password', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ currentPassword, newPassword })
+                    });
+
+                    const data = await response.json();
+                    if (!response.ok) {
+                        throw new Error(data.message || 'خطأ في تغيير كلمة المرور');
+                    }
+
+                    showToast('✅ ' + data.message, 'success');
+                    document.getElementById('currentPassword').value = '';
+                    document.getElementById('newPassword').value = '';
+                    document.getElementById('confirmPassword').value = '';
+                } catch (err) {
+                    showToast('❌ ' + err.message, 'error');
+                } finally {
+                    btn.disabled = false;
+                    btn.innerHTML = orig;
+                }
             });
 
             // ==========================================================
             // 13. تحديث الكل والخروج
             // ==========================================================
-            window.refreshAll = function() { loadArticles();
+            window.refreshAll = function() { 
+                showToast('🔄 جاري التحديث...', 'info');
+                loadArticles();
                 loadNews();
-                showToast('🔄 تم التحديث.', 'info'); };
+            };
+
             window.logout = function() {
-                sessionStorage.clear();
-                showToast('👋 تم تسجيل الخروج.', 'info');
-                setTimeout(() => { location.reload(); }, 500);
+                if (confirm('هل تريد تسجيل الخروج؟')) {
+                    sessionStorage.clear();
+                    showToast('👋 تم تسجيل الخروج.', 'info');
+                    setTimeout(() => { 
+                        window.location.href = '/admin/login.html';
+                    }, 500);
+                }
             };
 
             // ==========================================================
@@ -1702,12 +1762,10 @@
             loadNews();
             resetArticleForm();
             resetNewsForm();
-            setInterval(() => { loadArticles();
-                loadNews(); }, 60000);
-            console.log('✅ لوحة التحكم جاهزة مع تنسيقات متقدمة (مثل ورد).');
+            setInterval(() => { loadArticles(); loadNews(); }, 60000);
+            console.log('✅ لوحة التحكم جاهزة مع تنسيقات متقدمة.');
 
         })();
     </script>
-
 </body>
 </html>
